@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>Portfolio Master Controller - FINAL v2.7</title>
+    <style>
+        body { font-family: -apple-system, sans-serif; background: #f0f0f0; margin: 0; padding: 20px; color: #111; }
+        .admin-window { max-width: 1000px; margin: auto; background: white; border: 4px solid #111; border-radius: 12px; box-shadow: 15px 15px 0 #111; overflow: hidden; display: flex; flex-direction: column; min-height: 95vh; }
+        .header { background: #111; color: white; padding: 15px 25px; display: flex; justify-content: space-between; align-items: center; }
+        
+        .security-panel { padding: 20px; background: #fffde7; border-bottom: 4px solid #111; display: grid; grid-template-columns: 1.2fr 1fr 1fr; gap: 20px; }
+        .sec-box { border: 2.5px solid #111; padding: 15px; border-radius: 10px; background: #fff; box-shadow: 4px 4px 0 #111; }
+        .sec-box label { display: block; margin-bottom: 8px; font-weight: 800; font-size: 13px; color: #111; }
+        
+        .tab-group { display: flex; border-bottom: 4px solid #111; background: #eee; }
+        .tab-btn { flex: 1; padding: 15px; border: none; border-right: 2px solid #ccc; background: transparent; cursor: pointer; font-weight: 800; transition: 0.2s; font-size: 12px; }
+        .tab-btn.active { background: white; border-bottom: 4px solid #fff; margin-bottom: -4px; position: relative; z-index: 5; }
+
+        .content-area { flex: 1; padding: 30px; background: white; overflow-y: auto; }
+        input, textarea, select { width: 100%; padding: 10px; border: 2.5px solid #111; border-radius: 6px; box-sizing: border-box; margin-bottom: 12px; font-size: 14px; font-weight: 600; }
+        
+        .item-card { border: 2.5px solid #111; padding: 20px; border-radius: 12px; margin-bottom: 20px; position: relative; background: #fafafa; box-shadow: 6px 6px 0 #111; }
+        .btn-add { background: #28a745; color: white; border: 2.5px solid #111; padding: 8px 20px; border-radius: 8px; cursor: pointer; margin-bottom: 15px; font-weight: 800; }
+        .btn-del { background: #dc3545; color: white; border: 2px solid #111; padding: 4px 10px; border-radius: 6px; cursor: pointer; position: absolute; right: 10px; top: 10px; font-weight: 800; font-size: 11px; }
+        
+        .footer-save { border-top: 4px solid #111; padding: 25px; background: #f0f0f0; display: flex; gap: 20px; align-items: center; }
+        .save-btn { background: #007bff; color: white; border: 3px solid #111; padding: 15px 30px; border-radius: 10px; cursor: pointer; font-weight: 800; font-size: 1.1rem; box-shadow: 6px 6px 0 #0056b3; }
+        .preview-img { width: 100px; height: 100px; object-fit: cover; border: 2.5px solid #111; border-radius: 8px; margin-bottom: 10px; background: #eee; }
+    </style>
+</head>
+<body>
+
+<div class="admin-window">
+    <div class="header">
+        <h2 style="margin:0; font-weight:800; font-size:18px;">🛠️ PORTFOLIO MASTER CONTROL v2.7</h2>
+        <button onclick="document.getElementById('file-loader').click()" style="padding:8px 15px; cursor:pointer; font-weight:800;">📂 content.json 불러오기</button>
+        <input type="file" id="file-loader" style="display:none;" onchange="loadContent(event)">
+    </div>
+
+    <!-- Security Panel -->
+    <div class="security-panel">
+        <div class="sec-box">
+            <label>📅 접속 가능 기간</label>
+            시작: <input type="date" id="start_date">
+            종료: <input type="date" id="end_date">
+        </div>
+        <div class="sec-box">
+            <label>👤 관리 유저 (ID / PIN)</label>
+            <div id="users_container" style="max-height:80px; overflow-y:auto; margin-bottom:8px;"></div>
+            <button onclick="addUser()" class="btn-add" style="font-size:11px; padding:5px; width:100%; margin:0;">+ 유저 추가</button>
+        </div>
+        <div class="sec-box">
+            <label>👁️ 섹션 노출 토글</label>
+            <div style="font-size:10px; display:grid; grid-template-columns: 1fr 1fr; gap:3px;">
+                <span><input type="checkbox" id="v_01" checked> PROFILE</span>
+                <span><input type="checkbox" id="v_02" checked> PORTFOLIO</span>
+                <span><input type="checkbox" id="v_03" checked> CAREER</span>
+                <span><input type="checkbox" id="v_04" checked> EDU/ACT</span>
+                <span><input type="checkbox" id="v_05" checked> SKILLS</span>
+                <span><input type="checkbox" id="v_06" checked> AWARDS</span>
+            </div>
+        </div>
+    </div>
+
+    <div class="tab-group">
+        <button class="tab-btn active" onclick="switchTab(0)">01 PROFILE</button>
+        <button class="tab-btn" onclick="switchTab(1)">02 PORTFOLIO</button>
+        <button class="tab-btn" onclick="switchTab(2)">03 CAREER</button>
+        <button class="tab-btn" onclick="switchTab(3)">04 EDU & ACT</button>
+        <button class="tab-btn" onclick="switchTab(4)">05 SKILLS</button>
+        <button class="tab-btn" onclick="switchTab(5)">06 AWARDS</button>
+    </div>
+
+    <div class="content-area" id="editor-body"></div>
+
+    <div class="footer-save">
+        <div style="flex:1; font-weight:800; font-size:13px;">✅ 수정을 마친 후 [다운로드] 버튼을 눌러주세요.</div>
+        <button class="save-btn" onclick="exportFinal()">💾 통합 저장 및 다운로드 (.json)</button>
+    </div>
+</div>
+
+<script>
+    let globalData = { site_labels:{left:"SECTION", right:"KWON ARCHIVE"}, profile:{}, portfolio_items:[], careers:[], educations:[], skills:{tech:"", certs:[]}, awards:[] };
+    let authUsers = [{id:"visit", pin:"1234"}];
+    let tabIndex = 0;
+
+    function switchTab(idx) { tabIndex = idx; document.querySelectorAll('.tab-btn').forEach((b,i)=> b.classList.toggle('active', i===idx)); renderEditor(); }
+    function convertImg(event, callback) { const reader = new FileReader(); reader.onload = (e) => { callback(e.target.result); renderEditor(); }; reader.readAsDataURL(event.target.files[0]); }
+
+    function renderEditor() {
+        const area = document.getElementById('editor-body');
+        area.innerHTML = ""; let html = "";
+        globalData.awards = globalData.awards || []; // Ensure awards exist
+
+        if(tabIndex === 0) { // PROFILE
+            const p = globalData.profile;
+            const s = globalData.site_labels || {left: "SECTION", right: "KWON ARCHIVE"};
+            html = `
+                <div class="sec-box" style="margin-bottom:30px; background:#eef7ff; border-color:#007bff;">
+                    <label>🏁 공통 헤더 라벨</label>
+                    <div style="display:flex; gap:10px;">
+                        <input type="text" placeholder="Left" value="${s.left}" onchange="globalData.site_labels.left=this.value">
+                        <input type="text" placeholder="Right" value="${s.right}" onchange="globalData.site_labels.right=this.value">
+                    </div>
+                </div>
+                <label>프로필 메인 사진</label><img src="${p.image_url || ''}" class="preview-img"><input type="file" onchange="convertImg(event, (r)=> globalData.profile.image_url = r)">
+                <label>메인 타이틀</label><input type="text" value="${p.title || ''}" onchange="globalData.profile.title=this.value">
+                <label>헤더 배지</label><input type="text" value="${p.badge_text || ''}" onchange="globalData.profile.badge_text=this.value">
+                <label>이메일</label><input type="text" value="${p.email || ''}" onchange="globalData.profile.email=this.value">
+                <label>상세 소개</label><textarea onchange="globalData.profile.description=this.value">${p.description || ''}</textarea>`;
+        } else if(tabIndex === 1) { // PORTFOLIO
+            html = `<button class="btn-add" onclick="addNew('portfolio_items')">+ 새 프로젝트 추가</button>`;
+            globalData.portfolio_items.forEach((item, i) => {
+                html += `<div class="item-card"><button class="btn-del" onclick="removeIdx('portfolio_items',${i})">삭제</button>
+                    제목: <input type="text" value="${item.title}" onchange="globalData.portfolio_items[${i}].title=this.value">
+                    이미지: <img src="${item.thumbnail}" style="height:40px; display:block;"><input type="file" onchange="convertImg(event, (r)=> globalData.portfolio_items[${i}].thumbnail=r)">
+                    설명: <input type="text" value="${item.description}" onchange="globalData.portfolio_items[${i}].description=this.value">
+                    URL: <input type="text" value="${item.url}" onchange="globalData.portfolio_items[${i}].url=this.value">
+                </div>`;
+            });
+        } else if(tabIndex === 2 || tabIndex === 3) { // CAREER / EDU
+            const key = (tabIndex === 2) ? 'careers' : 'educations';
+            html = `<button class="btn-add" onclick="addNew('${key}')">+ 새 항목 추가</button>`;
+            globalData[key].forEach((item, i) => {
+                html += `<div class="item-card"><button class="btn-del" onclick="removeIdx('${key}',${i})">삭제</button>
+                    기간: <input type="text" value="${item.period}" onchange="globalData.${key}[${i}].period=this.value">
+                    ${tabIndex===2?'회사명':'학교명'}: <input type="text" value="${item.company || item.school}" onchange="globalData.${key}[${i}].${key==='careers'?'company':'school'}=this.value">
+                    아이콘/로고 이미지: <img src="${item.image_url || ''}" style="height:35px; display:block; border-radius:4px; margin-bottom:5px;"><input type="file" onchange="convertImg(event, (r)=> globalData.${key}[${i}].image_url=r)">
+                    이모티콘: <input type="text" value="${item.emoji || ''}" onchange="globalData.${key}[${i}].emoji=this.value">
+                    상세내용: <textarea onchange="globalData.${key}[${i}].${key==='careers'?'role':'detail'}=this.value">${item.role || item.detail}</textarea>
+                </div>`;
+            });
+        } else if(tabIndex === 4) { // SKILLS
+            html = `<label>기술 스택</label><textarea onchange="globalData.skills.tech=this.value">${globalData.skills.tech || ''}</textarea>
+                <hr><button class="btn-add" onclick="addNewCerts()">+ 자격증 추가</button>`;
+            globalData.skills.certs.forEach((c, i) => {
+                html += `<div class="item-card"><button class="btn-del" onclick="removeCert(${i})">삭제</button>
+                    자격증: <input type="text" value="${c.name}" onchange="globalData.skills.certs[${i}].name=this.value">
+                    취득일: <input type="text" value="${c.date}" onchange="globalData.skills.certs[${i}].date=this.value">
+                </div>`;
+            });
+        } else { // 06 AWARDS (Fixed Rendering with Military Input)
+            globalData.military = globalData.military || ""; 
+            html = `
+                <div class="item-card" style="border: 3px solid #dc3545; background: #fff5f5;">
+                    <label>🪖 군 병역 사항 (예: 육군 병장 만기전역)</label>
+                    <input type="text" value="${globalData.military}" oninput="globalData.military=this.value" placeholder="예: 대한민국 육군 병장 만기전역">
+                </div>
+                <hr>
+                <button class="btn-add" onclick="addNew('awards')">+ 새 수상/활동 추가</button>`;
+            globalData.awards.forEach((it, i) => {
+                html += `<div class="item-card"><button class="btn-del" onclick="removeIdx('awards',${i})">삭제</button>
+                    수상명: <input type="text" value="${it.name || ''}" onchange="globalData.awards[${i}].name=this.value">
+                    일시: <input type="text" value="${it.date || ''}" onchange="globalData.awards[${i}].date=this.value">
+                </div>`;
+            });
+        }
+        area.innerHTML = html;
+    }
+
+    function addNew(key) { globalData[key] = globalData[key] || []; globalData[key].unshift({title:"", company:"", school:"", period:"", role:"", detail:"", emoji:"📍", url:"", thumbnail:"", name:"", date:""}); renderEditor(); }
+    function removeIdx(key, idx) { globalData[key].splice(idx,1); renderEditor(); }
+    function addNewCerts() { globalData.skills.certs = globalData.skills.certs || []; globalData.skills.certs.unshift({name:"", date:""}); renderEditor(); }
+    function removeCert(idx) { globalData.skills.certs.splice(idx,1); renderEditor(); }
+    function addUser() { const id = prompt("ID:"); const pin = prompt("PIN:"); if(id && pin) { authUsers.push({id,pin}); renderIds(); } }
+    function renderIds() { document.getElementById('users_container').innerHTML = authUsers.map(u => `<span style="background:#111; color:white; padding:2px 6px; border-radius:4px; font-size:10px; margin-right:4px;">${u.id}</span>`).join(''); }
+
+    function exportFinal() {
+        // [MOD] site_labels are included globally in globalData
+        const config = { settings: { 
+            valid_start: document.getElementById('start_date').value, valid_end: document.getElementById('end_date').value,
+            allowed_users: authUsers,
+            visibilities: { "01 PROFILE": document.getElementById('v_01').checked, "02 PORTFOLIO": document.getElementById('v_02').checked, "03 CAREER": document.getElementById('v_03').checked, "04 EDU & ACTIVITIES": document.getElementById('v_04').checked, "05 SKILLS & CERTS": document.getElementById('v_05').checked, "06 AWARDS & MILITARY": document.getElementById('v_06').checked }
+        }};
+        downloadLink(config, "config.json");
+        setTimeout(() => downloadLink(globalData, "content.json"), 500);
+    }
+
+    function downloadLink(obj, name) { const blob = new Blob([JSON.stringify(obj, null, 2)], { type: "application/json" }); const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = name; a.click(); }
+    function loadContent(e) { const r = new FileReader(); r.onload = (f) => { try { globalData = JSON.parse(f.target.result); renderEditor(); alert("로드 완료!"); } catch(e){ alert("파일 형식이 맞지 않습니다."); } }; r.readAsText(e.target.files[0]); }
+    window.onload = () => renderEditor();
+</script>
+</body>
+</html>

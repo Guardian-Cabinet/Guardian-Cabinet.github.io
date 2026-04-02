@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kwon Soonchul | Portfolio Archive v3.0</title>
+    
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-145X0P396D"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'G-145X0P396D');
+    </script>
+
+    <!-- 🛡️ Security Check -->
+    <script src="assets/js/security.js"></script>
+
+    <!-- 🌐 Global Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@800&family=Inter:wght@400;600;800&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --bg-site: #f2f2f2;
+            --bg-cabinet: #ffffff;
+            --border-primary: #111111;
+            --accent-primary: #111111;
+            --text-primary: #111111;
+            --text-secondary: #666666;
+            --tab-height: 55px;
+        }
+
+        * { box-sizing: border-box; }
+        
+        /* 📝 Korean Typography: Block word-breaks for visual quality */
+        p, h1, h2, h3, li, div, span { word-break: keep-all; overflow-wrap: break-word; }
+
+        body {
+            background-color: var(--bg-site);
+            color: var(--text-primary);
+            font-family: 'Inter', sans-serif;
+            margin: 0; padding: 0;
+            display: flex; justify-content: center; align-items: center;
+            height: 100vh; overflow: hidden;
+            opacity: 0;
+            transition: opacity 0.5s ease;
+        }
+
+        /* 🗄️ Cabinet Structure: NO TOP BAR (As requested) */
+        .cabinet-container {
+            position: relative;
+            width: 95%; max-width: 1100px;
+            height: 96vh;
+            background: var(--bg-cabinet);
+            border: 4px solid var(--border-primary);
+            border-radius: 12px;
+            box-shadow: 15px 15px 0 rgba(0, 0, 0, 0.1);
+            display: flex; flex-direction: column;
+            overflow: hidden;
+        }
+
+        .folder-group { position: relative; flex: 1; overflow: hidden; background: #eee; }
+
+        .folder {
+            position: absolute; width: 100%;
+            transition: transform 0.6s cubic-bezier(0.2, 1, 0.3, 1);
+            will-change: transform; display: flex; flex-direction: column;
+        }
+
+        .tab-wrapper {
+            display: flex; width: 100%; height: var(--tab-height);
+            align-items: flex-end; padding: 0 40px;
+        }
+
+        .tab {
+            font-family: 'JetBrains Mono', monospace; font-size: 0.85rem; font-weight: 700;
+            padding: 10px 20px; background: #ddd; border: 3.5px solid var(--border-primary);
+            border-bottom: none; border-radius: 10px 10px 0 0;
+            cursor: pointer; transition: 0.2s; color: #444; position: relative; top: 1px;
+        }
+        .tab:hover { background: #ccc; }
+        .tab-active { background: #fff; color: #111; z-index: 5; box-shadow: 0 -5px 15px rgba(0,0,0,0.05); }
+
+        .folder-body {
+            flex-grow: 1; background: #fff; border-top: 3.5px solid var(--border-primary);
+            padding: 40px; overflow-y: auto; position: relative; z-index: 1;
+        }
+
+        /* 🖼️ Black Frame Header (Dynamic Labels) */
+        .header-frame {
+            display: flex; border: 3.5px solid #111; margin-bottom: 25px;
+            background: #111; overflow: hidden; border-radius: 4px;
+        }
+        .header-cell {
+            flex: 1; padding: 12px; color: white; border-right: 3.5px solid #111;
+            text-align: center; font-weight: 800; font-family: 'Outfit'; font-size: 0.85rem;
+            text-transform: uppercase;
+        }
+        .header-cell:last-child { border-right: none; }
+
+        /* 📋 Zigzag Timeline Layout */
+        .timeline-container { position: relative; margin: 40px 0; padding-bottom: 20px; }
+        .timeline-line {
+            position: absolute; left: 50%; top: 0; bottom: 0;
+            width: 4px; background: #111; transform: translateX(-50%); z-index: 1;
+        }
+        .timeline-item { position: relative; width: 100%; display: flex; align-items: center; margin-bottom: 70px; }
+        .timeline-dot {
+            position: absolute; left: 50%; transform: translateX(-50%);
+            width: 50px; height: 50px; background: white; border: 4px solid #111;
+            border-radius: 50%; z-index: 10; display: flex; align-items: center; justify-content: center;
+            font-size: 24px; box-shadow: 4px 4px 0 rgba(0,0,0,0.1);
+        }
+        .timeline-content {
+            width: 42%; padding: 25px; background: white; border: 3.5px solid #111;
+            border-radius: 12px; box-shadow: 10px 10px 0 #111; position: relative; z-index: 5;
+        }
+        .timeline-item:nth-child(odd) { justify-content: flex-start; }
+        .timeline-item:nth-child(even) { justify-content: flex-end; }
+
+        /* 📱 Mobile UI Fix (v3.1 Responsive) */
+        @media (max-width: 768px) {
+            .cabinet-container { height: 98vh; border: none; border-radius: 0; width: 100%; }
+            .tab-wrapper { padding: 0 10px; overflow-x: auto; -webkit-overflow-scrolling: touch; }
+            .tab { font-size: 0.72rem; padding: 8px 12px; white-space: nowrap; }
+            .folder-body { padding: 20px; }
+            .header-frame { flex-direction: column; }
+            .header-cell { border-right: none; border-bottom: 3.5px solid #111; font-size: 0.75rem; padding: 10px; }
+            .header-cell:last-child { border-bottom: none; }
+            .timeline-line { left: 25px; transform: none; }
+            .timeline-dot { left: 25px; transform: translateX(-50%); width: 44px; height: 44px; }
+            .timeline-item { padding-left: 55px; justify-content: flex-start !important; margin-bottom: 40px; }
+            .timeline-content { width: 100%; box-shadow: 6px 6px 0 #111; padding: 15px; }
+        }
+
+        /* ⚡ Ultra-Small Device Tweaks (v3.1) */
+        @media (max-width: 400px) {
+            h1 { font-size: 1.5rem !important; }
+            .badge { font-size: 0.65rem; }
+            .tab { font-size: 0.68rem; padding: 7px 10px; }
+            .folder-body { padding: 15px; }
+            .header-cell { padding: 8px; font-size: 0.7rem; }
+            .timeline-dot { width: 38px; height: 38px; font-size: 18px; }
+            .timeline-item { padding-left: 50px; }
+        }
+
+        h1 { font-size: clamp(1.8rem, 8vw, 2.4rem); font-weight: 800; margin: 0 0 15px 0; color: #111; line-height: 1.15; letter-spacing: -1px; }
+        h3 { font-weight: 800; font-size: 1.3rem; margin-top: 0; }
+        .badge { display: inline-block; padding: 5px 12px; border: 2.5px solid #111; border-radius: 6px; font-weight: 800; font-size: 0.75rem; background: #eee; margin-bottom: 12px; }
+        .content-grid { display: grid; grid-template-columns: 1fr 1.3fr; gap: 40px; }
+        .media-container { border: 3.5px solid #111; border-radius: 12px; overflow: hidden; box-shadow: 8px 8px 0 rgba(0,0,0,0.1); }
+        .media-container img { width: 100%; height: 100%; object-fit: cover; }
+    </style>
+</head>
+<body>
+    <div class="cabinet-container">
+        <!-- NO CABINET HEADER - Directly Folders -->
+        <div class="folder-group" id="folder-container"></div>
+    </div>
+    <script src="assets/js/app.js"></script>
+</body>
+</html>

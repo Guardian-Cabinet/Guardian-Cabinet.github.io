@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>권순철 - 시크릿 포트폴리오 파일</title>
+    <style>
+        /* 레퍼런스 이미지와 유사한 라이트 그레이 배경과 폰트 설정 */
+        body {
+            background-color: #e5e5e5;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            overflow: hidden; /* 전체 화면 스크롤 방지, 캐비닛 안에서만 스크롤 */
+        }
+
+        /* 화면 중앙에 위치할 서랍장 크기 */
+        .cabinet-container {
+            position: relative;
+            width: 100%;
+            max-width: 850px;
+            height: 85vh; /* 화면 높이의 85% 차지 */
+            margin: auto;
+            border-bottom: 5px solid #aaa; /* 서랍장 바닥 느낌 */
+        }
+
+        /* 개별 파일 폴더 형태 */
+        .folder {
+            position: absolute;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            /* 위아래로 스르륵 밀려나는 핵심 애니메이션 */
+            transition: transform 0.6s cubic-bezier(0.25, 1, 0.5, 1);
+            will-change: transform;
+        }
+
+        /* 파일의 윗부분 탭(이름표) 영역 */
+        .tab-wrapper {
+            display: flex;
+            width: 100%;
+            height: 50px; /* 탭의 높이 */
+            align-items: flex-end;
+        }
+
+        /* 실제 클릭하는 탭 디자인 (레퍼런스 느낌의 테두리) */
+        .tab {
+            border: 2px solid #111;
+            border-bottom: none;
+            border-radius: 12px 12px 0 0;
+            padding: 0 30px;
+            height: 48px;
+            line-height: 48px;
+            font-weight: bold;
+            font-size: 16px;
+            cursor: pointer;
+            position: relative;
+            top: 2px; /* 몸통의 윗 테두리를 덮어 깔끔하게 연결 */
+            z-index: 2;
+            transition: background-color 0.4s;
+            font-family: 'Courier New', Courier, monospace; /* 레트로한 타자기 폰트 느낌 */
+            letter-spacing: -0.5px;
+        }
+
+        /* 검은색 탭 스타일 (이미지의 P 012 느낌) */
+        .tab.dark {
+            background-color: #111 !important;
+            color: #fff;
+        }
+
+        /* 내용이 들어가는 파일 몸통 */
+        .folder-body {
+            flex-grow: 1;
+            border: 2px solid #111;
+            border-radius: 15px;
+            padding: 30px;
+            padding-bottom: 100px; /* 아래쪽 탭들에 가려지지 않게 여백 추가 */
+            overflow-y: auto; /* 내용이 길면 파일 안에서 스크롤 */
+            position: relative;
+            z-index: 1;
+            transition: background-color 0.4s;
+            box-sizing: border-box;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.1);
+        }
+
+        /* 스크롤바 디자인 */
+        .folder-body::-webkit-scrollbar { width: 8px; }
+        .folder-body::-webkit-scrollbar-thumb { background-color: #ccc; border-radius: 4px; }
+
+        /* 탭 위치를 지그재그로 분산 배치 (파일 캐비닛처럼) */
+        .folder:nth-child(1) .tab-wrapper { justify-content: flex-start; padding-left: 5%; }
+        .folder:nth-child(2) .tab-wrapper { justify-content: flex-start; padding-left: 25%; }
+        .folder:nth-child(3) .tab-wrapper { justify-content: flex-start; padding-left: 50%; }
+        .folder:nth-child(4) .tab-wrapper { justify-content: flex-start; padding-left: 70%; }
+
+        /* 내부 콘텐츠 스타일링 */
+        h1 { margin-top: 0; font-size: 2.2rem; border-bottom: 3px solid #111; padding-bottom: 10px; }
+        .content-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 30px; margin-top: 20px; }
+        
+        /* 사진 및 영상 컨테이너 */
+        .media-box { border: 2px solid #111; border-radius: 8px; overflow: hidden; background: #000; }
+        .media-box img { width: 100%; height: 100%; object-fit: cover; display: block; }
+        .media-box iframe { width: 100%; aspect-ratio: 16/9; border: none; display: block; }
+        
+        /* 텍스트 뱃지 (노란색 포스트잇 느낌 포인트) */
+        .badge { display: inline-block; background-color: #fffb8f; color: #111; padding: 4px 10px; border: 1px solid #111; border-radius: 20px; font-weight: bold; font-size: 14px; margin-bottom: 10px; }
+
+        /* 모바일 반응형 */
+        @media (max-width: 768px) {
+            .content-grid { grid-template-columns: 1fr; }
+            .tab { padding: 0 15px; font-size: 14px; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="cabinet-container" id="cabinet">
+        
+        <div class="folder" onclick="openFolder(0)">
+            <div class="tab-wrapper">
+                <div class="tab dark">01 PROFILE</div> </div>
+            <div class="folder-body">
+                <h1>About Me</h1>
+                <div class="content-grid">
+                    <div>
+                        <div class="media-box" style="height: 350px;">
+                            <img src="https://images.unsplash.com/photo-1522075469751-3a6694fb2f61?q=80&w=800&auto=format&fit=crop" alt="내 사진">
+                        </div>
+                    </div>
+                    <div>
+                        <span class="badge">프론트엔드 개발자</span>
+                        <h2>사용자 경험을 고민하는 권순철입니다.</h2>
+                        <p>디자인과 기술의 교차점에서 유려한 인터랙션을 만들어내는 것을 좋아합니다. 특히 이번 포트폴리오 웹사이트처럼 직관적이고 물리적인 느낌을 주는 UI/UX 구현에 관심이 많습니다.</p>
+                        <br>
+                        <h3>Contact Info</h3>
+                        <p>📧 Email: my-email@gmail.com</p>
+                        <p>💻 Github: github.com/kwonsoonchul23-cpu</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="folder" onclick="openFolder(1)">
+            <div class="tab-wrapper">
+                <div class="tab">02 PORTFOLIO</div>
+            </div>
+            <div class="folder-body">
+                <h1>Video & Projects</h1>
+                <div class="content-grid">
+                    <div>
+                        <div class="media-box">
+                            <iframe src="https://www.youtube.com/embed/dQw4w9WgXcQ" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                        </div>
+                        <p style="text-align: center; color: #555; margin-top: 10px;">▲ 직접 제작한 프로젝트 시연 영상</p>
+                    </div>
+                    <div>
+                        <span class="badge">팀 프로젝트</span> <span class="badge">React</span>
+                        <h2>OOO 웹 어플리케이션 개발</h2>
+                        <p>사용자가 실시간으로 데이터를 관리하고 시각화할 수 있는 대시보드를 구축했습니다. 영상에서 보시는 것처럼 부드러운 화면 전환에 신경을 썼습니다.</p>
+                        <ul>
+                            <li>수행 기간: 2023.09 - 2023.12</li>
+                            <li>담당 역할: 프론트엔드 전체 UI 구현 및 API 연동</li>
+                            <li>성과: 로딩 속도 30% 개선</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="folder" onclick="openFolder(2)">
+            <div class="tab-wrapper">
+                <div class="tab">03 EDUCATION</div>
+            </div>
+            <div class="folder-body">
+                <h1>Education History</h1>
+                <div>
+                    <h2>OO대학교 컴퓨터공학과</h2>
+                    <p style="color:#666; font-family: monospace;">2020.03 - 2024.02 (졸업)</p>
+                    <p>자료구조, 웹 프로그래밍, 캡스톤 디자인 등 전공 이수 (학점: 3.8/4.5)</p>
+                </div>
+                <hr style="border: 0; border-top: 1px dashed #aaa; margin: 30px 0;">
+                <div>
+                    <h2>OO고등학교</h2>
+                    <p style="color:#666; font-family: monospace;">2017.03 - 2020.02 (졸업)</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="folder" onclick="openFolder(3)">
+            <div class="tab-wrapper">
+                <div class="tab dark">04 SKILLS</div>
+            </div>
+            <div class="folder-body">
+                <h1>Skills & Certifications</h1>
+                <div class="content-grid">
+                    <div>
+                        <h2>Tech Stack</h2>
+                        <ul>
+                            <li><strong>Frontend:</strong> HTML, CSS, JavaScript, React</li>
+                            <li><strong>Backend:</strong> Node.js, Python (기초)</li>
+                            <li><strong>Tools:</strong> Git, GitHub, Figma</li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h2>Certifications</h2>
+                        <ul>
+                            <li>정보처리기사 (2023.09)</li>
+                            <li>OPIc IM2 (2024.01)</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        let currentActive = 0; // 처음에 열려있을 폴더 번호 (0부터 시작)
+        const tabHeight = 50;  // 탭이 위아래로 삐져나올 간격 (픽셀)
+
+        function layoutFolders() {
+            const container = document.getElementById('cabinet');
+            const folders = document.querySelectorAll('.folder');
+            
+            const containerHeight = container.clientHeight;
+            const n = folders.length;
+            
+            // 폴더 하나의 전체 높이 = (캐비닛 높이) - (나머지 탭들이 차지할 공간)
+            const folderHeight = containerHeight - ((n - 1) * tabHeight);
+
+            folders.forEach((folder, i) => {
+                const tab = folder.querySelector('.tab');
+                const body = folder.querySelector('.folder-body');
+
+                // 1. 폴더 높이 고정
+                folder.style.height = `${folderHeight}px`;
+
+                // 2. 선택된 폴더는 밝은 흰색, 나머지는 짙은 회색으로 음영 처리
+                if (i === currentActive) {
+                    if(!tab.classList.contains('dark')) tab.style.backgroundColor = '#ffffff';
+                    body.style.backgroundColor = '#ffffff';
+                } else {
+                    if(!tab.classList.contains('dark')) tab.style.backgroundColor = '#d1d1d1';
+                    body.style.backgroundColor = '#d1d1d1';
+                }
+
+                // 3. [핵심 위치 계산 로직] 위아래로 밀어내기
+                if (i < currentActive) {
+                    // 선택된 폴더보다 앞 번호들은 위쪽에 층층이 쌓임
+                    folder.style.transform = `translateY(${i * tabHeight}px)`;
+                } else if (i === currentActive) {
+                    // 선택된 폴더는 자기 자리에 펼쳐짐
+                    folder.style.transform = `translateY(${i * tabHeight}px)`;
+                } else {
+                    // 선택된 폴더보다 뒷 번호들은 아래쪽으로 밀려나서 탭만 보이게 층층이 쌓임
+                    folder.style.transform = `translateY(${containerHeight - ((n - i) * tabHeight)}px)`;
+                }
+
+                // 4. 스크롤 내용이 하단 탭들에 가려지지 않도록 패딩 동적 조절
+                const bottomTabsCount = n - 1; 
+                body.style.paddingBottom = `${(bottomTabsCount * tabHeight) + 40}px`;
+            });
+        }
+
+        // 폴더를 클릭하면 실행되는 함수
+        function openFolder(index) {
+            currentActive = index;
+            layoutFolders();
+        }
+
+        // 브라우저 크기가 변해도 비율 유지
+        window.addEventListener('resize', layoutFolders);
+        
+        // 페이지가 처음 로드될 때 정렬 시작
+        window.addEventListener('DOMContentLoaded', () => {
+            layoutFolders();
+        });
+    </script>
+
+</body>
+</html>

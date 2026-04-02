@@ -1,0 +1,20 @@
+{
+  "settings": {
+    "valid_start": "",
+    "valid_end": "",
+    "allowed_users": [
+      {
+        "id": "visit",
+        "pin": "1234"
+      }
+    ],
+    "visibilities": {
+      "01 PROFILE": true,
+      "02 PORTFOLIO": true,
+      "03 CAREER": true,
+      "04 EDU & ACTIVITIES": true,
+      "05 SKILLS & CERTS": true,
+      "06 AWARDS & MILITARY": true
+    }
+  }
+}
