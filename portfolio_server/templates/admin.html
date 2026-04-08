@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>포트폴리오 관리자 모드</title>
+    <style>
+        body { font-family: -apple-system, 'Pretendard', sans-serif; background: #f4f6f9; margin:0; padding:40px 40px 100px 40px; word-break: keep-all; }
+                .insight-panel { background: #fff3cd; color: #856404; padding: 15px 20px; border-radius: 8px; border-left: 5px solid #ffeeba; margin-bottom: 25px; font-weight: 700; line-height: 1.5; font-size: 15px; }
+        .container { max-width: 1000px; margin: auto; background: #fff; padding: 30px; border-radius: 12px; box-shadow: 0 5px 20px rgba(0,0,0,0.05); }
+        h1, h2, h3 { color:#333; }
+        h2 { border-bottom: 2px solid #eee; padding-bottom: 10px; margin-top: 40px; display: flex; justify-content: space-between; align-items: center; }
+        .section { margin-bottom: 40px; padding: 25px; border: 1px solid #eee; border-radius: 12px; }
+        .field-group { margin-bottom: 15px; }
+        label { font-weight: bold; display: block; margin-bottom: 5px; color:#555; font-size: 14px; }
+        input, textarea, select { width: 100%; padding: 10px; font-size: 14px; border: 1px solid #ccc; border-radius: 6px; box-sizing: border-box; }
+        textarea { height: 100px; resize: vertical; }
+        .array-item { background: #f9f9f9; padding: 15px; border-radius: 10px; border: 1px solid #eee; margin-bottom: 15px; position:relative; }
+        .btn { border:none; padding: 10px 20px; font-size: 14px; font-weight: bold; border-radius: 6px; cursor: pointer; transition: 0.2s; }
+        .btn-primary { background: #48C9B0; color:#fff; padding: 12px 30px; font-size: 16px; }
+        .btn-add { background: #fff; border: 2px solid #48C9B0; color: #48C9B0; font-size: 12px; padding: 5px 12px; }
+        .btn-danger { background: #ff7675; color: #fff; position: absolute; top: 10px; right: 10px; padding: 5px 10px; font-size: 11px; }
+
+        /* 고정 하단 저장 바 */
+        .sticky-save { position: fixed; bottom: 0; left: 0; width: 100%; background: rgba(255,255,255,0.95); border-top: 2px solid #48C9B0; padding: 15px 0; box-shadow: 0 -5px 15px rgba(0,0,0,0.1); z-index: 1000; display: flex; justify-content: center; align-items: center; gap: 20px; }
+        .sticky-save input[type="password"] { width: 150px; background: #fff; border: 2px solid #ddd; }
+
+        .image-preview { width: 100px; height: 100px; border: 1px solid #eee; border-radius: 8px; background: #fafafa; overflow: hidden; margin-right: 15px; }
+        .image-preview img { width: 100%; height: 100%; object-fit: cover; }
+        .toggle-group { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; background: #f8f9fa; padding: 15px; border-radius: 10px; }
+        .toggle-item { display: flex; align-items: center; gap: 8px; font-size: 14px; }
+        .toggle-item input { width: 20px; height: 20px; cursor:pointer; }
+        .hidden { display: none !important; }
+        .three-col { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 20px; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+            <h1>⚙️ 포트폴리오 관리 시스템</h1>
+            <div style="display:flex; gap:10px;">
+                <a href="/admin/visits" class="btn" style="background:#0f0f1a; color:#fff; text-decoration:none; padding:8px 15px;">📊 방문자 대시보드</a>
+                <a href="/logout" class="btn" style="background:#eee; color:#333; text-decoration:none; padding:8px 15px;">로그아웃</a>
+            </div>
+        </div>
+        {% if insight %}
+        <div class="insight-panel">{{ insight }}</div>
+        {% endif %}
+        <form id="adminForm" action="/admin/save" method="post" onsubmit="return handleFormSubmit(event)">
+            <input type="hidden" id="json_data" name="json_data">
+            
+            <div class="sticky-save">
+                <label style="margin:0;">설정 적용 PIN:</label>
+                <input type="password" id="pin" name="pin" placeholder="****" required>
+                <button type="submit" class="btn btn-primary">언제든 저장하기</button>
+            </div>
+
+            <div class="section">
+                <h2>📁 카테고리 노출 여부</h2>
+                <div class="toggle-group">
+                    <div class="toggle-item"><input type="checkbox" id="vis_profile" {% if data.settings.visibilities['01 PROFILE'] %}checked{% endif %}><label>PROFILE</label></div>
+                    <div class="toggle-item"><input type="checkbox" id="vis_portfolio" {% if data.settings.visibilities['02 PORTFOLIO'] %}checked{% endif %}><label>PORTFOLIO</label></div>
+                    <div class="toggle-item"><input type="checkbox" id="vis_career" {% if data.settings.visibilities['03 CAREER'] %}checked{% endif %}><label>CAREER</label></div>
+                    <div class="toggle-item"><input type="checkbox" id="vis_edu_act" {% if data.settings.visibilities['04 EDU & ACTIVITIES'] %}checked{% endif %}><label>EDU/TRAIN/ACT</label></div>
+                    <div class="toggle-item"><input type="checkbox" id="vis_skills" {% if data.settings.visibilities['05 SKILLS & CERTS'] %}checked{% endif %}><label>SKILLS</label></div>
+                    <div class="toggle-item"><input type="checkbox" id="vis_award_mil" {% if data.settings.visibilities['06 AWARDS & MILITARY'] %}checked{% endif %}><label>AWARDS/MILITARY</label></div>
+                </div>
+            </div>
+
+            <div class="section">
+                <h2>1. 기본 프로필 설정</h2>
+                <div style="display:flex; margin-bottom:15px; align-items:flex-end;">
+                    <div class="image-preview" id="p_preview"><img src="{{ data.content.profile.image_url }}"></div>
+                    <div style="flex:1;">
+                        <label>프로필 사진</label>
+                        <input type="file" onchange="uploadImage(this, 'p_img', 'p_preview')">
+                        <input type="hidden" id="p_img" value="{{ data.content.profile.image_url }}">
+                    </div>
+                </div>
+                <div class="field-group"><label>제목 (메인 타이틀)</label><input type="text" id="p_title" value="{{ data.content.profile.title }}"></div>
+                <div class="field-group"><label>상세 자기소개 (줄바꿈 가능)</label><textarea id="p_desc">{{ data.content.profile.description }}</textarea></div>
+                <div style="display:flex; gap:15px;">
+                    <div class="field-group" style="flex:1;"><label>이메일</label><input type="text" id="p_email" value="{{ data.content.profile.email }}"></div>
+                    <div class="field-group" style="flex:1;"><label>뱃지 문구</label><input type="text" id="p_badge" value="{{ data.content.profile.badge_text }}"></div>
+                </div>
+            </div>
+
+            <div class="section">
+                <h2>2. 포트폴리오 프로젝트 <button type="button" class="btn btn-add" onclick="addItem('portfolio')">+ 새 프로젝트 추가</button></h2>
+                <div id="portfolio_container">
+                    {% for item in data.content.portfolio_items %}
+                    <div class="array-item item-portfolio">
+                        <button type="button" class="btn btn-danger" onclick="this.parentElement.remove()">삭제</button>
+                        <input type="hidden" class="p_id" value="{{ item.id }}">
+                        <div style="display:flex; gap:10px; margin-bottom:10px;">
+                            <select class="p_type" onchange="togglePortfolioType(this)" style="flex:1;">
+                                <option value="youtube" {% if item.type == 'youtube' %}selected{% endif %}>유튜브 영상</option>
+                                <option value="link" {% if item.type == 'link' %}selected{% endif %}>일반 링크</option>
+                            </select>
+                            <input type="text" class="p_title" value="{{ item.title }}" placeholder="프로젝트 제목" style="flex:3;">
+                        </div>
+                        <textarea class="p_desc" placeholder="상세 설명">{{ item.description }}</textarea>
+                        <div class="field-group"><label>URL (영상주소 혹은 링크)</label><input type="url" class="p_url" value="{{ item.url }}"></div>
+                        <div class="preview-upload {{ 'hidden' if item.type == 'youtube' else '' }}">
+                            <label>미리보기 썸네일 (링크형인 경우만 해당)</label>
+                            <div style="display:flex; gap:15px; align-items:flex-end;">
+                                <div class="image-preview img-prev"><img src="{{ item.thumbnail }}"></div>
+                                <div style="flex:1;"><input type="file" onchange="uploadImage(this, null, null, true)"><input type="hidden" class="p_thumbnail" value="{{ item.thumbnail }}"></div>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+
+            <div class="section">
+                <h2>3. 주요 경력 <button type="button" class="btn btn-add" onclick="addItem('career')">+ 경력 추가</button></h2>
+                <div id="career_container">
+                    {% for c in data.content.careers %}
+                    <div class="array-item item-career">
+                        <button type="button" class="btn btn-danger" onclick="this.parentElement.remove()">삭제</button>
+                        <input type="hidden" class="c_id" value="{{ c.id }}">
+                        <div style="display:flex; gap:10px; margin-bottom:10px;"><input type="text" class="c_icon" value="{{ c.icon }}" placeholder="아이콘" style="width:100px;" onchange="autoSuggestEmoji(this)"><input type="text" class="c_period" value="{{ c.period }}" placeholder="기간"><input type="text" class="c_company" value="{{ c.company }}" placeholder="기관/회사명" onchange="autoSuggestEmoji(this)"></div>
+                        <textarea class="c_role" placeholder="담당 업무 및 성과" onchange="autoSuggestEmoji(this)">{{ c.role }}</textarea>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+
+            <div class="section">
+                <h2>4. 학력 / 교육 / 대외활동</h2>
+                <div class="three-col">
+                    <div>
+                        <h3>학력 <button type="button" class="btn btn-add" onclick="addItem('edu')">+</button></h3>
+                        <div id="edu_container">
+                            {% for e in data.content.educations %}<div class="array-item item-edu"><button type="button" class="btn btn-danger" onclick="this.parentElement.remove()">X</button><input type="hidden" class="e_id" value="{{ e.id }}"><div style="display:flex; gap:5px;"><input type="text" class="e_icon" value="{{ e.icon }}" placeholder="아이콘" style="width:70px;" onchange="autoSuggestEmoji(this)"><input type="text" class="e_period" value="{{ e.period }}"></div><input type="text" class="e_school" value="{{ e.school }}" onchange="autoSuggestEmoji(this)"><textarea class="e_detail" onchange="autoSuggestEmoji(this)">{{ e.detail }}</textarea></div>{% endfor %}
+                        </div>
+                    </div>
+                    <div>
+                        <h3>교육/연수 <button type="button" class="btn btn-add" onclick="addItem('train')">+</button></h3>
+                        <div id="train_container">
+                            {% for t in data.content.trainings %}<div class="array-item item-train"><button type="button" class="btn btn-danger" onclick="this.parentElement.remove()">X</button><div style="display:flex; gap:5px;"><input type="text" class="t_icon" value="{{ t.icon }}" placeholder="아이콘" style="width:70px;" onchange="autoSuggestEmoji(this)"><input type="text" class="t_period" value="{{ t.period }}"></div><input type="text" class="t_title" value="{{ t.title }}" onchange="autoSuggestEmoji(this)"><textarea class="t_detail" onchange="autoSuggestEmoji(this)">{{ t.detail }}</textarea></div>{% endfor %}
+                        </div>
+                    </div>
+                    <div>
+                        <h3>대외활동 <button type="button" class="btn btn-add" onclick="addItem('act')">+</button></h3>
+                        <div id="act_container">
+                            {% for a in data.content.activities %}<div class="array-item item-act"><button type="button" class="btn btn-danger" onclick="this.parentElement.remove()">X</button><div style="display:flex; gap:5px;"><input type="text" class="a_icon" value="{{ a.icon }}" placeholder="아이콘" style="width:70px;" onchange="autoSuggestEmoji(this)"><input type="text" class="a_period" value="{{ a.period }}"></div><input type="text" class="a_title" value="{{ a.title }}" onchange="autoSuggestEmoji(this)"><textarea class="a_detail" onchange="autoSuggestEmoji(this)">{{ a.detail }}</textarea></div>{% endfor %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="section">
+                <h2>5. 수상 및 병역</h2>
+                <div style="display:grid; grid-template-columns: 1.5fr 1fr; gap:20px;">
+                    <div>
+                        <h3>수상 내역 <button type="button" class="btn btn-add" onclick="addItem('award')">+ 추가</button></h3>
+                        <div id="award_container">
+                            {% for award in data.content.awards %}<div class="array-item item-award"><button type="button" class="btn btn-danger" onclick="this.parentElement.remove()">X</button><div style="display:flex; gap:5px;"><input type="text" class="aw_icon" value="{{ award.icon }}" placeholder="아이콘" style="width:70px;" onchange="autoSuggestEmoji(this)"><input type="text" class="aw_title" value="{{ award.title }}" placeholder="년도/대회명" style="margin-bottom:5px;"></div><input type="text" class="aw_date" value="{{ award.date }}" placeholder="수상 내용" style="margin-bottom:5px;" onchange="autoSuggestEmoji(this)"><input type="text" class="aw_org" value="{{ award.organization }}" placeholder="수여 기관"></div>{% endfor %}
+                        </div>
+                    </div>
+                    <div>
+                        <h3>병역 사항</h3>
+                        <div class="array-item">
+                            <label>상태</label><input type="text" id="m_status" value="{{ data.content.military.status }}">
+                            <label>기간</label><input type="text" id="m_period" value="{{ data.content.military.period }}">
+                            <label>군별/계급</label><input type="text" id="m_branch" value="{{ data.content.military.branch }}">
+                            <input type="text" id="m_role" value="{{ data.content.military.role }}" style="margin-top:5px;" placeholder="최종 계급/보직">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="section">
+                <h2>6. 보유 기술 및 자격증</h2>
+                <div class="field-group"><label>핵심 기술 (콤마로 구분)</label><input type="text" id="sk_tech" value="{{ data.content.skills.tech }}"></div>
+                <h3>전문 자격증 <button type="button" class="btn btn-add" onclick="addItem('cert')">+ 추가</button></h3>
+                <div id="cert_container">
+                    {% for cert in data.content.skills.certs %}<div class="array-item item-cert" style="display:flex; gap:10px; align-items:center;"><input type="text" class="ce_icon" value="{{ cert.icon }}" placeholder="아이콘" style="width:70px;" onchange="autoSuggestEmoji(this)"><input type="text" class="ce_name" value="{{ cert.name }}" style="flex:2;" placeholder="자격증명" onchange="autoSuggestEmoji(this)"><input type="text" class="ce_date" value="{{ cert.date }}" style="flex:1;" placeholder="취득일"><button type="button" class="btn btn-danger" onclick="this.parentElement.remove()">X</button></div>{% endfor %}
+                </div>
+            </div>
+        </form>
+    </div>
+
+    <script>
+        function autoSuggestEmoji(el) {
+    const text = el.value || '';
+    const arrayItem = el.closest('.array-item');
+    if(!arrayItem) return;
+    const iconInput = arrayItem.querySelector('.c_icon, .e_icon, .t_icon, .a_icon, .aw_icon, .ce_icon');
+    if(!iconInput) return;
+    if(iconInput.value.trim() !== '') return;
+
+    let emoji = '';
+    if(/개발|코드|프로그래밍|소프트|AI|데이터/i.test(text)) emoji = '👨\u200d💻';
+    else if(/복지|돌봄|센터|봉사|케어/i.test(text)) emoji = '🤝';
+    else if(/영상|촬영|편집|PD|유튜브|프리미어|애프터이펙트/i.test(text)) emoji = '🎬';
+    else if(/학원|강사|수학|교육|학교/i.test(text)) emoji = '🏫';
+    else if(/농사|유기농|재배/i.test(text)) emoji = '🌱';
+    else if(/교회|행정/i.test(text)) emoji = '⛪';
+    else if(/마케팅|홍보|광고/i.test(text)) emoji = '📢';
+    else if(/대상|우수|장려상|장학금/i.test(text)) emoji = '🏆';
+    else if(/수료|이수|훈련/i.test(text)) emoji = '📜';
+    else if(/자격|면허/i.test(text)) emoji = '🏅';
+    else if(/활동/i.test(text)) emoji = '🏃';
+    
+    if(emoji) {
+        iconInput.value = emoji;
+    }
+}
+
+async function uploadImage(input, targetId, previewId, isArray = false) {
+            const formData = new FormData();
+            formData.append('file', input.files[0]);
+            const resp = await fetch('/admin/upload', { method: 'POST', body: formData });
+            const res = await resp.json();
+            if(res.url) {
+                if(isArray) {
+                    const item = input.closest('.array-item');
+                    item.querySelector('input[type="hidden"].p_thumbnail').value = res.url;
+                    item.querySelector('.img-prev img').src = res.url;
+                } else {
+                    document.getElementById(targetId).value = res.url;
+                    document.getElementById(previewId).querySelector('img').src = res.url;
+                }
+            }
+        }
+
+        function togglePortfolioType(sel) {
+            sel.closest('.array-item').querySelector('.preview-upload').classList.toggle('hidden', sel.value === 'youtube');
+        }
+
+        function addItem(type) {
+            let html = '', container = '';
+            switch(type) {
+                case 'portfolio': container = 'portfolio_container'; html = `<div class="array-item item-portfolio"><button type="button" class="btn btn-danger" onclick="this.parentElement.remove()">삭제</button><input type="hidden" class="p_id" value="${Date.now()}"><div style="display:flex; gap:10px; margin-bottom:10px;"><select class="p_type" onchange="togglePortfolioType(this)" style="flex:1;"><option value="youtube">유튜브</option><option value="link">링크</option></select><input type="text" class="p_title" placeholder="제목" style="flex:3;"></div><textarea class="p_desc" placeholder="설명"></textarea><input type="url" class="p_url" placeholder="주소"><div class="preview-upload hidden"><div style="display:flex; gap:10px; align-items:flex-end;"><div class="image-preview img-prev"><img src=""></div><input type="file" onchange="uploadImage(this,null,null,true)"><input type="hidden" class="p_thumbnail"></div></div></div>`; break;
+                case 'career': container = 'career_container'; html = `<div class="array-item item-career"><button type="button" class="btn btn-danger" onclick="this.parentElement.remove()">삭제</button><input type="hidden" class="c_id" value="${Date.now()}"><div style="display:flex; gap:10px; margin-bottom:10px;"><input type="text" class="c_icon" placeholder="아이콘" style="width:100px;" onchange="autoSuggestEmoji(this)"><input type="text" class="c_period" placeholder="기간"><input type="text" class="c_company" placeholder="회사" onchange="autoSuggestEmoji(this)"></div><textarea class="c_role" onchange="autoSuggestEmoji(this)"></textarea></div>`; break;
+                case 'edu': container = 'edu_container'; html = `<div class="array-item item-edu"><button type="button" class="btn btn-danger" onclick="this.parentElement.remove()">X</button><input type="hidden" class="e_id" value="${Date.now()}"><div style="display:flex; gap:5px;"><input type="text" class="e_icon" placeholder="아이콘" style="width:70px;" onchange="autoSuggestEmoji(this)"><input type="text" class="e_period" style="margin-bottom:5px;"></div><input type="text" class="e_school" onchange="autoSuggestEmoji(this)"><textarea class="e_detail" onchange="autoSuggestEmoji(this)"></textarea></div>`; break;
+                case 'train': container = 'train_container'; html = `<div class="array-item item-train"><button type="button" class="btn btn-danger" onclick="this.parentElement.remove()">X</button><div style="display:flex; gap:5px;"><input type="text" class="t_icon" placeholder="아이콘" style="width:70px;" onchange="autoSuggestEmoji(this)"><input type="text" class="t_period" style="margin-bottom:5px;"></div><input type="text" class="t_title" onchange="autoSuggestEmoji(this)"><textarea class="t_detail" onchange="autoSuggestEmoji(this)"></textarea></div>`; break;
+                case 'act': container = 'act_container'; html = `<div class="array-item item-act"><button type="button" class="btn btn-danger" onclick="this.parentElement.remove()">X</button><div style="display:flex; gap:5px;"><input type="text" class="a_icon" placeholder="아이콘" style="width:70px;" onchange="autoSuggestEmoji(this)"><input type="text" class="a_period" style="margin-bottom:5px;"></div><input type="text" class="a_title" onchange="autoSuggestEmoji(this)"><textarea class="a_detail" onchange="autoSuggestEmoji(this)"></textarea></div>`; break;
+                case 'award': container = 'award_container'; html = `<div class="array-item item-award"><button type="button" class="btn btn-danger" onclick="this.parentElement.remove()">X</button><div style="display:flex; gap:5px;"><input type="text" class="aw_icon" placeholder="아이콘" style="width:70px;" onchange="autoSuggestEmoji(this)"><input type="text" class="aw_title" placeholder="년도" style="margin-bottom:5px;"></div><input type="text" class="aw_date" placeholder="내용" style="margin-bottom:5px;" onchange="autoSuggestEmoji(this)"><input type="text" class="aw_org" placeholder="기관"></div>`; break;
+                case 'cert': container = 'cert_container'; html = `<div class="array-item item-cert" style="display:flex; gap:10px; align-items:center;"><input type="text" class="ce_icon" placeholder="아이콘" style="width:70px;" onchange="autoSuggestEmoji(this)"><input type="text" class="ce_name" style="flex:2;" placeholder="자격증명" onchange="autoSuggestEmoji(this)"><input type="text" class="ce_date" style="flex:1;" placeholder="취득일"><button type="button" class="btn btn-danger" onclick="this.parentElement.remove()">X</button></div>`; break;
+            }
+            document.getElementById(container).insertAdjacentHTML('beforeend', html);
+        }
+
+        function handleFormSubmit(e) {
+            const out = {
+                settings: {
+                    valid_start: "2026-03-30", valid_end: "2026-12-31", pin: document.getElementById('pin').value,
+                    visibilities: {
+                        "01 PROFILE": document.getElementById('vis_profile').checked,
+                        "02 PORTFOLIO": document.getElementById('vis_portfolio').checked,
+                        "03 CAREER": document.getElementById('vis_career').checked,
+                        "04 EDU & ACTIVITIES": document.getElementById('vis_edu_act').checked,
+                        "05 SKILLS & CERTS": document.getElementById('vis_skills').checked,
+                        "06 AWARDS & MILITARY": document.getElementById('vis_award_mil').checked
+                    }
+                },
+                content: {
+                    profile: { title: document.getElementById('p_title').value, description: document.getElementById('p_desc').value, image_url: document.getElementById('p_img').value, email: document.getElementById('p_email').value, badge_text: document.getElementById('p_badge').value },
+                    portfolio_items: [], careers: [], educations: [], trainings: [], activities: [], awards: [],
+                    military: { status: document.getElementById('m_status').value, period: document.getElementById('m_period').value, branch: document.getElementById('m_branch').value, role: document.getElementById('m_role').value },
+                    skills: { tech: document.getElementById('sk_tech').value, certs: [] }
+                }
+            };
+            document.querySelectorAll('.item-portfolio').forEach(el => out.content.portfolio_items.push({ id: el.querySelector('.p_id').value, type: el.querySelector('.p_type').value, title: el.querySelector('.p_title').value, description: el.querySelector('.p_desc').value, url: el.querySelector('.p_url').value, thumbnail: el.querySelector('.p_thumbnail').value }));
+            document.querySelectorAll('.item-career').forEach(el => out.content.careers.push({ id: el.querySelector('.c_id').value, icon: el.querySelector('.c_icon').value, period: el.querySelector('.c_period').value, company: el.querySelector('.c_company').value, role: el.querySelector('.c_role').value }));
+            document.querySelectorAll('.item-edu').forEach(el => out.content.educations.push({ id: el.querySelector('.e_id').value, icon: el.querySelector('.e_icon').value, period: el.querySelector('.e_period').value, school: el.querySelector('.e_school').value, detail: el.querySelector('.e_detail').value }));
+            document.querySelectorAll('.item-train').forEach(el => out.content.trainings.push({ icon: el.querySelector('.t_icon').value, period: el.querySelector('.t_period').value, title: el.querySelector('.t_title').value, detail: el.querySelector('.t_detail').value }));
+            document.querySelectorAll('.item-act').forEach(el => out.content.activities.push({ icon: el.querySelector('.a_icon').value, period: el.querySelector('.a_period').value, title: el.querySelector('.a_title').value, detail: el.querySelector('.a_detail').value }));
+            document.querySelectorAll('.item-award').forEach(el => out.content.awards.push({ icon: el.querySelector('.aw_icon').value, title: el.querySelector('.aw_title').value, date: el.querySelector('.aw_date').value, organization: el.querySelector('.aw_org').value }));
+            document.querySelectorAll('.item-cert').forEach(el => out.content.skills.certs.push({ icon: el.querySelector('.ce_icon').value, name: el.querySelector('.ce_name').value, date: el.querySelector('.ce_date').value }));
+            
+            document.getElementById('json_data').value = JSON.stringify(out);
+            return true;
+        }
+    </script>
+</body>
+</html>

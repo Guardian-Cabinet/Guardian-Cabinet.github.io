@@ -1,0 +1,37 @@
+{% if data.settings.visibilities['02 PORTFOLIO'] %}
+<div class="folder" onclick="openFolder('02 PORTFOLIO')">
+    <div class="tab-wrapper"><div class="tab">02 PORTFOLIO</div></div>
+    <div class="folder-body">
+        <h1>Projects</h1>
+        <div class="content-grid">
+            {% for item in data.content.portfolio_items %}
+            <div class="portfolio-item-card">
+                <div class="media-box">
+                    {% if item.type == 'youtube' %}
+                    <iframe src="{{ item.url.replace('watch?v=', 'embed/').replace('youtu.be/', 'www.youtube.com/embed/') }}" allowfullscreen></iframe>
+                    {% else %}
+                    <a href="{{ item.url }}" target="_blank" style="text-decoration:none; display:block; height:100%;">
+                        <img src="{{ item.thumbnail or 'https://images.unsplash.com/photo-1517694712202-14dd9538aa97?q=80&w=400&auto=format' }}" alt="미리보기">
+                    </a>
+                    {% endif %}
+                </div>
+                <div class="project-content" style="margin-top:15px;">
+                    <div>
+                        {% if item.badges %}
+                        {% for badge in item.badges.split(',') %}
+                        <span class="badge {% if loop.index0 % 2 != 0 %}blue{% endif %}">{{ badge.strip() }}</span>
+                        {% endfor %}
+                        {% endif %}
+                    </div>
+                    <h3 style="margin:5px 0; font-size:1.4rem;">{{ item.title }}</h3>
+                    <p style="color:#444;">{{ item.description }}</p>
+                </div>
+                {% if item.type == 'link' and item.url %}
+                <a href="{{ item.url }}" target="_blank" class="btn-link">자세히 보기 →</a>
+                {% endif %}
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+{% endif %}

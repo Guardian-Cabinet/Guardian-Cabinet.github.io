@@ -241,21 +241,24 @@
         }
 
         .career-item {
-            padding-left: 20px;
+            padding-left: 25px;
             border-left: 3px solid #000;
             margin-bottom: 35px;
             position: relative;
         }
-        .career-item::before {
-            content: '';
+        .timeline-icon {
             position: absolute;
-            left: -9px;
-            top: 0;
-            width: 15px;
-            height: 15px;
+            left: -16px;
+            top: -2px;
+            width: 30px;
+            height: 30px;
             background: #fff;
             border: 3px solid #000;
             border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
         }
 
         @media (max-width: 768px) {
@@ -290,25 +293,25 @@
 
     <div class="cabinet-container" id="cabinet">
         
-        <!-- 01 PROFILE -->
+        <!-- 파셜(Partials)로 모듈화된 폴더 탭 내용들 -->
         
-        <div class="folder" onclick="openFolder('01 PROFILE')">
-            <div class="tab-wrapper"><div class="tab dark">01 PROFILE</div></div>
-            <div class="folder-body">
-                <h1>About Me</h1>
-                <div class="content-grid">
-                    <div>
-                        <div class="media-box sticky-box" style="height: 350px;">
-                            
-                            <img src="/static/uploads/upload_1774929270.jpg" alt="내 사진">
-                            
-                        </div>
-                    </div>
-                    <div>
-                        <span class="badge">디지털 기술로 사람의 가치를 실현하는 `솔루션 파트너`</span>
-                        <h2 style="font-size:1.8rem; margin-top:0;">사람,업무,정보를 연결해 운영 성과로 바꾸는 실무형 인재 '권순철'입니다</h2>
-                        <h4 style="color:#555; margin-top:0;"></h4>
-                        <p>1. 실천적 복지 및 교육 (Social Care & Education)
+<div class="folder" onclick="openFolder('01 PROFILE')">
+    <div class="tab-wrapper"><div class="tab dark">01 PROFILE</div></div>
+    <div class="folder-body">
+        <h1>About Me</h1>
+        <div class="content-grid">
+            <div>
+                <div class="media-box sticky-box" style="height: 350px;">
+                    
+                    <img src="/static/uploads/upload_1774929270.jpg" alt="내 사진">
+                    
+                </div>
+            </div>
+            <div>
+                <span class="badge">디지털 기술로 사람의 가치를 실현하는 `솔루션 파트너`</span>
+                <h2 style="font-size:1.8rem; margin-top:0;">사람,업무,정보를 연결해 운영 성과로 바꾸는 실무형 인재 '권순철'입니다</h2>
+                <h4 style="color:#555; margin-top:0;"></h4>
+                <p>1. 실천적 복지 및 교육 (Social Care & Education)
 - 핵심 가치: "가장 어려운 현장에서 답을 찾다"
 - 최중증 발달장애인 및 위기 청소년들과 함께하며 현장의 고충을 이해합니다. 단순히 돌봄에 그치지 않고, 직업 훈련 프로그램을 기획하거나 이용자 맞춤형 루틴을 설계하여 실질적인 자립을 지원했습니다.
 
@@ -319,99 +322,96 @@
 3. 경영 지원 및 행정 (Admin & Management)
 - 핵심 가치: "데이터로 증명하는 투명한 경영"
 - 비영리 단체와 IT 기업을 거치며 정부 과제 운영 경험을 쌓았습니다. 주먹구구식 회계를 엑셀 시스템으로 체계화하고, 조직의 리스크를 최소화하는 안정적인 살림꾼 역할을 수행합니다.</p>
-                        <br>
-                        
-                        <h3>Contact Info</h3>
-                        <p>Email: kwonsoonchul23@gmail.com</p>
-                        
-                        
-                    </div>
-                </div>
+                <br>
+                
+                <h3>Contact Info</h3>
+                <p>Email: kwonsoonchul23@gmail.com</p>
+                
+                
             </div>
         </div>
-        
+    </div>
+</div>
 
-        <!-- 02 PORTFOLIO -->
         
-        <div class="folder" onclick="openFolder('02 PORTFOLIO')">
-            <div class="tab-wrapper"><div class="tab">02 PORTFOLIO</div></div>
-            <div class="folder-body">
-                <h1>Projects</h1>
-                <div class="content-grid">
+<div class="folder" onclick="openFolder('02 PORTFOLIO')">
+    <div class="tab-wrapper"><div class="tab">02 PORTFOLIO</div></div>
+    <div class="folder-body">
+        <h1>Projects</h1>
+        <div class="content-grid">
+            
+            <div class="portfolio-item-card">
+                <div class="media-box">
                     
-                    <div class="portfolio-item-card">
-                        <div class="media-box">
-                            
-                            <a href="https://youth-canvas-ebeqjerbu85noh9qw2zufa.streamlit.app/" target="_blank" style="text-decoration:none; display:block; height:100%;">
-                                <img src="/static/uploads/upload_1774928073.png" alt="미리보기">
-                            </a>
-                            
-                        </div>
-                        <div class="project-content" style="margin-top:15px;">
-                            <div>
-                                
-                            </div>
-                            <h3 style="margin:5px 0; font-size:1.4rem;">청소년 맞춤형 정책 지원 서비스 개발</h3>
-                            <p style="color:#444;">청소년, 장애인, 학원 시설 등에서 관련된 프로그램을 게시하고 결제와 소통, 분석 등 다양한 needs를 충족시키기 위한 포털을 개발하여 상업화</p>
-                        </div>
-                        
-                        <a href="https://youth-canvas-ebeqjerbu85noh9qw2zufa.streamlit.app/" target="_blank" class="btn-link">자세히 보기 →</a>
-                        
-                    </div>
-                    
-                    <div class="portfolio-item-card">
-                        <div class="media-box">
-                            
-                            <a href="https://news-dashboard-cpigrdrhjzjaj4qzq92rc3.streamlit.app/" target="_blank" style="text-decoration:none; display:block; height:100%;">
-                                <img src="/static/uploads/upload_1774928108.png" alt="미리보기">
-                            </a>
-                            
-                        </div>
-                        <div class="project-content" style="margin-top:15px;">
-                            <div>
-                                
-                            </div>
-                            <h3 style="margin:5px 0; font-size:1.4rem;">데이터와 AI로 뉴스 편향을 검증하다</h3>
-                            <p style="color:#444;">청소년 미디어 리터러시 교육을 위한 팩트체크 시스템</p>
-                        </div>
-                        
-                        <a href="https://news-dashboard-cpigrdrhjzjaj4qzq92rc3.streamlit.app/" target="_blank" class="btn-link">자세히 보기 →</a>
-                        
-                    </div>
-                    
-                    <div class="portfolio-item-card">
-                        <div class="media-box">
-                            
-                            <iframe src="https://www.youtube.com/embed/F4elUfrAUZ0" allowfullscreen></iframe>
-                            
-                        </div>
-                        <div class="project-content" style="margin-top:15px;">
-                            <div>
-                                
-                            </div>
-                            <h3 style="margin:5px 0; font-size:1.4rem;">전문 프로덕션 납품 작품</h3>
-                            <p style="color:#444;">기업 홍보를 위한 촬영, 편집 등 전체 과정 수행 가능</p>
-                        </div>
-                        
-                    </div>
+                    <a href="https://youth-canvas-ebeqjerbu85noh9qw2zufa.streamlit.app/" target="_blank" style="text-decoration:none; display:block; height:100%;">
+                        <img src="/static/uploads/upload_1774928073.png" alt="미리보기">
+                    </a>
                     
                 </div>
+                <div class="project-content" style="margin-top:15px;">
+                    <div>
+                        
+                    </div>
+                    <h3 style="margin:5px 0; font-size:1.4rem;">청소년 맞춤형 정책 지원 서비스 개발</h3>
+                    <p style="color:#444;">청소년, 장애인, 학원 시설 등에서 관련된 프로그램을 게시하고 결제와 소통, 분석 등 다양한 needs를 충족시키기 위한 포털을 개발하여 상업화</p>
+                </div>
+                
+                <a href="https://youth-canvas-ebeqjerbu85noh9qw2zufa.streamlit.app/" target="_blank" class="btn-link">자세히 보기 →</a>
+                
             </div>
-        </div>
-        
-
-        <!-- 03 CAREER -->
-        
-        <div class="folder" onclick="openFolder('03 CAREER')">
-            <div class="tab-wrapper"><div class="tab">03 CAREER</div></div>
-            <div class="folder-body">
-                <h1>Career History</h1>
-                <div style="margin-top:20px;">
+            
+            <div class="portfolio-item-card">
+                <div class="media-box">
                     
-                    <div class="career-item">
-                        <h3 style="margin:0 0 5px 0; font-size:1.3rem;">햇살가득 사회적 협동조합</h3>
-                        <p style="color:var(--text-muted); font-family: 'Montserrat', monospace; font-weight:700; font-size:0.9rem; margin-bottom:12px;">2024.10 - 2025.12</p>
-                        <p style="color:var(--text-main); margin:0; font-size:1rem; line-height:1.7;">[최중증, 중증 발달장애인 제공인력]
+                    <a href="https://news-dashboard-cpigrdrhjzjaj4qzq92rc3.streamlit.app/" target="_blank" style="text-decoration:none; display:block; height:100%;">
+                        <img src="/static/uploads/upload_1774928108.png" alt="미리보기">
+                    </a>
+                    
+                </div>
+                <div class="project-content" style="margin-top:15px;">
+                    <div>
+                        
+                    </div>
+                    <h3 style="margin:5px 0; font-size:1.4rem;">데이터와 AI로 뉴스 편향을 검증하다</h3>
+                    <p style="color:#444;">청소년 미디어 리터러시 교육을 위한 팩트체크 시스템</p>
+                </div>
+                
+                <a href="https://news-dashboard-cpigrdrhjzjaj4qzq92rc3.streamlit.app/" target="_blank" class="btn-link">자세히 보기 →</a>
+                
+            </div>
+            
+            <div class="portfolio-item-card">
+                <div class="media-box">
+                    
+                    <iframe src="https://www.youtube.com/embed/F4elUfrAUZ0" allowfullscreen></iframe>
+                    
+                </div>
+                <div class="project-content" style="margin-top:15px;">
+                    <div>
+                        
+                    </div>
+                    <h3 style="margin:5px 0; font-size:1.4rem;">전문 프로덕션 납품 작품</h3>
+                    <p style="color:#444;">기업 홍보를 위한 촬영, 편집 등 전체 과정 수행 가능</p>
+                </div>
+                
+            </div>
+            
+        </div>
+    </div>
+</div>
+
+        
+<div class="folder" onclick="openFolder('03 CAREER')">
+    <div class="tab-wrapper"><div class="tab">03 CAREER</div></div>
+    <div class="folder-body">
+        <h1>Career History</h1>
+        <div style="margin-top:20px;">
+            
+            <div class="career-item">
+                <div class="timeline-icon">📌</div>
+                <h3 style="margin:0 0 5px 0; font-size:1.3rem;">햇살가득 사회적 협동조합</h3>
+                <p style="color:var(--text-muted); font-family: 'Montserrat', monospace; font-weight:700; font-size:0.9rem; margin-bottom:12px;">2024.10 - 2025.12</p>
+                <p style="color:var(--text-main); margin:0; font-size:1rem; line-height:1.7;">[최중증, 중증 발달장애인 제공인력]
 - 주간활동(132시간), 통합돌봄(176시간)
 - 유아동 및 10, 20, 30대 이용자 care
 - 은평구 특수학교 학생 care
@@ -426,12 +426,13 @@
 [홍보]
 - 이용자 보호자 대상으로 프로그램 진행 내용 영상촬영, 편집
 - 관련 포스터 등 제작</p>
-                    </div>
-                    
-                    <div class="career-item">
-                        <h3 style="margin:0 0 5px 0; font-size:1.3rem;">우리하나사회적협동조합</h3>
-                        <p style="color:var(--text-muted); font-family: 'Montserrat', monospace; font-weight:700; font-size:0.9rem; margin-bottom:12px;">2024.06 - 2024.09</p>
-                        <p style="color:var(--text-main); margin:0; font-size:1rem; line-height:1.7;">[최중증 발달장애인 1:1 제공인력]
+            </div>
+            
+            <div class="career-item">
+                <div class="timeline-icon">📌</div>
+                <h3 style="margin:0 0 5px 0; font-size:1.3rem;">우리하나사회적협동조합</h3>
+                <p style="color:var(--text-muted); font-family: 'Montserrat', monospace; font-weight:700; font-size:0.9rem; margin-bottom:12px;">2024.06 - 2024.09</p>
+                <p style="color:var(--text-main); margin:0; font-size:1rem; line-height:1.7;">[최중증 발달장애인 1:1 제공인력]
 - 주간활동(132시간), 통합돌봄(176시간)
 - 10, 20, 30대 이용자 care
 - 어려운(도전적)행동 대처
@@ -444,12 +445,13 @@
 - 센터 내 직업훈련 운영
 [홍보]
 - 이용자 보호자 대상으로 프로그램 진행 내용 영상촬영, 편집</p>
-                    </div>
-                    
-                    <div class="career-item">
-                        <h3 style="margin:0 0 5px 0; font-size:1.3rem;">허그인 사회적협동조합</h3>
-                        <p style="color:var(--text-muted); font-family: 'Montserrat', monospace; font-weight:700; font-size:0.9rem; margin-bottom:12px;">2024. 03 ~ 2024. 06</p>
-                        <p style="color:var(--text-main); margin:0; font-size:1rem; line-height:1.7;">[비영리 캠페인 관련 영상 제작]
+            </div>
+            
+            <div class="career-item">
+                <div class="timeline-icon">📌</div>
+                <h3 style="margin:0 0 5px 0; font-size:1.3rem;">허그인 사회적협동조합</h3>
+                <p style="color:var(--text-muted); font-family: 'Montserrat', monospace; font-weight:700; font-size:0.9rem; margin-bottom:12px;">2024. 03 ~ 2024. 06</p>
+                <p style="color:var(--text-main); margin:0; font-size:1rem; line-height:1.7;">[비영리 캠페인 관련 영상 제작]
 - 촬영 기획, 편집 구성안 작성
 - 현장 sk, int 등 촬영(gear : 소니 a7 4, DJI action2)
 - 편집(tool : 프리미어프로, 애프터이펙트, 포토샵, 일러스트레이터 등)
@@ -459,22 +461,24 @@
 [돌봄교실]
 - 돌봄교사
 - 프로그램 운영</p>
-                    </div>
-                    
-                    <div class="career-item">
-                        <h3 style="margin:0 0 5px 0; font-size:1.3rem;">양천 새희망 공동생활가정</h3>
-                        <p style="color:var(--text-muted); font-family: 'Montserrat', monospace; font-weight:700; font-size:0.9rem; margin-bottom:12px;">2023. 08 ~ 2024. 02</p>
-                        <p style="color:var(--text-main); margin:0; font-size:1rem; line-height:1.7;">- 2호봉 보육사 역임
+            </div>
+            
+            <div class="career-item">
+                <div class="timeline-icon">📌</div>
+                <h3 style="margin:0 0 5px 0; font-size:1.3rem;">양천 새희망 공동생활가정</h3>
+                <p style="color:var(--text-muted); font-family: 'Montserrat', monospace; font-weight:700; font-size:0.9rem; margin-bottom:12px;">2023. 08 ~ 2024. 02</p>
+                <p style="color:var(--text-main); margin:0; font-size:1rem; line-height:1.7;">- 2호봉 보육사 역임
 - 초등 3,4학년 // 중등 1,2,3학년 남자 각 5명 담당 및 지도
 - `ADHD, 미혼모, 새터민, 경계성 장애`에 대한 24시간 2일 순환 근무
 - 6대 안전예방교육 등 프로그램 운영
 - 사회서비스 포탈PROD(보건복지부) 프로그램 업무 수행</p>
-                    </div>
-                    
-                    <div class="career-item">
-                        <h3 style="margin:0 0 5px 0; font-size:1.3rem;">미스터비주얼</h3>
-                        <p style="color:var(--text-muted); font-family: 'Montserrat', monospace; font-weight:700; font-size:0.9rem; margin-bottom:12px;">2022. 09 ~ 2023. 07</p>
-                        <p style="color:var(--text-main); margin:0; font-size:1rem; line-height:1.7;">[국내 촬영]
+            </div>
+            
+            <div class="career-item">
+                <div class="timeline-icon">📌</div>
+                <h3 style="margin:0 0 5px 0; font-size:1.3rem;">미스터비주얼</h3>
+                <p style="color:var(--text-muted); font-family: 'Montserrat', monospace; font-weight:700; font-size:0.9rem; margin-bottom:12px;">2022. 09 ~ 2023. 07</p>
+                <p style="color:var(--text-main); margin:0; font-size:1rem; line-height:1.7;">[국내 촬영]
 - 현장 sk, int 등 촬영(gear : 캐논 EOS, nan 조명)
 - 편집(tool : 프리미어프로, 애프터이펙트, 포토샵, 일러스트레이터 등)
 [세이빙펫 캠페인]
@@ -487,21 +491,23 @@
 [라이브커머스]
 - 네이버라이브쇼핑 (tool : DJI osmo)
 - 프리즘 라이브 (tool : ATEM 중계기)</p>
-                    </div>
-                    
-                    <div class="career-item">
-                        <h3 style="margin:0 0 5px 0; font-size:1.3rem;">(주)문화제작소가능성들 </h3>
-                        <p style="color:var(--text-muted); font-family: 'Montserrat', monospace; font-weight:700; font-size:0.9rem; margin-bottom:12px;">2022. 05 ~ 2022. 09</p>
-                        <p style="color:var(--text-main); margin:0; font-size:1rem; line-height:1.7;">- 유튜브대학 학기별 수강생 민원 대응(평균 150명, 1~4학기)
+            </div>
+            
+            <div class="career-item">
+                <div class="timeline-icon">📌</div>
+                <h3 style="margin:0 0 5px 0; font-size:1.3rem;">(주)문화제작소가능성들 </h3>
+                <p style="color:var(--text-muted); font-family: 'Montserrat', monospace; font-weight:700; font-size:0.9rem; margin-bottom:12px;">2022. 05 ~ 2022. 09</p>
+                <p style="color:var(--text-main); margin:0; font-size:1rem; line-height:1.7;">- 유튜브대학 학기별 수강생 민원 대응(평균 150명, 1~4학기)
 - 마케팅 협업(숏폼 영상 제작 - 인스타그램, 유튜브 등)
 - 장학제도 운영 관리
 - 오프라인 행사(매회 약 200명 규모)</p>
-                    </div>
-                    
-                    <div class="career-item">
-                        <h3 style="margin:0 0 5px 0; font-size:1.3rem;">스마트캐스트</h3>
-                        <p style="color:var(--text-muted); font-family: 'Montserrat', monospace; font-weight:700; font-size:0.9rem; margin-bottom:12px;">2020. 10 ~ 2021. 11</p>
-                        <p style="color:var(--text-main); margin:0; font-size:1rem; line-height:1.7;">- 정부과제 운영 ( 중소기업기술개발사업SMTECH, RCMS, 한국에너지기술평가원genie )
+            </div>
+            
+            <div class="career-item">
+                <div class="timeline-icon">📌</div>
+                <h3 style="margin:0 0 5px 0; font-size:1.3rem;">스마트캐스트</h3>
+                <p style="color:var(--text-muted); font-family: 'Montserrat', monospace; font-weight:700; font-size:0.9rem; margin-bottom:12px;">2020. 10 ~ 2021. 11</p>
+                <p style="color:var(--text-main); margin:0; font-size:1rem; line-height:1.7;">- 정부과제 운영 ( 중소기업기술개발사업SMTECH, RCMS, 한국에너지기술평가원genie )
 - 이카운트 ERP 전사관리
 - 정부지원 사업 지원
 - 인사, 노무
@@ -509,322 +515,323 @@
 - 온라인 기사 광고 관리
 - 사내 벤처 : 기획, 영업, 홍보
 - 특허관리(10건, 매년 평균 2건 신규 등록)</p>
-                    </div>
-                    
-                    <div class="career-item">
-                        <h3 style="margin:0 0 5px 0; font-size:1.3rem;">미래인재수학과학학원</h3>
-                        <p style="color:var(--text-muted); font-family: 'Montserrat', monospace; font-weight:700; font-size:0.9rem; margin-bottom:12px;">2019. 09 ~ 2020. 09</p>
-                        <p style="color:var(--text-main); margin:0; font-size:1rem; line-height:1.7;">- 아카2000 프로그램 활용
+            </div>
+            
+            <div class="career-item">
+                <div class="timeline-icon">📌</div>
+                <h3 style="margin:0 0 5px 0; font-size:1.3rem;">미래인재수학과학학원</h3>
+                <p style="color:var(--text-muted); font-family: 'Montserrat', monospace; font-weight:700; font-size:0.9rem; margin-bottom:12px;">2019. 09 ~ 2020. 09</p>
+                <p style="color:var(--text-main); margin:0; font-size:1rem; line-height:1.7;">- 아카2000 프로그램 활용
 - 학원 전반 관리
 - 학생, 학부모 상담
 - 강사 관리</p>
-                    </div>
-                    
-                    <div class="career-item">
-                        <h3 style="margin:0 0 5px 0; font-size:1.3rem;">루트탑학원</h3>
-                        <p style="color:var(--text-muted); font-family: 'Montserrat', monospace; font-weight:700; font-size:0.9rem; margin-bottom:12px;">2018. 08 ~ 2019. 08</p>
-                        <p style="color:var(--text-main); margin:0; font-size:1rem; line-height:1.7;">- 수학 수업 준비 및 강의
+            </div>
+            
+            <div class="career-item">
+                <div class="timeline-icon">📌</div>
+                <h3 style="margin:0 0 5px 0; font-size:1.3rem;">루트탑학원</h3>
+                <p style="color:var(--text-muted); font-family: 'Montserrat', monospace; font-weight:700; font-size:0.9rem; margin-bottom:12px;">2018. 08 ~ 2019. 08</p>
+                <p style="color:var(--text-main); margin:0; font-size:1rem; line-height:1.7;">- 수학 수업 준비 및 강의
 - 학업 성취 미달 학생 전문반 운영 및 담당</p>
-                    </div>
-                    
-                    <div class="career-item">
-                        <h3 style="margin:0 0 5px 0; font-size:1.3rem;">유기농 농사(전주)</h3>
-                        <p style="color:var(--text-muted); font-family: 'Montserrat', monospace; font-weight:700; font-size:0.9rem; margin-bottom:12px;">2017. 03 ~ 2018. 08</p>
-                        <p style="color:var(--text-main); margin:0; font-size:1rem; line-height:1.7;">- 전주지역 농사팀 소속(구성원 : 30~40대)
+            </div>
+            
+            <div class="career-item">
+                <div class="timeline-icon">📌</div>
+                <h3 style="margin:0 0 5px 0; font-size:1.3rem;">유기농 농사(전주)</h3>
+                <p style="color:var(--text-muted); font-family: 'Montserrat', monospace; font-weight:700; font-size:0.9rem; margin-bottom:12px;">2017. 03 ~ 2018. 08</p>
+                <p style="color:var(--text-main); margin:0; font-size:1rem; line-height:1.7;">- 전주지역 농사팀 소속(구성원 : 30~40대)
 - 유기농 과수 재배 및 판매(배, 복숭아 등)
 - 유기농 재배 및 판매(감자, 고구마 등)
 - 마케팅 & 온,오프라인 영업
 - 유기농 농법 연구 및 체험 프로그램 운영</p>
-                    </div>
-                    
-                    <div class="career-item">
-                        <h3 style="margin:0 0 5px 0; font-size:1.3rem;">평안교회</h3>
-                        <p style="color:var(--text-muted); font-family: 'Montserrat', monospace; font-weight:700; font-size:0.9rem; margin-bottom:12px;">2013. 12 ~ 2017. 02</p>
-                        <p style="color:var(--text-main); margin:0; font-size:1rem; line-height:1.7;">- 비영리 법인 교회 행정간사
+            </div>
+            
+            <div class="career-item">
+                <div class="timeline-icon">📌</div>
+                <h3 style="margin:0 0 5px 0; font-size:1.3rem;">평안교회</h3>
+                <p style="color:var(--text-muted); font-family: 'Montserrat', monospace; font-weight:700; font-size:0.9rem; margin-bottom:12px;">2013. 12 ~ 2017. 02</p>
+                <p style="color:var(--text-main); margin:0; font-size:1rem; line-height:1.7;">- 비영리 법인 교회 행정간사
 - 교회 전체 시설 및 재정 관리
 - 교인 관리(약 300명 규모)
 - 주임 목사 비서 업무</p>
-                    </div>
-                    
-                    <div class="career-item">
-                        <h3 style="margin:0 0 5px 0; font-size:1.3rem;">J&J KOREA</h3>
-                        <p style="color:var(--text-muted); font-family: 'Montserrat', monospace; font-weight:700; font-size:0.9rem; margin-bottom:12px;">2011. 07 ~ 2013. 11</p>
-                        <p style="color:var(--text-main); margin:0; font-size:1rem; line-height:1.7;">- OEM화장품 도소매 판매 및 의료기기 판매
+            </div>
+            
+            <div class="career-item">
+                <div class="timeline-icon">📌</div>
+                <h3 style="margin:0 0 5px 0; font-size:1.3rem;">J&J KOREA</h3>
+                <p style="color:var(--text-muted); font-family: 'Montserrat', monospace; font-weight:700; font-size:0.9rem; margin-bottom:12px;">2011. 07 ~ 2013. 11</p>
+                <p style="color:var(--text-main); margin:0; font-size:1rem; line-height:1.7;">- OEM화장품 도소매 판매 및 의료기기 판매
 - 영업 및 관리(성형외과, 피부과 중심)
 - 지사 관리 담당
 - 배송, 재고관리</p>
-                    </div>
-                    
-                    <div class="career-item">
-                        <h3 style="margin:0 0 5px 0; font-size:1.3rem;">탑클래스아이 </h3>
-                        <p style="color:var(--text-muted); font-family: 'Montserrat', monospace; font-weight:700; font-size:0.9rem; margin-bottom:12px;">2007. 07 ~ 2011. 06</p>
-                        <p style="color:var(--text-main); margin:0; font-size:1rem; line-height:1.7;">- 중,고등학교 수학 과목 역임
-- 온라인 화상 수업
-- 학생, 학부모 상담 스킬 보유</p>
-                    </div>
-                    
-                    <div class="career-item">
-                        <h3 style="margin:0 0 5px 0; font-size:1.3rem;">YTN</h3>
-                        <p style="color:var(--text-muted); font-family: 'Montserrat', monospace; font-weight:700; font-size:0.9rem; margin-bottom:12px;">2009. 01 ~ 2009. 12</p>
-                        <p style="color:var(--text-main); margin:0; font-size:1rem; line-height:1.7;">- 취재팀 동행(4인 1조)
+            </div>
+            
+            <div class="career-item">
+                <div class="timeline-icon">📌</div>
+                <h3 style="margin:0 0 5px 0; font-size:1.3rem;">YTN</h3>
+                <p style="color:var(--text-muted); font-family: 'Montserrat', monospace; font-weight:700; font-size:0.9rem; margin-bottom:12px;">2009. 01 ~ 2009. 12</p>
+                <p style="color:var(--text-main); margin:0; font-size:1rem; line-height:1.7;">- 취재팀 동행(4인 1조)
 - 기획 `우리나라 구석구석`에 배정
 - 촬영 일지 기록, 관리
 - 카메라 관리 및 현장 통제, 차량 배차</p>
-                    </div>
-                    
-                </div>
             </div>
+            
+            <div class="career-item">
+                <div class="timeline-icon">📌</div>
+                <h3 style="margin:0 0 5px 0; font-size:1.3rem;">탑클래스아이 </h3>
+                <p style="color:var(--text-muted); font-family: 'Montserrat', monospace; font-weight:700; font-size:0.9rem; margin-bottom:12px;">2007. 07 ~ 2011. 06</p>
+                <p style="color:var(--text-main); margin:0; font-size:1rem; line-height:1.7;">- 중,고등학교 수학 과목 역임
+- 온라인 화상 수업
+- 학생, 학부모 상담 스킬 보유</p>
+            </div>
+            
+        </div>
+    </div>
+</div>
+
+        
+<div class="folder" onclick="openFolder('04 EDU & ACTIVITIES')">
+    <div class="tab-wrapper"><div class="tab">04 EDU & ACTIVITIES</div></div>
+    <div class="folder-body">
+        <h1>Education & Activities</h1>
+        <div style="margin-bottom:40px; margin-top:20px;">
+            <h2 style="font-size:1.6rem; border-left:5px solid var(--accent-color); padding-left:15px; margin-bottom:25px;">Education</h2>
+            
+            <div style="margin-bottom: 25px; padding-left:20px;">
+                <h3 style="margin:0 0 5px 0; font-size:1.2rem;">🎓 학점은행 (사회복지, 청소년 전공학사)</h3>
+                <p style="color:var(--text-muted); font-family: 'Montserrat', monospace; font-weight:700; font-size:0.85rem; margin-bottom:8px;">2019.10 - 2023.08</p>
+                <p style="color:var(--text-main); margin:0;">졸업학점: 96.3 / 100</p>
+            </div>
+            
+            <div style="margin-bottom: 25px; padding-left:20px;">
+                <h3 style="margin:0 0 5px 0; font-size:1.2rem;">🎓 홍익대학교(서울, 산업공학)</h3>
+                <p style="color:var(--text-muted); font-family: 'Montserrat', monospace; font-weight:700; font-size:0.85rem; margin-bottom:8px;">2002.02~2009.02</p>
+                <p style="color:var(--text-main); margin:0;">졸업학점: 82.6 / 100, `대학생 경진대회` (장려상) - 대한산업공학회 주관</p>
+            </div>
+            
+            <div style="margin-bottom: 25px; padding-left:20px;">
+                <h3 style="margin:0 0 5px 0; font-size:1.2rem;">🎓 선인고등학교</h3>
+                <p style="color:var(--text-muted); font-family: 'Montserrat', monospace; font-weight:700; font-size:0.85rem; margin-bottom:8px;">2001</p>
+                <p style="color:var(--text-main); margin:0;"></p>
+            </div>
+            
         </div>
         
-
-        <!-- 04 EDU & ACTIVITIES -->
         
-        <div class="folder" onclick="openFolder('04 EDU & ACTIVITIES')">
-            <div class="tab-wrapper"><div class="tab">04 EDU & ACTIVITIES</div></div>
-            <div class="folder-body">
-                <h1>Education & Activities</h1>
-                <div style="margin-bottom:40px; margin-top:20px;">
-                    <h2 style="font-size:1.6rem; border-left:5px solid var(--accent-color); padding-left:15px; margin-bottom:25px;">Education</h2>
-                    
-                    <div style="margin-bottom: 25px; padding-left:20px;">
-                        <h3 style="margin:0 0 5px 0; font-size:1.2rem;">학점은행 (사회복지, 청소년 전공학사)</h3>
-                        <p style="color:var(--text-muted); font-family: 'Montserrat', monospace; font-weight:700; font-size:0.85rem; margin-bottom:8px;">2019.10 - 2023.08</p>
-                        <p style="color:var(--text-main); margin:0;">졸업학점: 96.3 / 100</p>
-                    </div>
-                    
-                    <div style="margin-bottom: 25px; padding-left:20px;">
-                        <h3 style="margin:0 0 5px 0; font-size:1.2rem;">홍익대학교(서울, 산업공학)</h3>
-                        <p style="color:var(--text-muted); font-family: 'Montserrat', monospace; font-weight:700; font-size:0.85rem; margin-bottom:8px;">2002.02~2009.02</p>
-                        <p style="color:var(--text-main); margin:0;">졸업학점: 82.6 / 100, `대학생 경진대회` (장려상) - 대한산업공학회 주관</p>
-                    </div>
-                    
-                    <div style="margin-bottom: 25px; padding-left:20px;">
-                        <h3 style="margin:0 0 5px 0; font-size:1.2rem;">선인고등학교</h3>
-                        <p style="color:var(--text-muted); font-family: 'Montserrat', monospace; font-weight:700; font-size:0.85rem; margin-bottom:8px;">2001</p>
-                        <p style="color:var(--text-main); margin:0;"></p>
-                    </div>
-                    
-                </div>
-                
-                
-                <div style="margin-bottom:40px;">
-                    <h2 style="font-size:1.6rem; border-left:5px solid var(--accent-color); padding-left:15px; margin-bottom:25px;">Professional Trainings</h2>
-                    
-                    <div style="margin-bottom: 25px; padding-left:20px;">
-                        <h3 style="margin:0 0 5px 0; font-size:1.2rem;">AI 기반 데이터 저널리스트 양성과정 [MBC HRD]</h3>
-                        <p style="color:var(--text-muted); font-family: 'Montserrat', monospace; font-weight:700; font-size:0.85rem; margin-bottom:8px;">2025. 12 ~ 2026. 04</p>
-                        <p style="color:var(--text-main); margin:0;">- AI 활용(팩트체킹, 데이터 기반으로 신뢰도 확보)
+        <div style="margin-bottom:40px;">
+            <h2 style="font-size:1.6rem; border-left:5px solid var(--accent-color); padding-left:15px; margin-bottom:25px;">Professional Trainings</h2>
+            
+            <div style="margin-bottom: 25px; padding-left:20px;">
+                <h3 style="margin:0 0 5px 0; font-size:1.2rem;">📜 AI 기반 데이터 저널리스트 양성과정 [MBC HRD]</h3>
+                <p style="color:var(--text-muted); font-family: 'Montserrat', monospace; font-weight:700; font-size:0.85rem; margin-bottom:8px;">2025. 12 ~ 2026. 04</p>
+                <p style="color:var(--text-main); margin:0;">- AI 활용(팩트체킹, 데이터 기반으로 신뢰도 확보)
 - 자동 팩트체킹 시스템 구축
 - 빅데이터 분석
 - AI를 활용한 뉴스 영상/삽화 제작, 편집 자동화, 멀티미디어형 뉴스 콘텐츠 제작
 - AI Tool(ChatGPT, Python, Matplotlib, Streamlit, Midjourney, Veo, Gemini 등)</p>
-                    </div>
-                    
-                    <div style="margin-bottom: 25px; padding-left:20px;">
-                        <h3 style="margin:0 0 5px 0; font-size:1.2rem;">장애인활동지원사</h3>
-                        <p style="color:var(--text-muted); font-family: 'Montserrat', monospace; font-weight:700; font-size:0.85rem; margin-bottom:8px;">2024. 07 ~ 2024. 08</p>
-                        <p style="color:var(--text-main); margin:0;">- 10시간 실습 후 최종 이수 완료</p>
-                    </div>
-                    
-                    <div style="margin-bottom: 25px; padding-left:20px;">
-                        <h3 style="margin:0 0 5px 0; font-size:1.2rem;">영상촬영PD양성과정 [방송정보국제교육원(IIBI)]</h3>
-                        <p style="color:var(--text-muted); font-family: 'Montserrat', monospace; font-weight:700; font-size:0.85rem; margin-bottom:8px;">2021. 11 ~ 2022. 04</p>
-                        <p style="color:var(--text-main); margin:0;">- 카메라 (SONY PWX-Z150, A7M2)
+            </div>
+            
+            <div style="margin-bottom: 25px; padding-left:20px;">
+                <h3 style="margin:0 0 5px 0; font-size:1.2rem;">📜 장애인활동지원사</h3>
+                <p style="color:var(--text-muted); font-family: 'Montserrat', monospace; font-weight:700; font-size:0.85rem; margin-bottom:8px;">2024. 07 ~ 2024. 08</p>
+                <p style="color:var(--text-main); margin:0;">- 10시간 실습 후 최종 이수 완료</p>
+            </div>
+            
+            <div style="margin-bottom: 25px; padding-left:20px;">
+                <h3 style="margin:0 0 5px 0; font-size:1.2rem;">📜 영상촬영PD양성과정 [방송정보국제교육원(IIBI)]</h3>
+                <p style="color:var(--text-muted); font-family: 'Montserrat', monospace; font-weight:700; font-size:0.85rem; margin-bottom:8px;">2021. 11 ~ 2022. 04</p>
+                <p style="color:var(--text-main); margin:0;">- 카메라 (SONY PWX-Z150, A7M2)
 - 편집 Tool(프리미어프로, 애프터이펙트, 포토샵, 일러스트레이트, 파이널컷프로, 오디션)
 - 과정 별 시험, 프로젝트 수행
 - 일체의 내용을 이수</p>
-                    </div>
-                    
-                    <div style="margin-bottom: 25px; padding-left:20px;">
-                        <h3 style="margin:0 0 5px 0; font-size:1.2rem;">표준화교육 [한국표준협회]</h3>
-                        <p style="color:var(--text-muted); font-family: 'Montserrat', monospace; font-weight:700; font-size:0.85rem; margin-bottom:8px;">2007. 01 ~ 2007. 12</p>
-                        <p style="color:var(--text-main); margin:0;">- 산업자원부, 한국표준협회 주관
+            </div>
+            
+            <div style="margin-bottom: 25px; padding-left:20px;">
+                <h3 style="margin:0 0 5px 0; font-size:1.2rem;">📜 표준화교육 [한국표준협회]</h3>
+                <p style="color:var(--text-muted); font-family: 'Montserrat', monospace; font-weight:700; font-size:0.85rem; margin-bottom:8px;">2007. 01 ~ 2007. 12</p>
+                <p style="color:var(--text-main); margin:0;">- 산업자원부, 한국표준협회 주관
 - 일체의 내용을 이수</p>
-                    </div>
-                    
-                </div>
-                
+            </div>
+            
+        </div>
+        
 
-                <div>
-                    <h2 style="font-size:1.6rem; border-left:5px solid var(--accent-color); padding-left:15px; margin-bottom:25px;">Activities</h2>
-                    
-                    <div style="margin-bottom: 25px; padding-left:20px;">
-                        <h3 style="margin:0 0 5px 0; font-size:1.2rem;">고양시문촌7종합사회복지관 </h3>
-                        <p style="color:var(--text-muted); font-family: 'Montserrat', monospace; font-weight:700; font-size:0.85rem; margin-bottom:8px;">2025. 01 ~ 2026. 03</p>
-                        <p style="color:var(--text-main); margin:0;">- 멘토링(프로그램명 : 같이의 가치)
+        <div>
+            <h2 style="font-size:1.6rem; border-left:5px solid var(--accent-color); padding-left:15px; margin-bottom:25px;">Activities</h2>
+            
+            <div style="margin-bottom: 25px; padding-left:20px;">
+                <h3 style="margin:0 0 5px 0; font-size:1.2rem;">🏃 고양시문촌7종합사회복지관 </h3>
+                <p style="color:var(--text-muted); font-family: 'Montserrat', monospace; font-weight:700; font-size:0.85rem; margin-bottom:8px;">2025. 01 ~ 2026. 03</p>
+                <p style="color:var(--text-main); margin:0;">- 멘토링(프로그램명 : 같이의 가치)
 - 수학, 영어 수업
 - 초등학교6학년, 중학교2,3학년, 고등학교1학년
 - 대상자 : 저소득 및 일반 가정 아동, 청소년</p>
-                    </div>
-                    
-                    <div style="margin-bottom: 25px; padding-left:20px;">
-                        <h3 style="margin:0 0 5px 0; font-size:1.2rem;">평안교회 - 청년부</h3>
-                        <p style="color:var(--text-muted); font-family: 'Montserrat', monospace; font-weight:700; font-size:0.85rem; margin-bottom:8px;">2013. 12 ~ 2016. 01</p>
-                        <p style="color:var(--text-main); margin:0;">- 최소 4~5명의 성인 남녀를 소그룹으로 운영
+            </div>
+            
+            <div style="margin-bottom: 25px; padding-left:20px;">
+                <h3 style="margin:0 0 5px 0; font-size:1.2rem;">🏃 평안교회 - 청년부</h3>
+                <p style="color:var(--text-muted); font-family: 'Montserrat', monospace; font-weight:700; font-size:0.85rem; margin-bottom:8px;">2013. 12 ~ 2016. 01</p>
+                <p style="color:var(--text-main); margin:0;">- 최소 4~5명의 성인 남녀를 소그룹으로 운영
 - 최소 1년 2개의 소그룹에 대한 리더 역할 수행
 - 비젼 공유, 의사소통, 온오프라인 봉사 활동</p>
-                    </div>
-                    
-                    <div style="margin-bottom: 25px; padding-left:20px;">
-                        <h3 style="margin:0 0 5px 0; font-size:1.2rem;">IVF (Inter-Varsity Evangelical Student Fellowship)</h3>
-                        <p style="color:var(--text-muted); font-family: 'Montserrat', monospace; font-weight:700; font-size:0.85rem; margin-bottom:8px;">2006. 02 ~ 2015. 07</p>
-                        <p style="color:var(--text-main); margin:0;">- 홍익대 서울캠퍼스
+            </div>
+            
+            <div style="margin-bottom: 25px; padding-left:20px;">
+                <h3 style="margin:0 0 5px 0; font-size:1.2rem;">🏃 평안교회 - 지역봉사부</h3>
+                <p style="color:var(--text-muted); font-family: 'Montserrat', monospace; font-weight:700; font-size:0.85rem; margin-bottom:8px;">2007. 08 ~ 2013. 12</p>
+                <p style="color:var(--text-main); margin:0;">- 독산동 지역 독거 노인 방문
+- 반찬 준비 및 방문 봉사</p>
+            </div>
+            
+            <div style="margin-bottom: 25px; padding-left:20px;">
+                <h3 style="margin:0 0 5px 0; font-size:1.2rem;">🏃 평안교회 - 유치부</h3>
+                <p style="color:var(--text-muted); font-family: 'Montserrat', monospace; font-weight:700; font-size:0.85rem; margin-bottom:8px;">2007. 07 ~ 2014. 01</p>
+                <p style="color:var(--text-main); margin:0;">- 유치부 교사
+- 인형극 담당</p>
+            </div>
+            
+            <div style="margin-bottom: 25px; padding-left:20px;">
+                <h3 style="margin:0 0 5px 0; font-size:1.2rem;">🏃 IVF (Inter-Varsity Evangelical Student Fellowship)</h3>
+                <p style="color:var(--text-muted); font-family: 'Montserrat', monospace; font-weight:700; font-size:0.85rem; margin-bottom:8px;">2006. 02 ~ 2015. 07</p>
+                <p style="color:var(--text-main); margin:0;">- 홍익대 서울캠퍼스
 - 소그룹 리더(구성원 : 최소 4~5명)(대상자 : 서서울 지역 대학교)
 - 지역 내 봉사처 방문
 - IVF 지역 및 전국 단체 활동 참여</p>
-                    </div>
-                    
-                    <div style="margin-bottom: 25px; padding-left:20px;">
-                        <h3 style="margin:0 0 5px 0; font-size:1.2rem;">평안교회 - 유치부</h3>
-                        <p style="color:var(--text-muted); font-family: 'Montserrat', monospace; font-weight:700; font-size:0.85rem; margin-bottom:8px;">2007. 07 ~ 2014. 01</p>
-                        <p style="color:var(--text-main); margin:0;">- 유치부 교사
-- 인형극 담당</p>
-                    </div>
-                    
-                    <div style="margin-bottom: 25px; padding-left:20px;">
-                        <h3 style="margin:0 0 5px 0; font-size:1.2rem;">평안교회 - 지역봉사부</h3>
-                        <p style="color:var(--text-muted); font-family: 'Montserrat', monospace; font-weight:700; font-size:0.85rem; margin-bottom:8px;">2007. 08 ~ 2013. 12</p>
-                        <p style="color:var(--text-main); margin:0;">- 독산동 지역 독거 노인 방문
-- 반찬 준비 및 방문 봉사</p>
-                    </div>
-                    
-                </div>
             </div>
+            
         </div>
-        
+    </div>
+</div>
 
-        <!-- 05 SKILLS & CERTS -->
         
-        <div class="folder" onclick="openFolder('05 SKILLS & CERTS')">
-            <div class="tab-wrapper"><div class="tab">05 SKILLS & CERTS</div></div>
-            <div class="folder-body">
-                <h1>Skills & Certifications</h1>
-                <div class="content-grid" style="margin-top:20px;">
+<div class="folder" onclick="openFolder('05 SKILLS & CERTS')">
+    <div class="tab-wrapper"><div class="tab">05 SKILLS & CERTS</div></div>
+    <div class="folder-body">
+        <h1>Skills & Certifications</h1>
+        <div class="content-grid" style="margin-top:20px;">
+            
+            <div class="portfolio-item-card" style="box-shadow:none; border-style:dashed;">
+                <h2 style="font-size:1.5rem; margin-top:0;">Tech & Tools</h2>
+                <div style="display:flex; flex-wrap:wrap; gap:10px; margin-top:15px;">
                     
-                    <div class="portfolio-item-card" style="box-shadow:none; border-style:dashed;">
-                        <h2 style="font-size:1.5rem; margin-top:0;">Tech & Tools</h2>
-                        <div style="display:flex; flex-wrap:wrap; gap:10px; margin-top:15px;">
-                            
-                            <span class="badge" style="background:#f1f2f6; margin-bottom:0;">프리미어프로</span>
-                            
-                            <span class="badge" style="background:#f1f2f6; margin-bottom:0;">애프터이펙트</span>
-                            
-                            <span class="badge" style="background:#f1f2f6; margin-bottom:0;">파이널컷프로</span>
-                            
-                            <span class="badge" style="background:#f1f2f6; margin-bottom:0;">포토샵</span>
-                            
-                            <span class="badge" style="background:#f1f2f6; margin-bottom:0;">일러스트레이터</span>
-                            
-                            <span class="badge" style="background:#f1f2f6; margin-bottom:0;">Python</span>
-                            
-                            <span class="badge" style="background:#f1f2f6; margin-bottom:0;">ChatGPT/AI Tools</span>
-                            
-                            <span class="badge" style="background:#f1f2f6; margin-bottom:0;">촬영장비(소니 a7 등)</span>
-                            
-                        </div>
+                    <span class="badge" style="background:#f1f2f6; margin-bottom:0;">프리미어프로</span>
+                    
+                    <span class="badge" style="background:#f1f2f6; margin-bottom:0;">애프터이펙트</span>
+                    
+                    <span class="badge" style="background:#f1f2f6; margin-bottom:0;">파이널컷프로</span>
+                    
+                    <span class="badge" style="background:#f1f2f6; margin-bottom:0;">포토샵</span>
+                    
+                    <span class="badge" style="background:#f1f2f6; margin-bottom:0;">일러스트레이터</span>
+                    
+                    <span class="badge" style="background:#f1f2f6; margin-bottom:0;">Python</span>
+                    
+                    <span class="badge" style="background:#f1f2f6; margin-bottom:0;">ChatGPT/AI Tools</span>
+                    
+                    <span class="badge" style="background:#f1f2f6; margin-bottom:0;">촬영장비(소니 a7 등)</span>
+                    
+                </div>
+            </div>
+            
+            
+            <div>
+                <h2 style="font-size:1.5rem; margin-top:0;">Certifications</h2>
+                <div style="margin-top:20px;">
+                    
+                    <div style="margin-bottom:20px; border-bottom:1px solid #eee; padding-bottom:15px;">
+                        <div style="font-weight:900; font-size:1.15rem; color:var(--text-main);">🏅 청소년지도사 2급</div>
+                        <div style="color:var(--text-muted); font-size:0.9rem; font-family:'Montserrat', monospace; font-weight:700; margin-top:4px;">취득일: 2026. 04</div>
                     </div>
                     
+                    <div style="margin-bottom:20px; border-bottom:1px solid #eee; padding-bottom:15px;">
+                        <div style="font-weight:900; font-size:1.15rem; color:var(--text-main);">🏅 사회복지 2급</div>
+                        <div style="color:var(--text-muted); font-size:0.9rem; font-family:'Montserrat', monospace; font-weight:700; margin-top:4px;">취득일: 2019. 12</div>
+                    </div>
                     
-                    <div>
-                        <h2 style="font-size:1.5rem; margin-top:0;">Certifications</h2>
-                        <div style="margin-top:20px;">
-                            
-                            <div style="margin-bottom:20px; border-bottom:1px solid #eee; padding-bottom:15px;">
-                                <div style="font-weight:900; font-size:1.15rem; color:var(--text-main);">청소년지도사 2급</div>
-                                <div style="color:var(--text-muted); font-size:0.9rem; font-family:'Montserrat', monospace; font-weight:700; margin-top:4px;">취득일: 2026. 04</div>
-                            </div>
-                            
-                            <div style="margin-bottom:20px; border-bottom:1px solid #eee; padding-bottom:15px;">
-                                <div style="font-weight:900; font-size:1.15rem; color:var(--text-main);">사회복지 2급</div>
-                                <div style="color:var(--text-muted); font-size:0.9rem; font-family:'Montserrat', monospace; font-weight:700; margin-top:4px;">취득일: 2019. 12</div>
-                            </div>
-                            
-                            <div style="margin-bottom:20px; border-bottom:1px solid #eee; padding-bottom:15px;">
-                                <div style="font-weight:900; font-size:1.15rem; color:var(--text-main);">지게차운전기능사 </div>
-                                <div style="color:var(--text-muted); font-size:0.9rem; font-family:'Montserrat', monospace; font-weight:700; margin-top:4px;">취득일: 2018. 07</div>
-                            </div>
-                            
-                            <div style="margin-bottom:20px; border-bottom:1px solid #eee; padding-bottom:15px;">
-                                <div style="font-weight:900; font-size:1.15rem; color:var(--text-main);">천장크레인운전기능사 </div>
-                                <div style="color:var(--text-muted); font-size:0.9rem; font-family:'Montserrat', monospace; font-weight:700; margin-top:4px;">취득일: 2017. 12</div>
-                            </div>
-                            
-                            <div style="margin-bottom:20px; border-bottom:1px solid #eee; padding-bottom:15px;">
-                                <div style="font-weight:900; font-size:1.15rem; color:var(--text-main);">1종 보통운전면허 </div>
-                                <div style="color:var(--text-muted); font-size:0.9rem; font-family:'Montserrat', monospace; font-weight:700; margin-top:4px;">취득일: 2003. 04</div>
-                            </div>
-                            
-                        </div>
+                    <div style="margin-bottom:20px; border-bottom:1px solid #eee; padding-bottom:15px;">
+                        <div style="font-weight:900; font-size:1.15rem; color:var(--text-main);">🏅 지게차운전기능사 </div>
+                        <div style="color:var(--text-muted); font-size:0.9rem; font-family:'Montserrat', monospace; font-weight:700; margin-top:4px;">취득일: 2018. 07</div>
+                    </div>
+                    
+                    <div style="margin-bottom:20px; border-bottom:1px solid #eee; padding-bottom:15px;">
+                        <div style="font-weight:900; font-size:1.15rem; color:var(--text-main);">🏅 천장크레인운전기능사 </div>
+                        <div style="color:var(--text-muted); font-size:0.9rem; font-family:'Montserrat', monospace; font-weight:700; margin-top:4px;">취득일: 2017. 12</div>
+                    </div>
+                    
+                    <div style="margin-bottom:20px; border-bottom:1px solid #eee; padding-bottom:15px;">
+                        <div style="font-weight:900; font-size:1.15rem; color:var(--text-main);">🏅 1종 보통운전면허 </div>
+                        <div style="color:var(--text-muted); font-size:0.9rem; font-family:'Montserrat', monospace; font-weight:700; margin-top:4px;">취득일: 2003. 04</div>
                     </div>
                     
                 </div>
             </div>
+            
         </div>
-        
+    </div>
+</div>
 
-        <!-- 06 AWARDS & MILITARY -->
         
-        <div class="folder" onclick="openFolder('06 AWARDS & MILITARY')">
-            <div class="tab-wrapper"><div class="tab">06 AWARDS & MILITARY</div></div>
-            <div class="folder-body">
-                <h1>Awards & Military</h1>
-                <div class="content-grid" style="margin-top:20px;">
-                    <div>
-                        <h2 style="font-size:1.6rem; border-left:5px solid var(--accent-color); padding-left:15px; margin-bottom:25px;">Awards & Honors</h2>
-                        <div>
-                            
-                            <div style="margin-bottom: 20px; border-left: 3px solid #eee; padding-left: 20px;">
-                                <h3 style="margin:0 0 5px 0; font-size:1.15rem;">2008</h3>
-                                <div style="color:var(--text-muted); font-size:0.9rem; font-family:'Montserrat', sans-serif; font-weight:700;">대학생프로젝트경진대회 - 장려상 수상 | 대한산업공학회 </div>
-                            </div>
-                            
-                            <div style="margin-bottom: 20px; border-left: 3px solid #eee; padding-left: 20px;">
-                                <h3 style="margin:0 0 5px 0; font-size:1.15rem;">2008</h3>
-                                <div style="color:var(--text-muted); font-size:0.9rem; font-family:'Montserrat', sans-serif; font-weight:700;">학업 우수 장학금 | 홍익대</div>
-                            </div>
-                            
-                            <div style="margin-bottom: 20px; border-left: 3px solid #eee; padding-left: 20px;">
-                                <h3 style="margin:0 0 5px 0; font-size:1.15rem;">2007</h3>
-                                <div style="color:var(--text-muted); font-size:0.9rem; font-family:'Montserrat', sans-serif; font-weight:700;">학업 우수 장학금 | 홍익대</div>
-                            </div>
-                            
-                            <div style="margin-bottom: 20px; border-left: 3px solid #eee; padding-left: 20px;">
-                                <h3 style="margin:0 0 5px 0; font-size:1.15rem;">2000</h3>
-                                <div style="color:var(--text-muted); font-size:0.9rem; font-family:'Montserrat', sans-serif; font-weight:700;">`나라사랑` 글짓기 우수상 | 한국청소년인천광역시연맹</div>
-                            </div>
-                            
-                            <div style="margin-bottom: 20px; border-left: 3px solid #eee; padding-left: 20px;">
-                                <h3 style="margin:0 0 5px 0; font-size:1.15rem;">1998</h3>
-                                <div style="color:var(--text-muted); font-size:0.9rem; font-family:'Montserrat', sans-serif; font-weight:700;">학업 우수 장학금 | 인천광역시 서구청장</div>
-                            </div>
-                            
-                        </div>
+<div class="folder" onclick="openFolder('06 AWARDS & MILITARY')">
+    <div class="tab-wrapper"><div class="tab">06 AWARDS & MILITARY</div></div>
+    <div class="folder-body">
+        <h1>Awards & Military</h1>
+        <div class="content-grid" style="margin-top:20px;">
+            <div>
+                <h2 style="font-size:1.6rem; border-left:5px solid var(--accent-color); padding-left:15px; margin-bottom:25px;">Awards & Honors</h2>
+                <div>
+                    
+                    <div style="margin-bottom: 20px; border-left: 3px solid #eee; padding-left: 20px;">
+                        <h3 style="margin:0 0 5px 0; font-size:1.15rem;">🏆 2008</h3>
+                        <div style="color:var(--text-muted); font-size:0.9rem; font-family:'Montserrat', sans-serif; font-weight:700;">학업 우수 장학금 | 홍익대</div>
                     </div>
                     
-                    <div>
-                        <h2 style="font-size:1.6rem; border-left:5px solid #000; padding-left:15px; margin-bottom:25px;">Military Service</h2>
-                        <div class="portfolio-item-card" style="box-shadow:none; background:#f9f8f6; border-color:#dcdde1; border-width:1.5px;">
-                            <h3 style="margin:0 0 12px 0; font-size:1.4rem; color:var(--accent-color);">군필</h3>
-                            <div style="line-height:1.9; font-size:1rem;">
-                                <div style="display:flex; justify-content:space-between; border-bottom:1px solid #eee; padding-bottom:5px; margin-bottom:5px;">
-                                    <strong style="font-family:'Montserrat', sans-serif; font-size:0.8rem; text-transform:uppercase;">Period</strong>
-                                    <span>2004.01 - 2006.01</span>
-                                </div>
-                                <div style="display:flex; justify-content:space-between; border-bottom:1px solid #eee; padding-bottom:5px; margin-bottom:5px;">
-                                    <strong style="font-family:'Montserrat', sans-serif; font-size:0.8rem; text-transform:uppercase;">Branch</strong>
-                                    <span>육군</span>
-                                </div>
-                                <div style="display:flex; justify-content:space-between;">
-                                    <strong style="font-family:'Montserrat', sans-serif; font-size:0.8rem; text-transform:uppercase;">Rank/Role</strong>
-                                    <span>병장 만기전역</span>
-                                </div>
-                            </div>
+                    <div style="margin-bottom: 20px; border-left: 3px solid #eee; padding-left: 20px;">
+                        <h3 style="margin:0 0 5px 0; font-size:1.15rem;">🏆 2007</h3>
+                        <div style="color:var(--text-muted); font-size:0.9rem; font-family:'Montserrat', sans-serif; font-weight:700;">학업 우수 장학금 | 홍익대</div>
+                    </div>
+                    
+                    <div style="margin-bottom: 20px; border-left: 3px solid #eee; padding-left: 20px;">
+                        <h3 style="margin:0 0 5px 0; font-size:1.15rem;">🏆 1998</h3>
+                        <div style="color:var(--text-muted); font-size:0.9rem; font-family:'Montserrat', sans-serif; font-weight:700;">학업 우수 장학금 | 인천광역시 서구청장</div>
+                    </div>
+                    
+                    <div style="margin-bottom: 20px; border-left: 3px solid #eee; padding-left: 20px;">
+                        <h3 style="margin:0 0 5px 0; font-size:1.15rem;">🏆 2008</h3>
+                        <div style="color:var(--text-muted); font-size:0.9rem; font-family:'Montserrat', sans-serif; font-weight:700;">대학생프로젝트경진대회 - 장려상 수상 | 대한산업공학회 </div>
+                    </div>
+                    
+                    <div style="margin-bottom: 20px; border-left: 3px solid #eee; padding-left: 20px;">
+                        <h3 style="margin:0 0 5px 0; font-size:1.15rem;">🏆 2000</h3>
+                        <div style="color:var(--text-muted); font-size:0.9rem; font-family:'Montserrat', sans-serif; font-weight:700;">`나라사랑` 글짓기 우수상 | 한국청소년인천광역시연맹</div>
+                    </div>
+                    
+                </div>
+            </div>
+            
+            <div>
+                <h2 style="font-size:1.6rem; border-left:5px solid #000; padding-left:15px; margin-bottom:25px;">Military Service</h2>
+                <div class="portfolio-item-card" style="box-shadow:none; background:#f9f8f6; border-color:#dcdde1; border-width:1.5px;">
+                    <h3 style="margin:0 0 12px 0; font-size:1.4rem; color:var(--accent-color);">🎖️ 군필</h3>
+                    <div style="line-height:1.9; font-size:1rem;">
+                        <div style="display:flex; justify-content:space-between; border-bottom:1px solid #eee; padding-bottom:5px; margin-bottom:5px;">
+                            <strong style="font-family:'Montserrat', sans-serif; font-size:0.8rem; text-transform:uppercase;">Period</strong>
+                            <span>2004.01 - 2006.01</span>
+                        </div>
+                        <div style="display:flex; justify-content:space-between; border-bottom:1px solid #eee; padding-bottom:5px; margin-bottom:5px;">
+                            <strong style="font-family:'Montserrat', sans-serif; font-size:0.8rem; text-transform:uppercase;">Branch</strong>
+                            <span>육군</span>
+                        </div>
+                        <div style="display:flex; justify-content:space-between;">
+                            <strong style="font-family:'Montserrat', sans-serif; font-size:0.8rem; text-transform:uppercase;">Rank/Role</strong>
+                            <span>병장 만기전역</span>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-        
+    </div>
+</div>
+
 
     </div>
 

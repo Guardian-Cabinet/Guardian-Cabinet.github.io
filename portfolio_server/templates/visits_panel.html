@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>방문자 추적 대시보드</title>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { font-family: -apple-system, 'Pretendard', sans-serif; background: #0f0f1a; color: #e0e0e0; padding: 30px; min-height: 100vh; }
+        
+        .header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; flex-wrap: wrap; gap: 15px; }
+        .header h1 { font-size: 1.8rem; color: #fff; }
+        .header h1 span { color: #48C9B0; }
+        .header a { color: #aaa; text-decoration: none; font-size: 14px; border: 1px solid #333; padding: 8px 16px; border-radius: 8px; transition: 0.2s; }
+        .header a:hover { background: #222; color: #fff; }
+
+        /* 요약 카드 */
+        .stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 15px; margin-bottom: 30px; }
+        .stat-card { background: linear-gradient(135deg, #1a1a2e, #16213e); border: 1px solid #2a2a4a; border-radius: 12px; padding: 20px; text-align: center; }
+        .stat-card .number { font-size: 2.2rem; font-weight: bold; color: #48C9B0; }
+        .stat-card .label { font-size: 0.85rem; color: #888; margin-top: 5px; }
+
+        /* 필터 */
+        .filter-bar { background: #1a1a2e; border: 1px solid #2a2a4a; border-radius: 10px; padding: 15px 20px; margin-bottom: 20px; display: flex; gap: 15px; align-items: center; flex-wrap: wrap; }
+        .filter-bar input, .filter-bar select { background: #0f0f1a; border: 1px solid #333; color: #e0e0e0; padding: 8px 12px; border-radius: 6px; font-size: 14px; }
+        .filter-bar label { color: #888; font-size: 13px; }
+
+        /* 테이블 */
+        .table-wrap { background: #1a1a2e; border: 1px solid #2a2a4a; border-radius: 12px; overflow: hidden; }
+        table { width: 100%; border-collapse: collapse; }
+        th { background: #16213e; color: #48C9B0; padding: 14px 16px; text-align: left; font-size: 13px; text-transform: uppercase; letter-spacing: 0.5px; position: sticky; top: 0; }
+        td { padding: 12px 16px; border-bottom: 1px solid #222; font-size: 14px; }
+        tr:hover td { background: rgba(72, 201, 176, 0.05); }
+        
+        .badge { display: inline-block; padding: 3px 8px; border-radius: 4px; font-size: 11px; font-weight: bold; margin: 2px; }
+        .badge-page { background: rgba(72, 201, 176, 0.15); color: #48C9B0; }
+        .badge-time { background: rgba(255, 193, 7, 0.15); color: #ffc107; }
+        .badge-short { background: rgba(255, 87, 87, 0.15); color: #ff5757; }
+
+        .ip-cell { font-family: 'SF Mono', 'Fira Code', monospace; font-size: 13px; color: #7ec8e3; }
+        .time-cell { font-family: monospace; font-size: 13px; color: #aaa; }
+        .ua-cell { font-size: 12px; color: #666; max-width: 200px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+
+        .empty-state { text-align: center; padding: 80px 20px; color: #555; }
+        .empty-state h2 { font-size: 1.5rem; color: #444; }
+
+        @media (max-width: 768px) {
+            body { padding: 15px; }
+            .stats { grid-template-columns: repeat(2, 1fr); }
+            table { font-size: 12px; }
+            th, td { padding: 8px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>📊 <span>방문자 추적</span> 대시보드</h1>
+        <div>
+            <a href="/admin">⚙️ 관리자 페이지</a>
+            <a href="/">🏠 메인으로</a>
+        </div>
+    </div>
+
+    {% set total = visits | length %}
+    {% set today_str = now.strftime('%Y-%m-%d') if now else '' %}
+    
+    <div class="stats">
+        <div class="stat-card">
+            <div class="number">{{ total }}</div>
+            <div class="label">총 방문 수</div>
+        </div>
+        <div class="stat-card">
+            <div class="number" id="today_count">-</div>
+            <div class="label">오늘 방문</div>
+        </div>
+        <div class="stat-card">
+            <div class="number" id="avg_duration">-</div>
+            <div class="label">평균 체류시간</div>
+        </div>
+        <div class="stat-card">
+            <div class="number" id="unique_ips">-</div>
+            <div class="label">고유 방문자(IP)</div>
+        </div>
+    </div>
+
+    <div class="filter-bar">
+        <label>날짜 필터:</label>
+        <input type="date" id="filter_date" onchange="filterTable()">
+        <label>IP 검색:</label>
+        <input type="text" id="filter_ip" placeholder="IP 주소" oninput="filterTable()">
+        <button onclick="document.getElementById('filter_date').value=''; document.getElementById('filter_ip').value=''; filterTable();" style="background:#333; border:1px solid #555; color:#ccc; padding:8px 14px; border-radius:6px; cursor:pointer;">초기화</button>
+    </div>
+
+    <div class="table-wrap">
+        {% if visits %}
+        <table id="visits_table">
+            <thead>
+                <tr>
+                    <th>접속 시간</th>
+                    <th>IP 주소</th>
+                    <th>열람한 폴더</th>
+                    <th>체류 시간</th>
+                    <th>유입 경로</th>
+                    <th>기기/브라우저</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for v in visits %}
+                <tr class="visit-row" 
+                    data-date="{{ v.entered_at[:10] if v.entered_at else '' }}" 
+                    data-ip="{{ v.ip }}">
+                    <td class="time-cell">{{ v.entered_at }}</td>
+                    <td class="ip-cell">{{ v.ip }}</td>
+                    <td>
+                        {% for p in v.pages_viewed %}
+                        <span class="badge badge-page">{{ p }}</span>
+                        {% endfor %}
+                    </td>
+                    <td>
+                        {% if v.duration_seconds %}
+                            {% if v.duration_seconds >= 60 %}
+                                <span class="badge badge-time">{{ (v.duration_seconds // 60) }}분 {{ v.duration_seconds % 60 }}초</span>
+                            {% elif v.duration_seconds >= 10 %}
+                                <span class="badge badge-time">{{ v.duration_seconds }}초</span>
+                            {% else %}
+                                <span class="badge badge-short">{{ v.duration_seconds }}초 (빠른 이탈)</span>
+                            {% endif %}
+                        {% else %}
+                            <span style="color:#555;">진행 중...</span>
+                        {% endif %}
+                    </td>
+                    <td style="font-size:12px; color:#888;">{{ v.referrer[:30] if v.referrer else 'direct' }}</td>
+                    <td class="ua-cell" title="{{ v.user_agent }}">{{ v.user_agent[:40] }}...</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        {% else %}
+        <div class="empty-state">
+            <h2>🕵️ 아직 방문 기록이 없습니다</h2>
+            <p style="margin-top:10px;">포트폴리오 링크를 공유하면 여기에 방문 기록이 쌓입니다.</p>
+        </div>
+        {% endif %}
+    </div>
+
+    <script>
+        // 통계 계산
+        (function() {
+            const rows = document.querySelectorAll('.visit-row');
+            const today = new Date().toISOString().slice(0, 10);
+            let todayCount = 0;
+            let totalDuration = 0;
+            let durationCount = 0;
+            const ips = new Set();
+
+            rows.forEach(row => {
+                const date = row.dataset.date;
+                const ip = row.dataset.ip;
+                ips.add(ip);
+                if (date === today) todayCount++;
+                
+                const durationEl = row.querySelector('.badge-time, .badge-short');
+                if (durationEl) {
+                    const text = durationEl.textContent;
+                    let seconds = 0;
+                    const minMatch = text.match(/(\d+)분/);
+                    const secMatch = text.match(/(\d+)초/);
+                    if (minMatch) seconds += parseInt(minMatch[1]) * 60;
+                    if (secMatch) seconds += parseInt(secMatch[1]);
+                    totalDuration += seconds;
+                    durationCount++;
+                }
+            });
+
+            document.getElementById('today_count').textContent = todayCount;
+            document.getElementById('unique_ips').textContent = ips.size;
+            
+            if (durationCount > 0) {
+                const avg = Math.round(totalDuration / durationCount);
+                document.getElementById('avg_duration').textContent = avg >= 60 
+                    ? Math.floor(avg / 60) + '분 ' + (avg % 60) + '초'
+                    : avg + '초';
+            } else {
+                document.getElementById('avg_duration').textContent = '-';
+            }
+        })();
+
+        // 필터링
+        function filterTable() {
+            const dateVal = document.getElementById('filter_date').value;
+            const ipVal = document.getElementById('filter_ip').value.toLowerCase();
+            const rows = document.querySelectorAll('.visit-row');
+            
+            rows.forEach(row => {
+                let show = true;
+                if (dateVal && row.dataset.date !== dateVal) show = false;
+                if (ipVal && !row.dataset.ip.toLowerCase().includes(ipVal)) show = false;
+                row.style.display = show ? '' : 'none';
+            });
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,9 @@
+.venv/
+__pycache__/
+*.pyc
+.env
+portfolio_server/visits.json
+static/uploads/upload_*
+index.html
+temp_portfolio_index.html
+*.log

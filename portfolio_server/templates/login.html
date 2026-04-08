@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>관리자 로그인</title>
+    <style>
+        body { font-family: -apple-system, sans-serif; background: #f0f2f5; display: flex; align-items: center; justify-content: center; height: 100vh; margin: 0; }
+        .login-card { background: #fff; padding: 40px; border-radius: 12px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); width: 100%; max-width: 380px; text-align: center; }
+        h1 { font-size: 1.5rem; margin-bottom: 25px; color: #333; }
+        input[type="password"] { width: 100%; padding: 12px; font-size: 1.1rem; border: 2px solid #ddd; border-radius: 8px; margin-bottom: 20px; text-align: center; letter-spacing: 5px; box-sizing: border-box; }
+        button { width: 100%; padding: 12px; font-size: 1rem; font-weight: bold; background: #48C9B0; color: #fff; border: none; border-radius: 8px; cursor: pointer; transition: 0.2s; }
+        button:hover { background: #2ba690; }
+        .back { display: block; margin-top: 20px; color: #888; text-decoration: none; font-size: 0.9rem; }
+    </style>
+</head>
+<body>
+    <div class="login-card">
+        <h1>🔒 관리자 권한 확인</h1>
+        <form action="/login" method="POST">
+            <input type="text" name="admin_id" placeholder="관리자 ID" required autofocus style="width: 100%; padding: 12px; font-size: 1.1rem; border: 2px solid #ddd; border-radius: 8px; margin-bottom: 10px; box-sizing: border-box;">
+            <input type="password" name="pin" placeholder="PIN 번호 입력" required style="width: 100%; padding: 12px; font-size: 1.1rem; border: 2px solid #ddd; border-radius: 8px; margin-bottom: 20px; text-align: center; letter-spacing: 5px; box-sizing: border-box;">
+            <button type="submit">인증 및 입장</button>
+        </form>
+        <a href="/" class="back">← 메인 사이트로 돌아가기</a>
+    </div>
+</body>
+</html>

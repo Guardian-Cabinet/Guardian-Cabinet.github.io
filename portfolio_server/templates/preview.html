@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Enhanced Cabinet Design Preview</title>
+    <style>
+        :root {
+            --bg-color: #d1d1d1;
+            --folder-bg: #ffffff;
+            --border-color: #333333;
+            --accent-blue: #3498db;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            margin: 0; padding: 0;
+            font-family: 'Pretendard', -apple-system, sans-serif;
+            display: flex; justify-content: center; align-items: center;
+            min-height: 100vh; overflow: hidden;
+        }
+
+        .cabinet {
+            width: 95%; max-width: 1000px;
+            height: 90vh; position: relative;
+            background: #bbb;
+            border: 4px solid var(--border-color);
+            border-radius: 10px;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.3);
+            overflow: hidden;
+        }
+
+        .folder {
+            position: absolute;
+            width: 100%; height: 100%;
+            left: 0; top: 0;
+            background: var(--folder-bg);
+            transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            display: flex; flex-direction: column;
+            /* 외곽선 강화 */
+            border: 2px solid var(--border-color);
+            box-sizing: border-box;
+        }
+
+        .tab-wrapper {
+            height: 50px;
+            display: flex; align-items: flex-end;
+            cursor: pointer;
+            border-bottom: 2px solid var(--border-color);
+            background: #ececec;
+        }
+
+        .tab {
+            padding: 8px 30px;
+            background: var(--folder-bg);
+            border: 2px solid var(--border-color);
+            border-bottom: none;
+            border-radius: 15px 15px 0 0;
+            font-weight: bold;
+            font-size: 14px;
+            margin-left: 20px;
+            position: relative;
+            top: 2px;
+            transition: all 0.3s;
+            color: #777;
+        }
+
+        .folder.active .tab {
+            background: var(--folder-bg);
+            color: #000;
+            height: 35px;
+            padding-top: 12px;
+        }
+
+        .folder-body {
+            flex: 1;
+            padding: 50px;
+            overflow-y: auto;
+            opacity: 0; visibility: hidden;
+            transition: opacity 0.3s;
+        }
+
+        .folder.active .folder-body {
+            opacity: 1; visibility: visible;
+        }
+
+        /* 들여쓰기 강화 (Hanging Indent) */
+        .pre-text {
+            white-space: pre-wrap;
+            word-break: break-all;
+            line-height: 1.7;
+            color: #333;
+            /* 불렛 기호 등이 있을 때 뒷줄을 들여쓰기 */
+            padding-left: 1.2em;
+            text-indent: -1.2em;
+            margin: 10px 0;
+        }
+
+        h1 { border-bottom: 3px solid var(--border-color); padding-bottom: 15px; margin-bottom: 30px; }
+        h2 { margin-top: 40px; color: var(--accent-blue); }
+
+        .item-card {
+            border: 1px solid #ddd;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            background: #fafafa;
+        }
+
+        @media (max-width: 768px) {
+            .folder-body { padding: 25px; }
+            .tab { padding: 8px 15px; font-size: 12px; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="cabinet" id="cabinet">
+        <!-- 01 PROFILE -->
+        <div class="folder" onclick="openFolder(0)">
+            <div class="tab-wrapper"><div class="tab" style="margin-left:20px;">01 PROFILE</div></div>
+            <div class="folder-body">
+                <h1>{{ data.content.profile.title }}</h1>
+                <p class="pre-text">{{ data.content.profile.description }}</p>
+            </div>
+        </div>
+
+        <!-- 03 CAREER -->
+        <div class="folder" onclick="openFolder(1)">
+            <div class="tab-wrapper"><div class="tab" style="margin-left:180px;">03 CAREER</div></div>
+            <div class="folder-body">
+                <h1>Career Experience</h1>
+                {% for c in data.content.careers %}
+                <div class="item-card">
+                    <h3 style="margin:0;">{{ c.company }}</h3>
+                    <small style="color:#888;">{{ c.period }}</small>
+                    <p class="pre-text" style="margin-top:10px;">{{ c.role }}</p>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+
+        <!-- 06 AWARDS & MILITARY -->
+        <div class="folder" onclick="openFolder(2)">
+            <div class="tab-wrapper"><div class="tab" style="margin-left:340px;">06 AWARDS</div></div>
+            <div class="folder-body">
+                <h1>Awards & Honors</h1>
+                {% for a in data.content.awards %}
+                <div class="item-card">
+                    <strong>{{ a.title }}</strong> | {{ a.date }}<br>
+                    <span style="color:#666;">{{ a.organization }}</span>
+                </div>
+                {% endfor %}
+                <h1 style="margin-top:50px;">Military Service</h1>
+                <div class="item-card">
+                    <strong>상태:</strong> {{ data.content.military.status }}<br>
+                    <strong>기간:</strong> {{ data.content.military.period }}<br>
+                    <strong>보직:</strong> {{ data.content.military.role }}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let currentIdx = 1; // Career 기본 활성화 예시
+        const TAB_STEP = 50; 
+
+        function layout() {
+            const folders = document.querySelectorAll('.folder');
+            const total = folders.length;
+            const h = document.getElementById('cabinet').clientHeight;
+
+            folders.forEach((f, i) => {
+                if (i === currentIdx) {
+                    f.classList.add('active');
+                    f.style.transform = `translateY(${i * TAB_STEP}px)`;
+                    f.style.zIndex = 100;
+                } else if (i < currentIdx) {
+                    f.classList.remove('active');
+                    f.style.transform = `translateY(${i * TAB_STEP}px)`;
+                    f.style.zIndex = i;
+                } else {
+                    f.classList.remove('active');
+                    f.style.transform = `translateY(${h - (total - i) * TAB_STEP}px)`;
+                    f.style.zIndex = i;
+                }
+            });
+        }
+
+        function openFolder(i) {
+            currentIdx = i;
+            layout();
+        }
+
+        window.onload = layout;
+        window.onresize = layout;
+    </script>
+</body>
+</html>

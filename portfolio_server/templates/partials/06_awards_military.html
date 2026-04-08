@@ -1,0 +1,42 @@
+{% if data.settings.visibilities['06 AWARDS & MILITARY'] %}
+<div class="folder" onclick="openFolder('06 AWARDS & MILITARY')">
+    <div class="tab-wrapper"><div class="tab">06 AWARDS & MILITARY</div></div>
+    <div class="folder-body">
+        <h1>Awards & Military</h1>
+        <div class="content-grid" style="margin-top:20px;">
+            <div>
+                <h2 style="font-size:1.6rem; border-left:5px solid var(--accent-color); padding-left:15px; margin-bottom:25px;">Awards & Honors</h2>
+                <div>
+                    {% for award in data.content.awards %}
+                    <div style="margin-bottom: 20px; border-left: 3px solid #eee; padding-left: 20px;">
+                        <h3 style="margin:0 0 5px 0; font-size:1.15rem;">{{ award.icon or '🏆' }} {{ award.title }}</h3>
+                        <div style="color:var(--text-muted); font-size:0.9rem; font-family:'Montserrat', sans-serif; font-weight:700;">{{ award.date }} | {{ award.organization }}</div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+            
+            <div>
+                <h2 style="font-size:1.6rem; border-left:5px solid #000; padding-left:15px; margin-bottom:25px;">Military Service</h2>
+                <div class="portfolio-item-card" style="box-shadow:none; background:#f9f8f6; border-color:#dcdde1; border-width:1.5px;">
+                    <h3 style="margin:0 0 12px 0; font-size:1.4rem; color:var(--accent-color);">🎖️ {{ data.content.military.status }}</h3>
+                    <div style="line-height:1.9; font-size:1rem;">
+                        <div style="display:flex; justify-content:space-between; border-bottom:1px solid #eee; padding-bottom:5px; margin-bottom:5px;">
+                            <strong style="font-family:'Montserrat', sans-serif; font-size:0.8rem; text-transform:uppercase;">Period</strong>
+                            <span>{{ data.content.military.period }}</span>
+                        </div>
+                        <div style="display:flex; justify-content:space-between; border-bottom:1px solid #eee; padding-bottom:5px; margin-bottom:5px;">
+                            <strong style="font-family:'Montserrat', sans-serif; font-size:0.8rem; text-transform:uppercase;">Branch</strong>
+                            <span>{{ data.content.military.branch }}</span>
+                        </div>
+                        <div style="display:flex; justify-content:space-between;">
+                            <strong style="font-family:'Montserrat', sans-serif; font-size:0.8rem; text-transform:uppercase;">Rank/Role</strong>
+                            <span>{{ data.content.military.role }}</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endif %}

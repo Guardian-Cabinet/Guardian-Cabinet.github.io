@@ -1,0 +1,33 @@
+{% if data.settings.visibilities['05 SKILLS & CERTS'] %}
+<div class="folder" onclick="openFolder('05 SKILLS & CERTS')">
+    <div class="tab-wrapper"><div class="tab">05 SKILLS & CERTS</div></div>
+    <div class="folder-body">
+        <h1>Skills & Certifications</h1>
+        <div class="content-grid" style="margin-top:20px;">
+            {% if data.content.skills.tech %}
+            <div class="portfolio-item-card" style="box-shadow:none; border-style:dashed;">
+                <h2 style="font-size:1.5rem; margin-top:0;">Tech & Tools</h2>
+                <div style="display:flex; flex-wrap:wrap; gap:10px; margin-top:15px;">
+                    {% for tech in data.content.skills.tech.split(',') %}
+                    <span class="badge" style="background:#f1f2f6; margin-bottom:0;">{{ tech.strip() }}</span>
+                    {% endfor %}
+                </div>
+            </div>
+            {% endif %}
+            {% if data.content.skills.certs %}
+            <div>
+                <h2 style="font-size:1.5rem; margin-top:0;">Certifications</h2>
+                <div style="margin-top:20px;">
+                    {% for cert in data.content.skills.certs %}
+                    <div style="margin-bottom:20px; border-bottom:1px solid #eee; padding-bottom:15px;">
+                        <div style="font-weight:900; font-size:1.15rem; color:var(--text-main);">{{ cert.icon or '🏅' }} {{ cert.name }}</div>
+                        <div style="color:var(--text-muted); font-size:0.9rem; font-family:'Montserrat', monospace; font-weight:700; margin-top:4px;">취득일: {{ cert.date }}</div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endif %}

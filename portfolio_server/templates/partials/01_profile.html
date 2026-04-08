@@ -1,0 +1,31 @@
+{% if data.settings.visibilities['01 PROFILE'] %}
+<div class="folder" onclick="openFolder('01 PROFILE')">
+    <div class="tab-wrapper"><div class="tab dark">01 PROFILE</div></div>
+    <div class="folder-body">
+        <h1>About Me</h1>
+        <div class="content-grid">
+            <div>
+                <div class="media-box sticky-box" style="height: 350px;">
+                    {% if data.content.profile.image_url %}
+                    <img src="{{ data.content.profile.image_url }}" alt="내 사진">
+                    {% else %}
+                    <div style="background:#222; width:100%; height:100%; display:flex; align-items:center; justify-content:center; color:#555;">이미지를 등록해주세요</div>
+                    {% endif %}
+                </div>
+            </div>
+            <div>
+                <span class="badge">{{ data.content.profile.badge_text }}</span>
+                <h2 style="font-size:1.8rem; margin-top:0;">{{ data.content.profile.title }}</h2>
+                <h4 style="color:#555; margin-top:0;">{{ data.content.profile.subtitle }}</h4>
+                <p>{{ data.content.profile.description }}</p>
+                <br>
+                {% if data.content.profile.email or data.content.profile.github %}
+                <h3>Contact Info</h3>
+                {% if data.content.profile.email %}<p>Email: {{ data.content.profile.email }}</p>{% endif %}
+                {% if data.content.profile.github %}<p>Github: {{ data.content.profile.github }}</p>{% endif %}
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endif %}
