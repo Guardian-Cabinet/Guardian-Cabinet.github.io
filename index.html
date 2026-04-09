@@ -84,6 +84,7 @@
             transition: var(--transition-smooth);
             will-change: transform;
             cursor: pointer;
+            pointer-events: none; /* 폴더 박스가 겹쳐서 hover 가로채는 버그 차단 */
         }
 
         .tab-wrapper {
@@ -93,6 +94,7 @@
             align-items: flex-end;
             padding-left: 20px;
             padding-right: 20px;
+            pointer-events: auto; /* 실제 클릭 영역만 부활 */
         }
 
         .tab {
@@ -141,6 +143,7 @@
             box-sizing: border-box;
             background-color: #fff;
             box-shadow: var(--folder-shadow-inactive);
+            pointer-events: auto; /* 본문 스크롤 클릭 가능하게 복구 */
         }
 
         .folder.active .folder-body {
@@ -169,7 +172,7 @@
         
         p { white-space: pre-wrap; line-height: 1.8; font-size: 1.05rem; color: #444; font-weight: 400; word-break: keep-all; }
         
-        .content-grid { display: grid; grid-template-columns: 1fr 1.2fr; gap: 40px; margin-top: 20px; align-items: start; }
+        .content-grid { display: grid; grid-template-columns: 1fr 1.2fr; gap: 40px; margin-top: 20px; align-items: stretch; }
         
         .media-box { 
             border: 2px solid #000; 
@@ -201,7 +204,7 @@
         
         .btn-link { 
             display: block; background: #000; color: #fff; text-decoration: none; padding: 14px; 
-            border-radius: 10px; font-weight: 800; margin-top: 20px; transition: 0.3s;
+            border-radius: 10px; font-weight: 800; margin-top: auto; transition: 0.3s;
             text-align: center;
             font-family: 'Montserrat', sans-serif;
             text-transform: uppercase;
@@ -247,81 +250,126 @@
             position: relative;
         }
 
-        /* ──── TIMELINE 스타일 ──── */
+        /* ──── TIMELINE 스타일 (지그재그형) ──── */
         .timeline-wrapper {
             position: relative;
-            padding-left: 20px;
-            margin-top: 20px;
+            padding: 40px 0;
+            margin-top: 30px;
         }
-        /* 중앙선 역할 (다크그레이) */
+        
+        /* 중앙 관통선 (PC 기준 중앙) */
         .timeline-wrapper::before {
             content: '';
             position: absolute;
             top: 0;
             bottom: 0;
-            left: 21px; /* 원의 중앙을 관통 */
-            width: 4px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 5px;
             background: #2d3436;
-            border-radius: 2px;
+            border-radius: 3px;
         }
         
         .timeline-item {
             position: relative;
-            margin-bottom: 50px;
-            padding-left: 35px; /* 선과 원 영역 확보 */
+            width: 50%;
+            margin-bottom: 60px;
+            padding: 0 40px;
+            clear: both;
+            box-sizing: border-box;
         }
         
-        /* 둥근 아이콘 포인트 (오렌지/코랄) */
+        /* 지그재그 배치: 홀수는 왼쪽, 짝수는 오른쪽 */
+        .timeline-item:nth-child(odd) {
+            float: left;
+            text-align: right;
+            padding-right: 50px;
+            padding-left: 0;
+        }
+        .timeline-item:nth-child(even) {
+            float: right;
+            text-align: left;
+            padding-left: 50px;
+            padding-right: 0;
+        }
+
+        .timeline-wrapper::after {
+            content: "";
+            display: table;
+            clear: both;
+        }
+        
+        /* 둥근 아이콘 포인트 (대형 사이즈 - 지그재그 중앙 배치) */
         .timeline-circle {
             position: absolute;
-            left: -13px; /* wrapper의 left:20px 보다 왼쪽으로 빼서 선명하게 부각 */
             top: 0;
-            width: 32px;
-            height: 32px;
+            width: 65px;
+            height: 65px;
             background-color: #f2f0eb;
-            border: 4px solid #ff6b6b; /* 코랄/레드 포인트 */
+            border: 5px solid #ff6b6b; /* 코랄/레드 포인트 */
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 15px;
+            font-size: 28px;
             z-index: 2;
             box-sizing: border-box;
-            background-repeat: no-size;
+            background-repeat: no-repeat;
             background-position: center;
             background-size: cover;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
         }
+        
+        /* 아이콘 위치 교정 - 중앙선의 위치에 맞게 설정 */
+        .timeline-item:nth-child(odd) .timeline-circle {
+            right: -32.5px; /* width 65px의 반값 */
+        }
+        .timeline-item:nth-child(even) .timeline-circle {
+            left: -32.5px;
+        }
+
         .timeline-circle img {
             width: 100%; height: 100%; border-radius: 50%; object-fit: cover;
         }
 
         .timeline-content h3 {
-            margin: 0 0 5px 0;
-            font-size: 1.15rem;
+            margin: 0 0 10px 0;
+            font-size: 1.3rem;
             color: #2d3436;
             font-weight: 800;
         }
         
-        /* 연도/기간 배지 (모노톤 포인트) */
+        /* 연도/기간 배지 */
         .timeline-period {
             display: inline-block;
-            font-size: 0.85rem;
+            font-size: 0.9rem;
             font-family: 'Montserrat', sans-serif;
             font-weight: 800;
             color: #fff;
             background-color: #2d3436;
-            padding: 3px 12px;
-            border-radius: 12px;
-            margin-bottom: 12px;
+            padding: 5px 16px;
+            border-radius: 20px;
+            margin-bottom: 15px;
         }
 
-        /* 들여쓰기를 통한 가독성(긴글) 제어 */
+        /* 들여쓰기를 통한 가독성(긴글) 제어 - 방향별 세팅 */
         .timeline-text {
             color: #444;    
             line-height: 1.7;
             font-size: 1.05rem;
-            padding-left: 10px; /* 텍스트 들여쓰기 */
-            border-left: 2px dashed rgba(0,0,0,0.1); /* 미세한 보조선 */
+            text-align: left; /* 본문은 항상 왼쪽 정렬이 편함 */
+            display: inline-block;
+        }
+        
+        /* 왼쪽 아이템은 본문 텍스트가 약간 들여쓰기 덜 되어도 됨 */
+        .timeline-item:nth-child(even) .timeline-text {
+            padding-left: 15px;
+            border-left: 2px dashed rgba(0,0,0,0.15);
+        }
+        .timeline-item:nth-child(odd) .timeline-text {
+            padding-right: 15px;
+            border-right: 2px dashed rgba(0,0,0,0.15);
+            text-align: right;
         }
 
         .timeline-icon {
@@ -364,14 +412,31 @@
             p { font-size: 1rem; line-height: 1.7; word-break: keep-all; }
             .career-item { padding-left: 20px; margin-bottom: 28px; }
             
-            /* 타임라인 모바일 대응 */
-            .timeline-wrapper { padding-left: 15px; }
-            .timeline-wrapper::before { left: 16px; width: 3px; }
-            .timeline-item { padding-left: 25px; margin-bottom: 35px; }
-            .timeline-circle { width: 26px; height: 26px; left: -11px; border-width: 3px; font-size: 12px; }
-            .timeline-content h3 { font-size: 1.05rem; }
-            .timeline-period { font-size: 0.75rem; padding: 2px 8px; }
-            .timeline-text { font-size: 0.95rem; line-height: 1.6; padding-left: 8px; }
+            /* 타임라인 모바일 대응 (다시 1열 좌측 정렬로) */
+            .timeline-wrapper { padding-left: 20px; padding-top: 10px; }
+            .timeline-wrapper::before { left: 40px; transform: none; width: 4px; }
+            
+            .timeline-item, .timeline-item:nth-child(odd), .timeline-item:nth-child(even) { 
+                width: 100%; float: none; text-align: left; 
+                padding-left: 70px; padding-right: 0; margin-bottom: 45px; 
+            }
+            .timeline-item:nth-child(odd) .timeline-circle, .timeline-item:nth-child(even) .timeline-circle { 
+                width: 44px; height: 44px; left: 0px; top: -5px; border-width: 4px; font-size: 20px; 
+                right: auto;
+            }
+            
+            .timeline-item:nth-child(odd) .timeline-text, .timeline-item:nth-child(even) .timeline-text {
+                text-align: left;
+                padding-left: 12px;
+                padding-right: 0;
+                border-left: 2px dashed rgba(0,0,0,0.15);
+                border-right: none;
+                font-size: 0.95rem;
+                line-height: 1.6;
+            }
+
+            .timeline-content h3 { font-size: 1.15rem; margin-top: 5px; }
+            .timeline-period { font-size: 0.8rem; padding: 3px 10px; }
 
             .timeline-icon { width: 26px; height: 26px; left: -14px; font-size: 12px; }
         }
@@ -1124,22 +1189,19 @@
 
             const isMobile = window.innerWidth <= 768;
             const tabHeight = isMobile ? 38 : 50;
+            const cascadeGap = isMobile ? 8 : 12;
 
             const containerHeight = container.clientHeight;
             const n = folders.length;
-            
-            // 모바일일수록 공간 확장을 위해 하단 스택 간격을 극단적으로 줄임 (12px~15px)
-            const stackGap = isMobile ? 12 : 16;
-            const folderHeight = containerHeight - (currentActive * tabHeight) - ((n - currentActive - 1) * stackGap);
 
-            // 탭 위치 정렬
+            // 탭 위치 정렬 (All-Top 방식 공간 압축)
             folders.forEach((folder, i) => {
                 const tab = folder.querySelector('.tab');
                 const body = folder.querySelector('.folder-body');
                 const tabWrapper = folder.querySelector('.tab-wrapper');
 
-                folder.style.height = `${folderHeight}px`;
-                folder.style.zIndex = (i === currentActive) ? 100 : i;
+                // 모든 높이를 하단 끝까지 연장!
+                folder.style.height = `${containerHeight - (i * cascadeGap)}px`;
                 
                 // 클래스 제어
                 if (i === currentActive) {
@@ -1149,24 +1211,18 @@
                 } else {
                     folder.classList.remove('active');
                     if(!tab.classList.contains('dark')) tab.style.backgroundColor = '#e0dad0';
-                    body.style.backgroundColor = '#e0dad0';
+                    body.style.backgroundColor = '#e0dad0'; /* 투명해지지만 겹쳤을 때를 위해 스케치 유지 */
                 }
 
                 // 탭 수평 위치 분산
                 tabWrapper.style.justifyContent = 'flex-start';
-                tabWrapper.style.paddingLeft = `${(i / n) * 85}%`; // 탭이 화면 밖으로 나가지 않게 90 -> 85% 조정
+                tabWrapper.style.paddingLeft = `${(i / n) * 85}%`; 
 
-                // 위치 계산 (하단 뭉침 밀집화)
-                if (i < currentActive) {
-                    folder.style.transform = `translateY(${i * tabHeight}px)`;
-                } else if (i === currentActive) {
-                    folder.style.transform = `translateY(${i * tabHeight}px)`;
-                } else {
-                    // 미선택 하단 탭들은 화면 하단으로부터 촘촘하게 쌓임 (12~16px 간격)
-                    folder.style.transform = `translateY(${containerHeight - ((n - i) * stackGap)}px)`;
-                }
+                // 모든 탭이 상단에 밀집 도열 (가독성 공간 100% 확보)
+                folder.style.transform = `translateY(${i * cascadeGap}px)`;
 
-                body.style.paddingBottom = `${((n - 1) * stackGap) + 40}px`;
+                // 하단 뭉침이 없어졌으므로 패딩 복구
+                body.style.paddingBottom = `40px`;
             });
         }
 
