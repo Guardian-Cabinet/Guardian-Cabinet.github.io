@@ -6,7 +6,13 @@
         <div style="margin-top:20px;">
             {% for c in data.content.careers %}
             <div class="career-item">
-                <div class="timeline-icon">{{ c.icon or '📌' }}</div>
+                <div class="timeline-icon">
+                    {% if c.icon and (c.icon.startswith('/') or c.icon.startswith('http')) %}
+                        <img src="{{ c.icon }}" style="width:100%; height:100%; border-radius:50%; object-fit:cover;">
+                    {% else %}
+                        {{ c.icon or '📌' }}
+                    {% endif %}
+                </div>
                 <h3 style="margin:0 0 5px 0; font-size:1.3rem;">{{ c.company }}</h3>
                 <p style="color:var(--text-muted); font-family: 'Montserrat', monospace; font-weight:700; font-size:0.9rem; margin-bottom:12px;">{{ c.period }}</p>
                 <p style="color:var(--text-main); margin:0; font-size:1rem; line-height:1.7;">{{ c.role }}</p>

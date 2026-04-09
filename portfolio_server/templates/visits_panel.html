@@ -61,6 +61,16 @@
         </div>
     </div>
 
+    <!-- Chart.js CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <div style="background: #1a1a2e; border: 1px solid #2a2a4a; border-radius: 12px; padding: 20px; margin-bottom: 30px;">
+        <h3 style="color: #48C9B0; margin-bottom: 15px; font-size: 15px;">📈 일별 방문자 추이 (최근 14일)</h3>
+        <div style="position: relative; height: 250px; width: 100%;">
+            <canvas id="visitsChart"></canvas>
+        </div>
+    </div>
+
     {% set total = visits | length %}
     {% set today_str = now.strftime('%Y-%m-%d') if now else '' %}
     
@@ -183,6 +193,62 @@
             } else {
                 document.getElementById('avg_duration').textContent = '-';
             }
+
+            // ── 일별 방문자 차트 그리기 ──
+            const dateCounts = {};
+            // 최근 14일 0으로 초기화
+            for (let i = 13; i >= 0; i--) {
+                const d = new Date();
+                d.setDate(d.getDate() - i);
+                const dateStr = d.toISOString().slice(0, 10);
+                dateCounts[dateStr] = 0;
+            }
+
+            rows.forEach(row => {
+                const date = row.dataset.date;
+                if (dateCounts[date] !== undefined) {
+                    dateCounts[date]++;
+                } else if (date) {
+                    // 과거 데이터가 14일 범위를 벗어난 경우 (옵션)
+                    dateCounts[date] = (dateCounts[date] || 0) + 1;
+                }
+            });
+
+            // 정렬된 라벨 및 데이터 추출
+            const labels = Object.keys(dateCounts).sort();
+            const dataPts = labels.map(l => dateCounts[l]);
+            // 라벨 포맷 변경 (MM-DD)
+            const shortLabels = labels.map(l => l.slice(5));
+
+            const ctx = document.getElementById('visitsChart').getContext('2d');
+            new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: shortLabels,
+                    datasets: [{
+                        label: '일일 방문 수',
+                        data: dataPts,
+                        borderColor: '#48C9B0',
+                        backgroundColor: 'rgba(72, 201, 176, 0.2)',
+                        borderWidth: 2,
+                        tension: 0.3,
+                        fill: true,
+                        pointBackgroundColor: '#48C9B0'
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        y: { beginAtZero: true, ticks: { precision: 0, color: '#aaa' }, grid: { color: '#2a2a4a' } },
+                        x: { ticks: { color: '#ccc' }, grid: { display: false } }
+                    },
+                    plugins: {
+                        legend: { display: false }
+                    }
+                }
+            });
+
         })();
 
         // 필터링

@@ -31,6 +31,11 @@
         .toggle-item input { width: 20px; height: 20px; cursor:pointer; }
         .hidden { display: none !important; }
         .three-col { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 20px; }
+        
+        /* Icon Picker Styles */
+        #emojiPickerPopup { display: none; position: absolute; background: #fff; border: 1px solid #ccc; padding: 10px; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.15); z-index: 1001; grid-template-columns: repeat(5, 1fr); gap: 5px; }
+        .emoji-btn { font-size: 20px; cursor: pointer; padding: 5px; border-radius: 5px; text-align: center; border: none; background: transparent; }
+        .emoji-btn:hover { background: #f0f0f0; }
     </style>
 </head>
 <body>
@@ -242,7 +247,94 @@ async function uploadImage(input, targetId, previewId, isArray = false) {
                 case 'cert': container = 'cert_container'; html = `<div class="array-item item-cert" style="display:flex; gap:10px; align-items:center;"><input type="text" class="ce_icon" placeholder="아이콘" style="width:70px;" onchange="autoSuggestEmoji(this)"><input type="text" class="ce_name" style="flex:2;" placeholder="자격증명" onchange="autoSuggestEmoji(this)"><input type="text" class="ce_date" style="flex:1;" placeholder="취득일"><button type="button" class="btn btn-danger" onclick="this.parentElement.remove()">X</button></div>`; break;
             }
             document.getElementById(container).insertAdjacentHTML('beforeend', html);
+            wrapIconInputs();
         }
+
+        // --- Custom Icon/Emoji Picker Injection ---
+        let currentIconInput = null;
+        function closeEmojiPicker(e) {
+            const popup = document.getElementById('emojiPickerPopup');
+            if (popup && popup.style.display === 'grid' && !e.target.closest('#emojiPickerPopup') && !e.target.closest('.emoji-trigger-btn')) {
+                popup.style.display = 'none';
+            }
+        }
+        document.addEventListener('click', closeEmojiPicker);
+
+        function openEmojiPickerPopup(btn, input) {
+            let popup = document.getElementById('emojiPickerPopup');
+            if (!popup) {
+                popup = document.createElement('div');
+                popup.id = 'emojiPickerPopup';
+                document.body.appendChild(popup);
+                const emojis = ['💼', '🏢', '🎓', '📜', '🏃', '🏆', '🥇', '💻', '🤝', '🎬', '🏫', '🌱', '⛪', '📢', '🏅', '🔥', '🌟', '💡', '🛠️', '🎨'];
+                emojis.forEach(em => {
+                    const b = document.createElement('button');
+                    b.className = 'emoji-btn';
+                    b.innerText = em;
+                    b.onclick = (e) => { e.preventDefault(); if (currentIconInput) currentIconInput.value = em; popup.style.display = 'none'; };
+                    popup.appendChild(b);
+                });
+            }
+            currentIconInput = input;
+            const rect = btn.getBoundingClientRect();
+            popup.style.left = rect.left + window.scrollX + 'px';
+            popup.style.top = (rect.bottom + window.scrollY + 5) + 'px';
+            popup.style.display = 'grid';
+        }
+
+        function wrapIconInputs() {
+            const iconClasses = ['.c_icon', '.e_icon', '.t_icon', '.a_icon', '.aw_icon', '.ce_icon'];
+            iconClasses.forEach(cls => {
+                document.querySelectorAll(cls).forEach(input => {
+                    if (input.dataset.wrapped) return;
+                    input.dataset.wrapped = 'true';
+                    
+                    const wrapper = document.createElement('div');
+                    wrapper.style.display = 'flex';
+                    wrapper.style.gap = '5px';
+                    wrapper.style.alignItems = 'center';
+                    
+                    const btnUpload = document.createElement('button');
+                    btnUpload.type = 'button';
+                    btnUpload.className = 'btn-add';
+                    btnUpload.style.padding = '0 5px';
+                    btnUpload.style.height = '38px';
+                    btnUpload.innerHTML = '🖼️';
+                    btnUpload.title = '이미지 업로드';
+                    
+                    const btnEmoji = document.createElement('button');
+                    btnEmoji.type = 'button';
+                    btnEmoji.className = 'btn-add emoji-trigger-btn';
+                    btnEmoji.style.padding = '0 5px';
+                    btnEmoji.style.height = '38px';
+                    btnEmoji.innerHTML = '😀';
+                    btnEmoji.title = '이모지 선택';
+                    btnEmoji.onclick = (e) => { e.preventDefault(); openEmojiPickerPopup(btnEmoji, input); };
+                    
+                    const fileInput = document.createElement('input');
+                    fileInput.type = 'file';
+                    fileInput.style.display = 'none';
+                    fileInput.accept = 'image/*';
+                    fileInput.onchange = async () => {
+                        if(!fileInput.files[0]) return;
+                        const formData = new FormData();
+                        formData.append('file', fileInput.files[0]);
+                        const resp = await fetch('/admin/upload', { method: 'POST', body: formData });
+                        const res = await resp.json();
+                        if(res.url) { input.value = res.url; }
+                    };
+                    btnUpload.onclick = () => fileInput.click();
+                    
+                    input.parentNode.insertBefore(wrapper, input);
+                    wrapper.appendChild(input);
+                    wrapper.appendChild(btnEmoji);
+                    wrapper.appendChild(btnUpload);
+                    wrapper.appendChild(fileInput);
+                });
+            });
+        }
+        document.addEventListener('DOMContentLoaded', wrapIconInputs);
+        // ----------------------------------------
 
         function handleFormSubmit(e) {
             const out = {

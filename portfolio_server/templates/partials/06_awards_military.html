@@ -9,7 +9,10 @@
                 <div>
                     {% for award in data.content.awards %}
                     <div style="margin-bottom: 20px; border-left: 3px solid #eee; padding-left: 20px;">
-                        <h3 style="margin:0 0 5px 0; font-size:1.15rem;">{{ award.icon or '🏆' }} {{ award.title }}</h3>
+                        <h3 style="margin:0 0 5px 0; font-size:1.15rem; display:flex; align-items:center; gap:8px;">
+                            {% if award.icon and (award.icon.startswith('/') or award.icon.startswith('http')) %}<img src="{{ award.icon }}" style="width:24px; height:24px; border-radius:50%; object-fit:cover;">{% else %}<span>{{ award.icon or '🏆' }}</span>{% endif %}
+                            {{ award.title }}
+                        </h3>
                         <div style="color:var(--text-muted); font-size:0.9rem; font-family:'Montserrat', sans-serif; font-weight:700;">{{ award.date }} | {{ award.organization }}</div>
                     </div>
                     {% endfor %}
