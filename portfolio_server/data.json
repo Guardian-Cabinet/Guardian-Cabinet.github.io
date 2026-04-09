@@ -2,7 +2,6 @@
   "settings": {
     "valid_start": "2026-03-30",
     "valid_end": "2026-12-31",
-    "pin": "kwon2927",
     "visibilities": {
       "01 PROFILE": true,
       "02 PORTFOLIO": true,
@@ -10,8 +9,7 @@
       "04 EDU & ACTIVITIES": true,
       "05 SKILLS & CERTS": true,
       "06 AWARDS & MILITARY": true
-    },
-    "admin_id": "admin"
+    }
   },
   "content": {
     "profile": {

@@ -40,6 +40,13 @@ def load_data():
             return data
     return {}
 
+def load_secrets():
+    secrets_file = os.path.join(BASE_DIR, "secrets.json")
+    if os.path.exists(secrets_file):
+        with open(secrets_file, "r", encoding="utf-8") as f:
+            return json.load(f)
+    return {"admin_id": "admin", "pin": "1234"}
+
 def save_data(data):
     with open(DATA_FILE, "w", encoding="utf-8") as f:
         json.dump(data, f, ensure_ascii=False, indent=2)
@@ -178,9 +185,9 @@ async def get_login(request: Request):
 
 @app.post("/login")
 async def post_login(admin_id: str = Form(...), pin: str = Form(...)):
-    data = load_data()
-    stored_id = data.get("settings", {}).get("admin_id", "admin")
-    stored_pin = data.get("settings", {}).get("pin", "1234")
+    secrets = load_secrets()
+    stored_id = secrets.get("admin_id", "admin")
+    stored_pin = secrets.get("pin", "1234")
     if admin_id == stored_id and pin == stored_pin:
         response = RedirectResponse(url="/admin", status_code=status.HTTP_303_SEE_OTHER)
         response.set_cookie(key="admin_session", value="authenticated", httponly=True)
@@ -266,22 +273,21 @@ def save_admin(
     pin: str = Form(...),
     json_data: str = Form(...)
 ):
-    data = load_data()
-    stored_pin = data.get("settings", {}).get("pin", "1234")
+    secrets = load_secrets()
+    stored_pin = secrets.get("pin", "1234")
     
     if pin != stored_pin:
         return HTMLResponse("<h1>비밀번호(PIN)가 틀렸습니다.</h1><br><a href='/admin'>돌아가기</a>", status_code=403)
     
     try:
         new_data = json.loads(json_data)
+        data = load_data()
         if "settings" not in new_data:
-            new_data["settings"] = data["settings"]
+            new_data["settings"] = data.get("settings", {})
         
-        # Preserve or update login info
-        if "pin" not in new_data["settings"]:
-             new_data["settings"]["pin"] = stored_pin
-        if "admin_id" not in new_data["settings"]:
-             new_data["settings"]["admin_id"] = data.get("settings", {}).get("admin_id", "admin")
+        # PIN과 admin_id가 data.json에 남지 않도록 제거 (보안)
+        new_data["settings"].pop("pin", None)
+        new_data["settings"].pop("admin_id", None)
              
         save_data(new_data)
         

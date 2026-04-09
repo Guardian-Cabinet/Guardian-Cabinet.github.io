@@ -7,3 +7,4 @@ static/uploads/upload_*
 index.html
 temp_portfolio_index.html
 *.log
+portfolio_server/secrets.json
