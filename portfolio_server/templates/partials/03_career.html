@@ -1,21 +1,24 @@
 {% if data.settings.visibilities['03 CAREER'] %}
 <div class="folder" onclick="openFolder('03 CAREER')">
-    <div class="tab-wrapper"><div class="tab">03 CAREER</div></div>
+    <div class="tab-wrapper">
+        <div class="tab">03 CAREER</div>
+    </div>
     <div class="folder-body">
-        <h1>Career History</h1>
-        <div style="margin-top:20px;">
+        <h1>경력 사항</h1>
+        <div class="timeline-wrapper">
             {% for c in data.content.careers %}
-            <div class="career-item">
-                <div class="timeline-icon">
-                    {% if c.icon and (c.icon.startswith('/') or c.icon.startswith('http')) %}
-                        <img src="{{ c.icon }}" style="width:100%; height:100%; border-radius:50%; object-fit:cover;">
-                    {% else %}
-                        {{ c.icon or '📌' }}
-                    {% endif %}
+            <div class="timeline-item">
+                {% if c.icon.startswith('http') or c.icon.startswith('/') %}
+                <div class="timeline-circle" style="background-image: url('{{ c.icon }}');"></div>
+                {% else %}
+                <div class="timeline-circle">{{ c.icon }}</div>
+                {% endif %}
+                
+                <div class="timeline-content">
+                    <span class="timeline-period">{{ c.period }}</span>
+                    <h3>{{ c.company }} - {{ c.role }}</h3>
+                    <p class="timeline-text">{{ c.desc }}</p>
                 </div>
-                <h3 style="margin:0 0 5px 0; font-size:1.3rem;">{{ c.company }}</h3>
-                <p style="color:var(--text-muted); font-family: 'Montserrat', monospace; font-weight:700; font-size:0.9rem; margin-bottom:12px;">{{ c.period }}</p>
-                <p style="color:var(--text-main); margin:0; font-size:1rem; line-height:1.7;">{{ c.role }}</p>
             </div>
             {% endfor %}
         </div>

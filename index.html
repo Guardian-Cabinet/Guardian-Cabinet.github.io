@@ -246,6 +246,84 @@
             margin-bottom: 35px;
             position: relative;
         }
+
+        /* ──── TIMELINE 스타일 ──── */
+        .timeline-wrapper {
+            position: relative;
+            padding-left: 20px;
+            margin-top: 20px;
+        }
+        /* 중앙선 역할 (다크그레이) */
+        .timeline-wrapper::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            left: 21px; /* 원의 중앙을 관통 */
+            width: 4px;
+            background: #2d3436;
+            border-radius: 2px;
+        }
+        
+        .timeline-item {
+            position: relative;
+            margin-bottom: 50px;
+            padding-left: 35px; /* 선과 원 영역 확보 */
+        }
+        
+        /* 둥근 아이콘 포인트 (오렌지/코랄) */
+        .timeline-circle {
+            position: absolute;
+            left: -13px; /* wrapper의 left:20px 보다 왼쪽으로 빼서 선명하게 부각 */
+            top: 0;
+            width: 32px;
+            height: 32px;
+            background-color: #f2f0eb;
+            border: 4px solid #ff6b6b; /* 코랄/레드 포인트 */
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 15px;
+            z-index: 2;
+            box-sizing: border-box;
+            background-repeat: no-size;
+            background-position: center;
+            background-size: cover;
+        }
+        .timeline-circle img {
+            width: 100%; height: 100%; border-radius: 50%; object-fit: cover;
+        }
+
+        .timeline-content h3 {
+            margin: 0 0 5px 0;
+            font-size: 1.15rem;
+            color: #2d3436;
+            font-weight: 800;
+        }
+        
+        /* 연도/기간 배지 (모노톤 포인트) */
+        .timeline-period {
+            display: inline-block;
+            font-size: 0.85rem;
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 800;
+            color: #fff;
+            background-color: #2d3436;
+            padding: 3px 12px;
+            border-radius: 12px;
+            margin-bottom: 12px;
+        }
+
+        /* 들여쓰기를 통한 가독성(긴글) 제어 */
+        .timeline-text {
+            color: #444;    
+            line-height: 1.7;
+            font-size: 1.05rem;
+            padding-left: 10px; /* 텍스트 들여쓰기 */
+            border-left: 2px dashed rgba(0,0,0,0.1); /* 미세한 보조선 */
+        }
+
         .timeline-icon {
             position: absolute;
             left: -16px;
@@ -285,6 +363,16 @@
             h2 { font-size: 1.25rem; }
             p { font-size: 1rem; line-height: 1.7; word-break: keep-all; }
             .career-item { padding-left: 20px; margin-bottom: 28px; }
+            
+            /* 타임라인 모바일 대응 */
+            .timeline-wrapper { padding-left: 15px; }
+            .timeline-wrapper::before { left: 16px; width: 3px; }
+            .timeline-item { padding-left: 25px; margin-bottom: 35px; }
+            .timeline-circle { width: 26px; height: 26px; left: -11px; border-width: 3px; font-size: 12px; }
+            .timeline-content h3 { font-size: 1.05rem; }
+            .timeline-period { font-size: 0.75rem; padding: 2px 8px; }
+            .timeline-text { font-size: 0.95rem; line-height: 1.6; padding-left: 8px; }
+
             .timeline-icon { width: 26px; height: 26px; left: -14px; font-size: 12px; }
         }
     </style>
@@ -408,20 +496,21 @@
 
         
 <div class="folder" onclick="openFolder('03 CAREER')">
-    <div class="tab-wrapper"><div class="tab">03 CAREER</div></div>
+    <div class="tab-wrapper">
+        <div class="tab">03 CAREER</div>
+    </div>
     <div class="folder-body">
-        <h1>Career History</h1>
-        <div style="margin-top:20px;">
+        <h1>경력 사항</h1>
+        <div class="timeline-wrapper">
             
-            <div class="career-item">
-                <div class="timeline-icon">
-                    
-                        🎨
-                    
-                </div>
-                <h3 style="margin:0 0 5px 0; font-size:1.3rem;">햇살가득 사회적 협동조합</h3>
-                <p style="color:var(--text-muted); font-family: 'Montserrat', monospace; font-weight:700; font-size:0.9rem; margin-bottom:12px;">2024.10 - 2025.12</p>
-                <p style="color:var(--text-main); margin:0; font-size:1rem; line-height:1.7;">[최중증, 중증 발달장애인 제공인력]
+            <div class="timeline-item">
+                
+                <div class="timeline-circle">🎨</div>
+                
+                
+                <div class="timeline-content">
+                    <span class="timeline-period">2024.10 - 2025.12</span>
+                    <h3>햇살가득 사회적 협동조합 - [최중증, 중증 발달장애인 제공인력]
 - 주간활동(132시간), 통합돌봄(176시간)
 - 유아동 및 10, 20, 30대 이용자 care
 - 은평구 특수학교 학생 care
@@ -435,18 +524,19 @@
 - 센터 내 직업훈련 운영
 [홍보]
 - 이용자 보호자 대상으로 프로그램 진행 내용 영상촬영, 편집
-- 관련 포스터 등 제작</p>
+- 관련 포스터 등 제작</h3>
+                    <p class="timeline-text"></p>
+                </div>
             </div>
             
-            <div class="career-item">
-                <div class="timeline-icon">
-                    
-                        🏃
-                    
-                </div>
-                <h3 style="margin:0 0 5px 0; font-size:1.3rem;">우리하나사회적협동조합</h3>
-                <p style="color:var(--text-muted); font-family: 'Montserrat', monospace; font-weight:700; font-size:0.9rem; margin-bottom:12px;">2024.06 - 2024.09</p>
-                <p style="color:var(--text-main); margin:0; font-size:1rem; line-height:1.7;">[최중증 발달장애인 1:1 제공인력]
+            <div class="timeline-item">
+                
+                <div class="timeline-circle">🏃</div>
+                
+                
+                <div class="timeline-content">
+                    <span class="timeline-period">2024.06 - 2024.09</span>
+                    <h3>우리하나사회적협동조합 - [최중증 발달장애인 1:1 제공인력]
 - 주간활동(132시간), 통합돌봄(176시간)
 - 10, 20, 30대 이용자 care
 - 어려운(도전적)행동 대처
@@ -458,18 +548,19 @@
 [직업훈련]
 - 센터 내 직업훈련 운영
 [홍보]
-- 이용자 보호자 대상으로 프로그램 진행 내용 영상촬영, 편집</p>
+- 이용자 보호자 대상으로 프로그램 진행 내용 영상촬영, 편집</h3>
+                    <p class="timeline-text"></p>
+                </div>
             </div>
             
-            <div class="career-item">
-                <div class="timeline-icon">
-                    
-                        🎓
-                    
-                </div>
-                <h3 style="margin:0 0 5px 0; font-size:1.3rem;">허그인 사회적협동조합</h3>
-                <p style="color:var(--text-muted); font-family: 'Montserrat', monospace; font-weight:700; font-size:0.9rem; margin-bottom:12px;">2024. 03 ~ 2024. 06</p>
-                <p style="color:var(--text-main); margin:0; font-size:1rem; line-height:1.7;">[비영리 캠페인 관련 영상 제작]
+            <div class="timeline-item">
+                
+                <div class="timeline-circle">🎓</div>
+                
+                
+                <div class="timeline-content">
+                    <span class="timeline-period">2024. 03 ~ 2024. 06</span>
+                    <h3>허그인 사회적협동조합 - [비영리 캠페인 관련 영상 제작]
 - 촬영 기획, 편집 구성안 작성
 - 현장 sk, int 등 촬영(gear : 소니 a7 4, DJI action2)
 - 편집(tool : 프리미어프로, 애프터이펙트, 포토샵, 일러스트레이터 등)
@@ -478,33 +569,35 @@
 - LED 365인치 (tool : ProPresenter)
 [돌봄교실]
 - 돌봄교사
-- 프로그램 운영</p>
+- 프로그램 운영</h3>
+                    <p class="timeline-text"></p>
+                </div>
             </div>
             
-            <div class="career-item">
-                <div class="timeline-icon">
-                    
-                        ⛪
-                    
-                </div>
-                <h3 style="margin:0 0 5px 0; font-size:1.3rem;">양천 새희망 공동생활가정</h3>
-                <p style="color:var(--text-muted); font-family: 'Montserrat', monospace; font-weight:700; font-size:0.9rem; margin-bottom:12px;">2023. 08 ~ 2024. 02</p>
-                <p style="color:var(--text-main); margin:0; font-size:1rem; line-height:1.7;">- 2호봉 보육사 역임
+            <div class="timeline-item">
+                
+                <div class="timeline-circle">⛪</div>
+                
+                
+                <div class="timeline-content">
+                    <span class="timeline-period">2023. 08 ~ 2024. 02</span>
+                    <h3>양천 새희망 공동생활가정 - - 2호봉 보육사 역임
 - 초등 3,4학년 // 중등 1,2,3학년 남자 각 5명 담당 및 지도
 - `ADHD, 미혼모, 새터민, 경계성 장애`에 대한 24시간 2일 순환 근무
 - 6대 안전예방교육 등 프로그램 운영
-- 사회서비스 포탈PROD(보건복지부) 프로그램 업무 수행</p>
+- 사회서비스 포탈PROD(보건복지부) 프로그램 업무 수행</h3>
+                    <p class="timeline-text"></p>
+                </div>
             </div>
             
-            <div class="career-item">
-                <div class="timeline-icon">
-                    
-                        🎬
-                    
-                </div>
-                <h3 style="margin:0 0 5px 0; font-size:1.3rem;">미스터비주얼</h3>
-                <p style="color:var(--text-muted); font-family: 'Montserrat', monospace; font-weight:700; font-size:0.9rem; margin-bottom:12px;">2022. 09 ~ 2023. 07</p>
-                <p style="color:var(--text-main); margin:0; font-size:1rem; line-height:1.7;">[국내 촬영]
+            <div class="timeline-item">
+                
+                <div class="timeline-circle">🎬</div>
+                
+                
+                <div class="timeline-content">
+                    <span class="timeline-period">2022. 09 ~ 2023. 07</span>
+                    <h3>미스터비주얼 - [국내 촬영]
 - 현장 sk, int 등 촬영(gear : 캐논 EOS, nan 조명)
 - 편집(tool : 프리미어프로, 애프터이펙트, 포토샵, 일러스트레이터 등)
 [세이빙펫 캠페인]
@@ -516,135 +609,146 @@
 - 매경TV
 [라이브커머스]
 - 네이버라이브쇼핑 (tool : DJI osmo)
-- 프리즘 라이브 (tool : ATEM 중계기)</p>
+- 프리즘 라이브 (tool : ATEM 중계기)</h3>
+                    <p class="timeline-text"></p>
+                </div>
             </div>
             
-            <div class="career-item">
-                <div class="timeline-icon">
-                    
-                        📢
-                    
-                </div>
-                <h3 style="margin:0 0 5px 0; font-size:1.3rem;">(주)문화제작소가능성들 </h3>
-                <p style="color:var(--text-muted); font-family: 'Montserrat', monospace; font-weight:700; font-size:0.9rem; margin-bottom:12px;">2022. 05 ~ 2022. 09</p>
-                <p style="color:var(--text-main); margin:0; font-size:1rem; line-height:1.7;">- 유튜브대학 학기별 수강생 민원 대응(평균 150명, 1~4학기)
+            <div class="timeline-item">
+                
+                <div class="timeline-circle">📢</div>
+                
+                
+                <div class="timeline-content">
+                    <span class="timeline-period">2022. 05 ~ 2022. 09</span>
+                    <h3>(주)문화제작소가능성들  - - 유튜브대학 학기별 수강생 민원 대응(평균 150명, 1~4학기)
 - 마케팅 협업(숏폼 영상 제작 - 인스타그램, 유튜브 등)
 - 장학제도 운영 관리
-- 오프라인 행사(매회 약 200명 규모)</p>
+- 오프라인 행사(매회 약 200명 규모)</h3>
+                    <p class="timeline-text"></p>
+                </div>
             </div>
             
-            <div class="career-item">
-                <div class="timeline-icon">
-                    
-                        💻
-                    
-                </div>
-                <h3 style="margin:0 0 5px 0; font-size:1.3rem;">스마트캐스트</h3>
-                <p style="color:var(--text-muted); font-family: 'Montserrat', monospace; font-weight:700; font-size:0.9rem; margin-bottom:12px;">2020. 10 ~ 2021. 11</p>
-                <p style="color:var(--text-main); margin:0; font-size:1rem; line-height:1.7;">- 정부과제 운영 ( 중소기업기술개발사업SMTECH, RCMS, 한국에너지기술평가원genie )
+            <div class="timeline-item">
+                
+                <div class="timeline-circle">💻</div>
+                
+                
+                <div class="timeline-content">
+                    <span class="timeline-period">2020. 10 ~ 2021. 11</span>
+                    <h3>스마트캐스트 - - 정부과제 운영 ( 중소기업기술개발사업SMTECH, RCMS, 한국에너지기술평가원genie )
 - 이카운트 ERP 전사관리
 - 정부지원 사업 지원
 - 인사, 노무
 - 목포 지점 관리(해상케이블카 포토사업)
 - 온라인 기사 광고 관리
 - 사내 벤처 : 기획, 영업, 홍보
-- 특허관리(10건, 매년 평균 2건 신규 등록)</p>
+- 특허관리(10건, 매년 평균 2건 신규 등록)</h3>
+                    <p class="timeline-text"></p>
+                </div>
             </div>
             
-            <div class="career-item">
-                <div class="timeline-icon">
-                    
-                        🥇
-                    
-                </div>
-                <h3 style="margin:0 0 5px 0; font-size:1.3rem;">미래인재수학과학학원</h3>
-                <p style="color:var(--text-muted); font-family: 'Montserrat', monospace; font-weight:700; font-size:0.9rem; margin-bottom:12px;">2019. 09 ~ 2020. 09</p>
-                <p style="color:var(--text-main); margin:0; font-size:1rem; line-height:1.7;">- 아카2000 프로그램 활용
+            <div class="timeline-item">
+                
+                <div class="timeline-circle">🥇</div>
+                
+                
+                <div class="timeline-content">
+                    <span class="timeline-period">2019. 09 ~ 2020. 09</span>
+                    <h3>미래인재수학과학학원 - - 아카2000 프로그램 활용
 - 학원 전반 관리
 - 학생, 학부모 상담
-- 강사 관리</p>
+- 강사 관리</h3>
+                    <p class="timeline-text"></p>
+                </div>
             </div>
             
-            <div class="career-item">
-                <div class="timeline-icon">
-                    
-                        🏆
-                    
+            <div class="timeline-item">
+                
+                <div class="timeline-circle">🏆</div>
+                
+                
+                <div class="timeline-content">
+                    <span class="timeline-period">2018. 08 ~ 2019. 08</span>
+                    <h3>루트탑학원 - - 수학 수업 준비 및 강의
+- 학업 성취 미달 학생 전문반 운영 및 담당</h3>
+                    <p class="timeline-text"></p>
                 </div>
-                <h3 style="margin:0 0 5px 0; font-size:1.3rem;">루트탑학원</h3>
-                <p style="color:var(--text-muted); font-family: 'Montserrat', monospace; font-weight:700; font-size:0.9rem; margin-bottom:12px;">2018. 08 ~ 2019. 08</p>
-                <p style="color:var(--text-main); margin:0; font-size:1rem; line-height:1.7;">- 수학 수업 준비 및 강의
-- 학업 성취 미달 학생 전문반 운영 및 담당</p>
             </div>
             
-            <div class="career-item">
-                <div class="timeline-icon">
-                    
-                        🌱
-                    
-                </div>
-                <h3 style="margin:0 0 5px 0; font-size:1.3rem;">유기농 농사(전주)</h3>
-                <p style="color:var(--text-muted); font-family: 'Montserrat', monospace; font-weight:700; font-size:0.9rem; margin-bottom:12px;">2017. 03 ~ 2018. 08</p>
-                <p style="color:var(--text-main); margin:0; font-size:1rem; line-height:1.7;">- 전주지역 농사팀 소속(구성원 : 30~40대)
+            <div class="timeline-item">
+                
+                <div class="timeline-circle">🌱</div>
+                
+                
+                <div class="timeline-content">
+                    <span class="timeline-period">2017. 03 ~ 2018. 08</span>
+                    <h3>유기농 농사(전주) - - 전주지역 농사팀 소속(구성원 : 30~40대)
 - 유기농 과수 재배 및 판매(배, 복숭아 등)
 - 유기농 재배 및 판매(감자, 고구마 등)
 - 마케팅 & 온,오프라인 영업
-- 유기농 농법 연구 및 체험 프로그램 운영</p>
+- 유기농 농법 연구 및 체험 프로그램 운영</h3>
+                    <p class="timeline-text"></p>
+                </div>
             </div>
             
-            <div class="career-item">
-                <div class="timeline-icon">
-                    
-                        🌟
-                    
-                </div>
-                <h3 style="margin:0 0 5px 0; font-size:1.3rem;">평안교회</h3>
-                <p style="color:var(--text-muted); font-family: 'Montserrat', monospace; font-weight:700; font-size:0.9rem; margin-bottom:12px;">2013. 12 ~ 2017. 02</p>
-                <p style="color:var(--text-main); margin:0; font-size:1rem; line-height:1.7;">- 비영리 법인 교회 행정간사
+            <div class="timeline-item">
+                
+                <div class="timeline-circle">🌟</div>
+                
+                
+                <div class="timeline-content">
+                    <span class="timeline-period">2013. 12 ~ 2017. 02</span>
+                    <h3>평안교회 - - 비영리 법인 교회 행정간사
 - 교회 전체 시설 및 재정 관리
 - 교인 관리(약 300명 규모)
-- 주임 목사 비서 업무</p>
+- 주임 목사 비서 업무</h3>
+                    <p class="timeline-text"></p>
+                </div>
             </div>
             
-            <div class="career-item">
-                <div class="timeline-icon">
-                    
-                        💡
-                    
-                </div>
-                <h3 style="margin:0 0 5px 0; font-size:1.3rem;">J&J KOREA</h3>
-                <p style="color:var(--text-muted); font-family: 'Montserrat', monospace; font-weight:700; font-size:0.9rem; margin-bottom:12px;">2011. 07 ~ 2013. 11</p>
-                <p style="color:var(--text-main); margin:0; font-size:1rem; line-height:1.7;">- OEM화장품 도소매 판매 및 의료기기 판매
+            <div class="timeline-item">
+                
+                <div class="timeline-circle">💡</div>
+                
+                
+                <div class="timeline-content">
+                    <span class="timeline-period">2011. 07 ~ 2013. 11</span>
+                    <h3>J&J KOREA - - OEM화장품 도소매 판매 및 의료기기 판매
 - 영업 및 관리(성형외과, 피부과 중심)
 - 지사 관리 담당
-- 배송, 재고관리</p>
+- 배송, 재고관리</h3>
+                    <p class="timeline-text"></p>
+                </div>
             </div>
             
-            <div class="career-item">
-                <div class="timeline-icon">
-                    
-                        🏢
-                    
-                </div>
-                <h3 style="margin:0 0 5px 0; font-size:1.3rem;">YTN</h3>
-                <p style="color:var(--text-muted); font-family: 'Montserrat', monospace; font-weight:700; font-size:0.9rem; margin-bottom:12px;">2009. 01 ~ 2009. 12</p>
-                <p style="color:var(--text-main); margin:0; font-size:1rem; line-height:1.7;">- 취재팀 동행(4인 1조)
+            <div class="timeline-item">
+                
+                <div class="timeline-circle">🏢</div>
+                
+                
+                <div class="timeline-content">
+                    <span class="timeline-period">2009. 01 ~ 2009. 12</span>
+                    <h3>YTN - - 취재팀 동행(4인 1조)
 - 기획 `우리나라 구석구석`에 배정
 - 촬영 일지 기록, 관리
-- 카메라 관리 및 현장 통제, 차량 배차</p>
+- 카메라 관리 및 현장 통제, 차량 배차</h3>
+                    <p class="timeline-text"></p>
+                </div>
             </div>
             
-            <div class="career-item">
-                <div class="timeline-icon">
-                    
-                        🔥
-                    
-                </div>
-                <h3 style="margin:0 0 5px 0; font-size:1.3rem;">탑클래스아이 </h3>
-                <p style="color:var(--text-muted); font-family: 'Montserrat', monospace; font-weight:700; font-size:0.9rem; margin-bottom:12px;">2007. 07 ~ 2011. 06</p>
-                <p style="color:var(--text-main); margin:0; font-size:1rem; line-height:1.7;">- 중,고등학교 수학 과목 역임
+            <div class="timeline-item">
+                
+                <div class="timeline-circle">🔥</div>
+                
+                
+                <div class="timeline-content">
+                    <span class="timeline-period">2007. 07 ~ 2011. 06</span>
+                    <h3>탑클래스아이  - - 중,고등학교 수학 과목 역임
 - 온라인 화상 수업
-- 학생, 학부모 상담 스킬 보유</p>
+- 학생, 학부모 상담 스킬 보유</h3>
+                    <p class="timeline-text"></p>
+                </div>
             </div>
             
         </div>
@@ -658,145 +762,187 @@
         <h1>Education & Activities</h1>
         <div style="margin-bottom:40px; margin-top:20px;">
             <h2 style="font-size:1.6rem; border-left:5px solid var(--accent-color); padding-left:15px; margin-bottom:25px;">Education</h2>
-            
-            <div style="margin-bottom: 25px; padding-left:20px;">
-                <h3 style="margin:0 0 5px 0; font-size:1.2rem; display:flex; align-items:center; gap:8px;">
-                    <span>🎓</span>
-                    학점은행 (사회복지, 청소년 전공학사)
-                </h3>
-                <p style="color:var(--text-muted); font-family: 'Montserrat', monospace; font-weight:700; font-size:0.85rem; margin-bottom:8px;">2019.10 - 2023.08</p>
-                <p style="color:var(--text-main); margin:0;">졸업학점: 96.3 / 100</p>
+            <div class="timeline-wrapper">
+                
+                <div class="timeline-item">
+                    
+                    <div class="timeline-circle"></div>
+                    
+                    
+                    <div class="timeline-content">
+                        <span class="timeline-period">2019.10 - 2023.08</span>
+                        <h3>학점은행 (사회복지, 청소년 전공학사)</h3>
+                        <p class="timeline-text">졸업학점: 96.3 / 100</p>
+                    </div>
+                </div>
+                
+                <div class="timeline-item">
+                    
+                    <div class="timeline-circle"></div>
+                    
+                    
+                    <div class="timeline-content">
+                        <span class="timeline-period">2002.02~2009.02</span>
+                        <h3>홍익대학교(서울, 산업공학)</h3>
+                        <p class="timeline-text">졸업학점: 82.6 / 100, `대학생 경진대회` (장려상) - 대한산업공학회 주관</p>
+                    </div>
+                </div>
+                
+                <div class="timeline-item">
+                    
+                    <div class="timeline-circle"></div>
+                    
+                    
+                    <div class="timeline-content">
+                        <span class="timeline-period">2001</span>
+                        <h3>선인고등학교</h3>
+                        <p class="timeline-text"></p>
+                    </div>
+                </div>
+                
             </div>
-            
-            <div style="margin-bottom: 25px; padding-left:20px;">
-                <h3 style="margin:0 0 5px 0; font-size:1.2rem; display:flex; align-items:center; gap:8px;">
-                    <span>🎓</span>
-                    홍익대학교(서울, 산업공학)
-                </h3>
-                <p style="color:var(--text-muted); font-family: 'Montserrat', monospace; font-weight:700; font-size:0.85rem; margin-bottom:8px;">2002.02~2009.02</p>
-                <p style="color:var(--text-main); margin:0;">졸업학점: 82.6 / 100, `대학생 경진대회` (장려상) - 대한산업공학회 주관</p>
-            </div>
-            
-            <div style="margin-bottom: 25px; padding-left:20px;">
-                <h3 style="margin:0 0 5px 0; font-size:1.2rem; display:flex; align-items:center; gap:8px;">
-                    <span>🎓</span>
-                    선인고등학교
-                </h3>
-                <p style="color:var(--text-muted); font-family: 'Montserrat', monospace; font-weight:700; font-size:0.85rem; margin-bottom:8px;">2001</p>
-                <p style="color:var(--text-main); margin:0;"></p>
-            </div>
-            
         </div>
         
         
         <div style="margin-bottom:40px;">
             <h2 style="font-size:1.6rem; border-left:5px solid var(--accent-color); padding-left:15px; margin-bottom:25px;">Professional Trainings</h2>
-            
-            <div style="margin-bottom: 25px; padding-left:20px;">
-                <h3 style="margin:0 0 5px 0; font-size:1.2rem; display:flex; align-items:center; gap:8px;">
-                    <span>📜</span>
-                    AI 기반 데이터 저널리스트 양성과정 [MBC HRD]
-                </h3>
-                <p style="color:var(--text-muted); font-family: 'Montserrat', monospace; font-weight:700; font-size:0.85rem; margin-bottom:8px;">2025. 12 ~ 2026. 04</p>
-                <p style="color:var(--text-main); margin:0;">- AI 활용(팩트체킹, 데이터 기반으로 신뢰도 확보)
+            <div class="timeline-wrapper">
+                
+                <div class="timeline-item">
+                    
+                    <div class="timeline-circle"></div>
+                    
+                    
+                    <div class="timeline-content">
+                        <span class="timeline-period">2025. 12 ~ 2026. 04</span>
+                        <h3>AI 기반 데이터 저널리스트 양성과정 [MBC HRD]</h3>
+                        <p class="timeline-text">- AI 활용(팩트체킹, 데이터 기반으로 신뢰도 확보)
 - 자동 팩트체킹 시스템 구축
 - 빅데이터 분석
 - AI를 활용한 뉴스 영상/삽화 제작, 편집 자동화, 멀티미디어형 뉴스 콘텐츠 제작
 - AI Tool(ChatGPT, Python, Matplotlib, Streamlit, Midjourney, Veo, Gemini 등)</p>
-            </div>
-            
-            <div style="margin-bottom: 25px; padding-left:20px;">
-                <h3 style="margin:0 0 5px 0; font-size:1.2rem; display:flex; align-items:center; gap:8px;">
-                    <span>📜</span>
-                    장애인활동지원사
-                </h3>
-                <p style="color:var(--text-muted); font-family: 'Montserrat', monospace; font-weight:700; font-size:0.85rem; margin-bottom:8px;">2024. 07 ~ 2024. 08</p>
-                <p style="color:var(--text-main); margin:0;">- 10시간 실습 후 최종 이수 완료</p>
-            </div>
-            
-            <div style="margin-bottom: 25px; padding-left:20px;">
-                <h3 style="margin:0 0 5px 0; font-size:1.2rem; display:flex; align-items:center; gap:8px;">
-                    <span>📜</span>
-                    영상촬영PD양성과정 [방송정보국제교육원(IIBI)]
-                </h3>
-                <p style="color:var(--text-muted); font-family: 'Montserrat', monospace; font-weight:700; font-size:0.85rem; margin-bottom:8px;">2021. 11 ~ 2022. 04</p>
-                <p style="color:var(--text-main); margin:0;">- 카메라 (SONY PWX-Z150, A7M2)
+                    </div>
+                </div>
+                
+                <div class="timeline-item">
+                    
+                    <div class="timeline-circle"></div>
+                    
+                    
+                    <div class="timeline-content">
+                        <span class="timeline-period">2024. 07 ~ 2024. 08</span>
+                        <h3>장애인활동지원사</h3>
+                        <p class="timeline-text">- 10시간 실습 후 최종 이수 완료</p>
+                    </div>
+                </div>
+                
+                <div class="timeline-item">
+                    
+                    <div class="timeline-circle"></div>
+                    
+                    
+                    <div class="timeline-content">
+                        <span class="timeline-period">2021. 11 ~ 2022. 04</span>
+                        <h3>영상촬영PD양성과정 [방송정보국제교육원(IIBI)]</h3>
+                        <p class="timeline-text">- 카메라 (SONY PWX-Z150, A7M2)
 - 편집 Tool(프리미어프로, 애프터이펙트, 포토샵, 일러스트레이트, 파이널컷프로, 오디션)
 - 과정 별 시험, 프로젝트 수행
 - 일체의 내용을 이수</p>
-            </div>
-            
-            <div style="margin-bottom: 25px; padding-left:20px;">
-                <h3 style="margin:0 0 5px 0; font-size:1.2rem; display:flex; align-items:center; gap:8px;">
-                    <span>📜</span>
-                    표준화교육 [한국표준협회]
-                </h3>
-                <p style="color:var(--text-muted); font-family: 'Montserrat', monospace; font-weight:700; font-size:0.85rem; margin-bottom:8px;">2007. 01 ~ 2007. 12</p>
-                <p style="color:var(--text-main); margin:0;">- 산업자원부, 한국표준협회 주관
+                    </div>
+                </div>
+                
+                <div class="timeline-item">
+                    
+                    <div class="timeline-circle"></div>
+                    
+                    
+                    <div class="timeline-content">
+                        <span class="timeline-period">2007. 01 ~ 2007. 12</span>
+                        <h3>표준화교육 [한국표준협회]</h3>
+                        <p class="timeline-text">- 산업자원부, 한국표준협회 주관
 - 일체의 내용을 이수</p>
+                    </div>
+                </div>
+                
             </div>
-            
         </div>
         
 
         <div>
             <h2 style="font-size:1.6rem; border-left:5px solid var(--accent-color); padding-left:15px; margin-bottom:25px;">Activities</h2>
-            
-            <div style="margin-bottom: 25px; padding-left:20px;">
-                <h3 style="margin:0 0 5px 0; font-size:1.2rem; display:flex; align-items:center; gap:8px;">
-                    <span>🏃</span>
-                    고양시문촌7종합사회복지관 
-                </h3>
-                <p style="color:var(--text-muted); font-family: 'Montserrat', monospace; font-weight:700; font-size:0.85rem; margin-bottom:8px;">2025. 01 ~ 2026. 03</p>
-                <p style="color:var(--text-main); margin:0;">- 멘토링(프로그램명 : 같이의 가치)
+            <div class="timeline-wrapper">
+                
+                <div class="timeline-item">
+                    
+                    <div class="timeline-circle"></div>
+                    
+                    
+                    <div class="timeline-content">
+                        <span class="timeline-period">2025. 01 ~ 2026. 03</span>
+                        <h3>고양시문촌7종합사회복지관 </h3>
+                        <p class="timeline-text">- 멘토링(프로그램명 : 같이의 가치)
 - 수학, 영어 수업
 - 초등학교6학년, 중학교2,3학년, 고등학교1학년
 - 대상자 : 저소득 및 일반 가정 아동, 청소년</p>
-            </div>
-            
-            <div style="margin-bottom: 25px; padding-left:20px;">
-                <h3 style="margin:0 0 5px 0; font-size:1.2rem; display:flex; align-items:center; gap:8px;">
-                    <span>🏃</span>
-                    평안교회 - 청년부
-                </h3>
-                <p style="color:var(--text-muted); font-family: 'Montserrat', monospace; font-weight:700; font-size:0.85rem; margin-bottom:8px;">2013. 12 ~ 2016. 01</p>
-                <p style="color:var(--text-main); margin:0;">- 최소 4~5명의 성인 남녀를 소그룹으로 운영
+                    </div>
+                </div>
+                
+                <div class="timeline-item">
+                    
+                    <div class="timeline-circle"></div>
+                    
+                    
+                    <div class="timeline-content">
+                        <span class="timeline-period">2013. 12 ~ 2016. 01</span>
+                        <h3>평안교회 - 청년부</h3>
+                        <p class="timeline-text">- 최소 4~5명의 성인 남녀를 소그룹으로 운영
 - 최소 1년 2개의 소그룹에 대한 리더 역할 수행
 - 비젼 공유, 의사소통, 온오프라인 봉사 활동</p>
-            </div>
-            
-            <div style="margin-bottom: 25px; padding-left:20px;">
-                <h3 style="margin:0 0 5px 0; font-size:1.2rem; display:flex; align-items:center; gap:8px;">
-                    <span>🏃</span>
-                    평안교회 - 지역봉사부
-                </h3>
-                <p style="color:var(--text-muted); font-family: 'Montserrat', monospace; font-weight:700; font-size:0.85rem; margin-bottom:8px;">2007. 08 ~ 2013. 12</p>
-                <p style="color:var(--text-main); margin:0;">- 독산동 지역 독거 노인 방문
+                    </div>
+                </div>
+                
+                <div class="timeline-item">
+                    
+                    <div class="timeline-circle"></div>
+                    
+                    
+                    <div class="timeline-content">
+                        <span class="timeline-period">2007. 08 ~ 2013. 12</span>
+                        <h3>평안교회 - 지역봉사부</h3>
+                        <p class="timeline-text">- 독산동 지역 독거 노인 방문
 - 반찬 준비 및 방문 봉사</p>
-            </div>
-            
-            <div style="margin-bottom: 25px; padding-left:20px;">
-                <h3 style="margin:0 0 5px 0; font-size:1.2rem; display:flex; align-items:center; gap:8px;">
-                    <span>🏃</span>
-                    평안교회 - 유치부
-                </h3>
-                <p style="color:var(--text-muted); font-family: 'Montserrat', monospace; font-weight:700; font-size:0.85rem; margin-bottom:8px;">2007. 07 ~ 2014. 01</p>
-                <p style="color:var(--text-main); margin:0;">- 유치부 교사
+                    </div>
+                </div>
+                
+                <div class="timeline-item">
+                    
+                    <div class="timeline-circle"></div>
+                    
+                    
+                    <div class="timeline-content">
+                        <span class="timeline-period">2007. 07 ~ 2014. 01</span>
+                        <h3>평안교회 - 유치부</h3>
+                        <p class="timeline-text">- 유치부 교사
 - 인형극 담당</p>
-            </div>
-            
-            <div style="margin-bottom: 25px; padding-left:20px;">
-                <h3 style="margin:0 0 5px 0; font-size:1.2rem; display:flex; align-items:center; gap:8px;">
-                    <span>🏃</span>
-                    IVF (Inter-Varsity Evangelical Student Fellowship)
-                </h3>
-                <p style="color:var(--text-muted); font-family: 'Montserrat', monospace; font-weight:700; font-size:0.85rem; margin-bottom:8px;">2006. 02 ~ 2015. 07</p>
-                <p style="color:var(--text-main); margin:0;">- 홍익대 서울캠퍼스
+                    </div>
+                </div>
+                
+                <div class="timeline-item">
+                    
+                    <div class="timeline-circle"></div>
+                    
+                    
+                    <div class="timeline-content">
+                        <span class="timeline-period">2006. 02 ~ 2015. 07</span>
+                        <h3>IVF (Inter-Varsity Evangelical Student Fellowship)</h3>
+                        <p class="timeline-text">- 홍익대 서울캠퍼스
 - 소그룹 리더(구성원 : 최소 4~5명)(대상자 : 서서울 지역 대학교)
 - 지역 내 봉사처 방문
 - IVF 지역 및 전국 단체 활동 참여</p>
+                    </div>
+                </div>
+                
             </div>
-            
         </div>
     </div>
 </div>
@@ -981,7 +1127,10 @@
 
             const containerHeight = container.clientHeight;
             const n = folders.length;
-            const folderHeight = containerHeight - ((n - 1) * tabHeight);
+            
+            // 모바일일수록 공간 확장을 위해 하단 스택 간격을 극단적으로 줄임 (12px~15px)
+            const stackGap = isMobile ? 12 : 16;
+            const folderHeight = containerHeight - (currentActive * tabHeight) - ((n - currentActive - 1) * stackGap);
 
             // 탭 위치 정렬
             folders.forEach((folder, i) => {
@@ -990,35 +1139,34 @@
                 const tabWrapper = folder.querySelector('.tab-wrapper');
 
                 folder.style.height = `${folderHeight}px`;
+                folder.style.zIndex = (i === currentActive) ? 100 : i;
                 
-                // 클래스 제어 (비활성 탭 내용 숨김용)
+                // 클래스 제어
                 if (i === currentActive) {
                     folder.classList.add('active');
-                } else {
-                    folder.classList.remove('active');
-                }
-
-                // 탭 수평 위치 분산
-                tabWrapper.style.justifyContent = 'flex-start';
-                tabWrapper.style.paddingLeft = `${(i / n) * 90}%`;
-
-                if (i === currentActive) {
                     if(!tab.classList.contains('dark')) tab.style.backgroundColor = '#ffffff';
                     body.style.backgroundColor = '#ffffff';
                 } else {
+                    folder.classList.remove('active');
                     if(!tab.classList.contains('dark')) tab.style.backgroundColor = '#e0dad0';
                     body.style.backgroundColor = '#e0dad0';
                 }
 
+                // 탭 수평 위치 분산
+                tabWrapper.style.justifyContent = 'flex-start';
+                tabWrapper.style.paddingLeft = `${(i / n) * 85}%`; // 탭이 화면 밖으로 나가지 않게 90 -> 85% 조정
+
+                // 위치 계산 (하단 뭉침 밀집화)
                 if (i < currentActive) {
                     folder.style.transform = `translateY(${i * tabHeight}px)`;
                 } else if (i === currentActive) {
                     folder.style.transform = `translateY(${i * tabHeight}px)`;
                 } else {
-                    folder.style.transform = `translateY(${containerHeight - ((n - i) * tabHeight)}px)`;
+                    // 미선택 하단 탭들은 화면 하단으로부터 촘촘하게 쌓임 (12~16px 간격)
+                    folder.style.transform = `translateY(${containerHeight - ((n - i) * stackGap)}px)`;
                 }
 
-                body.style.paddingBottom = `${((n - 1) * tabHeight) + 40}px`;
+                body.style.paddingBottom = `${((n - 1) * stackGap) + 40}px`;
             });
         }
 

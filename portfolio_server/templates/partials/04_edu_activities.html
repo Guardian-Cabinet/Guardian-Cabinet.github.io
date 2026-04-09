@@ -5,46 +5,67 @@
         <h1>Education & Activities</h1>
         <div style="margin-bottom:40px; margin-top:20px;">
             <h2 style="font-size:1.6rem; border-left:5px solid var(--accent-color); padding-left:15px; margin-bottom:25px;">Education</h2>
-            {% for e in data.content.educations %}
-            <div style="margin-bottom: 25px; padding-left:20px;">
-                <h3 style="margin:0 0 5px 0; font-size:1.2rem; display:flex; align-items:center; gap:8px;">
-                    {% if e.icon and (e.icon.startswith('/') or e.icon.startswith('http')) %}<img src="{{ e.icon }}" style="width:24px; height:24px; border-radius:50%; object-fit:cover;">{% else %}<span>{{ e.icon or '🎓' }}</span>{% endif %}
-                    {{ e.school }}
-                </h3>
-                <p style="color:var(--text-muted); font-family: 'Montserrat', monospace; font-weight:700; font-size:0.85rem; margin-bottom:8px;">{{ e.period }}</p>
-                <p style="color:var(--text-main); margin:0;">{{ e.detail }}</p>
+            <div class="timeline-wrapper">
+                {% for e in data.content.educations %}
+                <div class="timeline-item">
+                    {% if e.icon.startswith('http') or e.icon.startswith('/') %}
+                    <div class="timeline-circle" style="background-image: url('{{ e.icon }}');"></div>
+                    {% else %}
+                    <div class="timeline-circle">{{ e.icon }}</div>
+                    {% endif %}
+                    
+                    <div class="timeline-content">
+                        <span class="timeline-period">{{ e.period }}</span>
+                        <h3>{{ e.school }}</h3>
+                        <p class="timeline-text">{{ e.detail }}</p>
+                    </div>
+                </div>
+                {% endfor %}
             </div>
-            {% endfor %}
         </div>
         
         {% if data.content.trainings %}
         <div style="margin-bottom:40px;">
             <h2 style="font-size:1.6rem; border-left:5px solid var(--accent-color); padding-left:15px; margin-bottom:25px;">Professional Trainings</h2>
-            {% for t in data.content.trainings %}
-            <div style="margin-bottom: 25px; padding-left:20px;">
-                <h3 style="margin:0 0 5px 0; font-size:1.2rem; display:flex; align-items:center; gap:8px;">
-                    {% if t.icon and (t.icon.startswith('/') or t.icon.startswith('http')) %}<img src="{{ t.icon }}" style="width:24px; height:24px; border-radius:50%; object-fit:cover;">{% else %}<span>{{ t.icon or '📜' }}</span>{% endif %}
-                    {{ t.title }}
-                </h3>
-                <p style="color:var(--text-muted); font-family: 'Montserrat', monospace; font-weight:700; font-size:0.85rem; margin-bottom:8px;">{{ t.period }}</p>
-                <p style="color:var(--text-main); margin:0;">{{ t.detail }}</p>
+            <div class="timeline-wrapper">
+                {% for t in data.content.trainings %}
+                <div class="timeline-item">
+                    {% if t.icon.startswith('http') or t.icon.startswith('/') %}
+                    <div class="timeline-circle" style="background-image: url('{{ t.icon }}');"></div>
+                    {% else %}
+                    <div class="timeline-circle">{{ t.icon }}</div>
+                    {% endif %}
+                    
+                    <div class="timeline-content">
+                        <span class="timeline-period">{{ t.period }}</span>
+                        <h3>{{ t.title }}</h3>
+                        <p class="timeline-text">{{ t.detail }}</p>
+                    </div>
+                </div>
+                {% endfor %}
             </div>
-            {% endfor %}
         </div>
         {% endif %}
 
         <div>
             <h2 style="font-size:1.6rem; border-left:5px solid var(--accent-color); padding-left:15px; margin-bottom:25px;">Activities</h2>
-            {% for a in data.content.activities %}
-            <div style="margin-bottom: 25px; padding-left:20px;">
-                <h3 style="margin:0 0 5px 0; font-size:1.2rem; display:flex; align-items:center; gap:8px;">
-                    {% if a.icon and (a.icon.startswith('/') or a.icon.startswith('http')) %}<img src="{{ a.icon }}" style="width:24px; height:24px; border-radius:50%; object-fit:cover;">{% else %}<span>{{ a.icon or '🏃' }}</span>{% endif %}
-                    {{ a.title }}
-                </h3>
-                <p style="color:var(--text-muted); font-family: 'Montserrat', monospace; font-weight:700; font-size:0.85rem; margin-bottom:8px;">{{ a.period }}</p>
-                <p style="color:var(--text-main); margin:0;">{{ a.detail }}</p>
+            <div class="timeline-wrapper">
+                {% for a in data.content.activities %}
+                <div class="timeline-item">
+                    {% if a.icon.startswith('http') or a.icon.startswith('/') %}
+                    <div class="timeline-circle" style="background-image: url('{{ a.icon }}');"></div>
+                    {% else %}
+                    <div class="timeline-circle">{{ a.icon }}</div>
+                    {% endif %}
+                    
+                    <div class="timeline-content">
+                        <span class="timeline-period">{{ a.period }}</span>
+                        <h3>{{ a.title }}</h3>
+                        <p class="timeline-text">{{ a.detail }}</p>
+                    </div>
+                </div>
+                {% endfor %}
             </div>
-            {% endfor %}
         </div>
     </div>
 </div>
