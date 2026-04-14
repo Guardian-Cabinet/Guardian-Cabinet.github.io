@@ -85,6 +85,7 @@
             will-change: transform;
             cursor: pointer;
             pointer-events: none; /* 폴더 박스가 겹쳐서 hover 가로채는 버그 차단 */
+            z-index: 1; /* 기본 z-index */
         }
 
         .tab-wrapper {
@@ -94,20 +95,21 @@
             align-items: flex-end;
             padding-left: 20px;
             padding-right: 20px;
-            pointer-events: auto; /* 실제 클릭 영역만 부활 */
+            pointer-events: none; /* 하위 요소에서만 클릭 허용하도록 수정 */
+            position: relative;
         }
 
         .tab {
             border: 2px solid #000;
             border-bottom: none;
             border-radius: 14px 14px 0 0;
-            padding: 0 35px;
+            padding: 0 28px;
             height: 53px;
             line-height: 53px;
             font-weight: 900;
             font-family: 'Montserrat', sans-serif;
-            font-size: 14px;
-            letter-spacing: 1px;
+            font-size: 13px;
+            letter-spacing: 0.5px;
             cursor: pointer;
             position: relative;
             top: 2px;
@@ -116,6 +118,8 @@
             background-color: #f7f5f2;
             box-shadow: 0 -5px 15px rgba(0,0,0,0.03);
             text-transform: uppercase;
+            pointer-events: auto; /* 클릭 영역 활성화 */
+            white-space: nowrap; /* 텍스트 깨짐 방지 */
         }
 
         .tab.dark {
@@ -128,6 +132,14 @@
         .folder:not(.active):hover .tab {
             transform: translateY(-5px);
             background-color: #ffffff !important;
+        }
+
+        /* 활성 탭의 z-index를 최상위로 */
+        .folder.active {
+            z-index: 100 !important;
+        }
+        .folder:hover {
+            z-index: 99 !important;
         }
 
         .folder-body {
@@ -146,6 +158,8 @@
             pointer-events: auto; /* 본문 스크롤 클릭 가능하게 복구 */
         }
 
+        /* z-index는 위의 선언과 JS에서 직접 관리 */
+        
         .folder.active .folder-body {
             box-shadow: var(--cabinet-shadow);
         }
@@ -387,6 +401,28 @@
             font-size: 14px;
         }
 
+        /* 줄글 들여쓰기 (Hanging Indent) */
+        .bullet-line {
+            display: flex;
+            align-items: flex-start;
+            margin-top: 4px;
+            margin-bottom: 4px;
+            padding-left: 4px;
+        }
+        .bullet-marker {
+            min-width: 16px;
+            flex-shrink: 0;
+            display: inline-block;
+            color: #888;
+            font-weight: 700;
+        }
+        .bullet-content {
+            flex-grow: 1;
+            padding-left: 2px;
+            border-left: 2px solid rgba(0,0,0,0.08);
+            padding-left: 10px;
+        }
+
         @media (max-width: 768px) {
             body { 
                 height: 100vh; 
@@ -404,8 +440,8 @@
                 margin: 0; 
             }
             .content-grid { grid-template-columns: 1fr; gap: 25px; }
-            .tab { padding: 0 12px; font-size: 10px; height: 40px; line-height: 40px; border-width: 1.5px; }
-            .tab-wrapper { height: 40px; padding-left: 5px; padding-right: 5px; }
+            .tab { padding: 0 8px; font-size: 9px; height: 40px; line-height: 40px; border-width: 1.5px; white-space: nowrap; letter-spacing: 0; }
+            .tab-wrapper { height: 40px; padding-left: 5px; padding-right: 5px; pointer-events: none; }
             .folder-body { padding: 20px 15px 80px 15px; border-radius: 12px; border-width: 1.5px; }
             h1 { font-size: 1.7rem; letter-spacing: -1px; margin-bottom: 20px; }
             h2 { font-size: 1.25rem; }
@@ -451,6 +487,9 @@
     </div>
 
     <div class="cabinet-container" id="cabinet">
+        
+        <!-- 탭 클릭 오버레이 - 모든 폴더 위에 떠있는 투명 클릭 영역 -->
+        <div id="tab-overlay" style="position:absolute; top:0; left:0; width:100%; height:0; z-index:9999; pointer-events:none;"></div>
         
         <!-- 파셜(Partials)로 모듈화된 폴더 탭 내용들 -->
         
@@ -1194,35 +1233,114 @@
             const containerHeight = container.clientHeight;
             const n = folders.length;
 
-            // 탭 위치 정렬 (All-Top 방식 공간 압축)
+            // 1. 브라우저 렌더링 후 width값을 정확히 가져오기 위해 style 초기화
+            folders.forEach(f => {
+                const tw = f.querySelector('.tab-wrapper');
+                const tab = f.querySelector('.tab');
+                tw.style.justifyContent = 'flex-end';
+                tw.style.paddingLeft = '0';
+                tab.style.marginRight = '0';
+                tab.style.top = '2px';
+            });
+
+            // 2. 탭 수평 크기 계산 (수평 정렬을 위해)
+            const tabWidths = folders.map(f => f.querySelector('.tab').offsetWidth);
+            
+            // 3. 우측 기준 위치(margin-right) 계산 
+            let currentRight = 0;
+            const rightPositions = [];
+            const overlapGap = isMobile ? -2 : -4; // 겹침 방지/조정 (파일 탭 느낌)
+            for(let i = n - 1; i >= 0; i--) {
+                rightPositions[i] = currentRight;
+                currentRight += tabWidths[i] + overlapGap;
+            }
+
+            // 4. 레이아웃 적용
             folders.forEach((folder, i) => {
                 const tab = folder.querySelector('.tab');
                 const body = folder.querySelector('.folder-body');
-                const tabWrapper = folder.querySelector('.tab-wrapper');
 
                 // 모든 높이를 하단 끝까지 연장!
                 folder.style.height = `${containerHeight - (i * cascadeGap)}px`;
                 
-                // 클래스 제어
+                // 클래스 제어 + z-index 관리
                 if (i === currentActive) {
                     folder.classList.add('active');
+                    folder.style.zIndex = 100; // 활성 탭 최상위
                     if(!tab.classList.contains('dark')) tab.style.backgroundColor = '#ffffff';
                     body.style.backgroundColor = '#ffffff';
                 } else {
                     folder.classList.remove('active');
+                    folder.style.zIndex = n - i; // 앞의 탭이 뒤의 탭보다 위에
                     if(!tab.classList.contains('dark')) tab.style.backgroundColor = '#e0dad0';
                     body.style.backgroundColor = '#e0dad0'; /* 투명해지지만 겹쳤을 때를 위해 스케치 유지 */
                 }
 
-                // 탭 수평 위치 분산
-                tabWrapper.style.justifyContent = 'flex-start';
-                tabWrapper.style.paddingLeft = `${(i / n) * 85}%`; 
-
                 // 모든 탭이 상단에 밀집 도열 (가독성 공간 100% 확보)
+                // 폴더 바디는 계단식으로 내려감
                 folder.style.transform = `translateY(${i * cascadeGap}px)`;
+
+                // 탭은 역으로 올려서 동일 선상에 일렬(Horizontally) 도열
+                tab.style.top = `${2 - (i * cascadeGap)}px`;
+                
+                // 우측 정렬된 탭들의 수평 위치 지정 (일렬 나열)
+                tab.style.marginRight = `${rightPositions[i]}px`;
 
                 // 하단 뭉침이 없어졌으므로 패딩 복구
                 body.style.paddingBottom = `40px`;
+            });
+        }
+
+        // ──── 탭 클릭 오버레이 시스템 ────
+        // 모든 탭의 위치를 추적하는 투명 클릭 영역을 z-index: 9999로 생성
+        function setupTabDelegation() {
+            const overlay = document.getElementById('tab-overlay');
+            const tabs = document.querySelectorAll('.folder .tab');
+            
+            tabs.forEach((tab, index) => {
+                const clone = document.createElement('div');
+                clone.className = 'tab-overlay-click';
+                clone.style.cssText = 'position:absolute; cursor:pointer; pointer-events:auto;';
+                clone.dataset.tabIndex = index;
+                clone.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    currentActive = index;
+                    layoutFolders();
+                    syncOverlayPositions();
+                    // 방문자 추적
+                    const tabId = tab.textContent.trim();
+                    if (window._trackSession) {
+                        fetch('/api/track/page', {
+                            method: 'POST',
+                            headers: {'Content-Type': 'application/json'},
+                            body: JSON.stringify({ session_id: window._trackSession, page: tabId })
+                        }).catch(() => {});
+                    }
+                });
+                overlay.appendChild(clone);
+            });
+            
+            syncOverlayPositions();
+        }
+        
+        // 탭 오버레이 위치 동기화
+        function syncOverlayPositions() {
+            const overlay = document.getElementById('tab-overlay');
+            const container = document.getElementById('cabinet');
+            if(!overlay || !container) return;
+            
+            const containerRect = container.getBoundingClientRect();
+            const tabs = document.querySelectorAll('.folder .tab');
+            const clones = overlay.querySelectorAll('.tab-overlay-click');
+            
+            tabs.forEach((tab, index) => {
+                if(clones[index]) {
+                    const rect = tab.getBoundingClientRect();
+                    clones[index].style.left = `${rect.left - containerRect.left}px`;
+                    clones[index].style.top = `${rect.top - containerRect.top}px`;
+                    clones[index].style.width = `${rect.width}px`;
+                    clones[index].style.height = `${rect.height}px`;
+                }
             });
         }
 
@@ -1274,8 +1392,42 @@
             });
         })();
 
-        window.addEventListener('resize', layoutFolders);
-        window.addEventListener('DOMContentLoaded', layoutFolders);
+        // ──── 모듈식 뷸릿 포인터 들여쓰기 ────
+        function formatBullets() {
+            const elements = document.querySelectorAll('.folder-body p, .folder-body h3, .folder-body h4');
+            elements.forEach(el => {
+                // h3, h4도 포함 - children 체크를 완화하여 span 등이 있어도 처리
+                const rawHtml = el.innerHTML;
+                if (rawHtml.includes('- ') || rawHtml.includes('-\n')) {
+                    const lines = rawHtml.split('\n');
+                    let newHtml = '';
+                    let isModified = false;
+                    
+                    lines.forEach((line, index) => {
+                        let trimmed = line.trim();
+                        // '-'로 시작하되, 첫 줄(제목) 뒤의 ' - ' 패턴이 아닌 독립 줄만
+                        if (trimmed.startsWith('- ') || (trimmed === '-')) {
+                            let content = trimmed.substring(1).trim();
+                            newHtml += `<span class="bullet-line"><span class="bullet-marker">–</span><span class="bullet-content">${content}</span></span>`;
+                            isModified = true;
+                        } else {
+                            newHtml += line + (index < lines.length - 1 ? '\n' : '');
+                        }
+                    });
+                    
+                    if (isModified) {
+                        el.innerHTML = newHtml;
+                    }
+                }
+            });
+        }
+
+        window.addEventListener('resize', () => { layoutFolders(); syncOverlayPositions(); });
+        window.addEventListener('DOMContentLoaded', () => {
+            layoutFolders();
+            formatBullets();
+            setupTabDelegation();
+        });
     </script>
 </body>
 </html>
