@@ -330,7 +330,7 @@
         /* 지그재그 배치: 홀수는 왼쪽, 짝수는 오른쪽 */
         .timeline-item:nth-child(odd) {
             float: left;
-            text-align: right;
+            text-align: left; /* 좌측 통일(Option 1) 반영 */
             padding-right: 50px;
             padding-left: 0;
         }
@@ -415,9 +415,9 @@
             border-left: 2px dashed rgba(0,0,0,0.15);
         }
         .timeline-item:nth-child(odd) .timeline-text {
-            padding-right: 15px;
-            border-right: 2px dashed rgba(0,0,0,0.15);
-            text-align: right;
+            padding-left: 15px; /* Option 1 좌측 정렬 통일 */
+            border-left: 2px dashed rgba(0,0,0,0.15);
+            text-align: left;
         }
 
         .timeline-icon {
