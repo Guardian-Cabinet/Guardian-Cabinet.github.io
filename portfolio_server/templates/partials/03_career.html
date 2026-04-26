@@ -16,8 +16,9 @@
                 
                 <div class="timeline-content">
                     <span class="timeline-period">{{ c.period }}</span>
-                    <h3>{{ c.company }} - {{ c.role }}</h3>
-                    <p class="timeline-text">{{ c.desc }}</p>
+                    <h3 class="industrial-title">{{ c.company }}</h3>
+                    <p class="timeline-text career-details">{{ c.role }}</p>
+                    {% if c.desc %}<p class="timeline-text">{{ c.desc }}</p>{% endif %}
                 </div>
             </div>
             {% endfor %}
