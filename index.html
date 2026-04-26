@@ -102,24 +102,25 @@
         .tab {
             border: 2px solid #000;
             border-bottom: none;
-            border-radius: 14px 14px 0 0;
-            padding: 0 28px;
-            height: 53px;
-            line-height: 53px;
+            border-radius: 12px 12px 0 0;
+            padding: 0 18px;
+            height: 48px;
+            line-height: 48px;
             font-weight: 900;
             font-family: 'Montserrat', sans-serif;
-            font-size: 13px;
-            letter-spacing: 0.5px;
+            font-size: 12px;
+            letter-spacing: 0px;
             cursor: pointer;
             position: relative;
             top: 2px;
             z-index: 2;
             transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             background-color: #f7f5f2;
-            box-shadow: 0 -5px 15px rgba(0,0,0,0.03);
+            box-shadow: 0 -3px 10px rgba(0,0,0,0.03);
             text-transform: uppercase;
             pointer-events: auto; /* 클릭 영역 활성화 */
             white-space: nowrap; /* 텍스트 깨짐 방지 */
+            user-select: none;
         }
 
         .tab.dark {
@@ -128,18 +129,25 @@
             border-color: #000;
         }
 
-        /* Hover effect for tabs */
-        .folder:not(.active):hover .tab {
-            transform: translateY(-5px);
-            background-color: #ffffff !important;
-        }
-
-        /* 활성 탭의 z-index를 최상위로 */
+        /* Hover effect - Overlay delegates 'hovered' class */
         .folder.active {
             z-index: 100 !important;
         }
-        .folder:hover {
+        .folder.hovered {
             z-index: 99 !important;
+        }
+        .folder.hovered .tab {
+            transform: translateY(-6px);
+            background-color: #ffffff !important;
+            box-shadow: 0 -5px 15px rgba(0,0,0,0.08);
+            text-decoration: underline;
+            text-underline-offset: 4px;
+            text-decoration-thickness: 1.5px;
+        }
+        .folder.active .tab {
+            text-decoration: underline;
+            text-underline-offset: 4px;
+            text-decoration-thickness: 1.5px;
         }
 
         .folder-body {
@@ -440,8 +448,8 @@
                 margin: 0; 
             }
             .content-grid { grid-template-columns: 1fr; gap: 25px; }
-            .tab { padding: 0 8px; font-size: 9px; height: 40px; line-height: 40px; border-width: 1.5px; white-space: nowrap; letter-spacing: 0; }
-            .tab-wrapper { height: 40px; padding-left: 5px; padding-right: 5px; pointer-events: none; }
+            .tab { padding: 0 6px; font-size: 9px; height: 38px; line-height: 38px; border-width: 1.5px; white-space: nowrap; letter-spacing: -0.5px; border-radius: 8px 8px 0 0; }
+            .tab-wrapper { height: 38px; padding-left: 2px; padding-right: 2px; pointer-events: none; }
             .folder-body { padding: 20px 15px 80px 15px; border-radius: 12px; border-width: 1.5px; }
             h1 { font-size: 1.7rem; letter-spacing: -1px; margin-bottom: 20px; }
             h2 { font-size: 1.25rem; }
@@ -1237,8 +1245,9 @@
             folders.forEach(f => {
                 const tw = f.querySelector('.tab-wrapper');
                 const tab = f.querySelector('.tab');
-                tw.style.justifyContent = 'flex-end';
-                tw.style.paddingLeft = '0';
+                tw.style.justifyContent = 'flex-start'; // 좌측 정렬로 가독성 개선
+                tw.style.paddingRight = '0';
+                tab.style.marginLeft = '0';
                 tab.style.marginRight = '0';
                 tab.style.top = '2px';
             });
@@ -1246,13 +1255,24 @@
             // 2. 탭 수평 크기 계산 (수평 정렬을 위해)
             const tabWidths = folders.map(f => f.querySelector('.tab').offsetWidth);
             
-            // 3. 우측 기준 위치(margin-right) 계산 
-            let currentRight = 0;
-            const rightPositions = [];
-            const overlapGap = isMobile ? -2 : -4; // 겹침 방지/조정 (파일 탭 느낌)
-            for(let i = n - 1; i >= 0; i--) {
-                rightPositions[i] = currentRight;
-                currentRight += tabWidths[i] + overlapGap;
+            // 3. 좌측 기준 위치(margin-left) 계산 및 오버플로우 방지
+            const containerWidth = container.clientWidth;
+            const availableWidth = containerWidth - (isMobile ? 4 : 40); // 탭 래퍼 패딩 제외 가용 폭
+            const totalTabWidths = tabWidths.reduce((a, b) => a + b, 0);
+            
+            let overlapGap = isMobile ? -3 : -5; // 겹침 방지/조정 (파일 탭 느낌)
+            let requiredWidth = totalTabWidths + (overlapGap * (n - 1));
+            
+            // 만약 가용 폭보다 탭들의 총 길이가 길면 겹침 폭을 동적으로 늘려 욱여넣음
+            if (requiredWidth > availableWidth && n > 1) {
+                overlapGap = (availableWidth - totalTabWidths) / (n - 1);
+            }
+
+            let currentLeft = 0;
+            const leftPositions = [];
+            for(let i = 0; i < n; i++) {
+                leftPositions[i] = currentLeft;
+                currentLeft += tabWidths[i] + overlapGap;
             }
 
             // 4. 레이아웃 적용
@@ -1261,7 +1281,7 @@
                 const body = folder.querySelector('.folder-body');
 
                 // 모든 높이를 하단 끝까지 연장!
-                folder.style.height = `${containerHeight - (i * cascadeGap)}px`;
+                folder.style.height = `${containerHeight - ((n - 1 - i) * cascadeGap)}px`;
                 
                 // 클래스 제어 + z-index 관리
                 if (i === currentActive) {
@@ -1271,20 +1291,19 @@
                     body.style.backgroundColor = '#ffffff';
                 } else {
                     folder.classList.remove('active');
-                    folder.style.zIndex = n - i; // 앞의 탭이 뒤의 탭보다 위에
+                    folder.style.zIndex = n - i; // 앞의 탭이 뒤의 탭보다 위에 위치함 (좌측부터 우측으로 겹치게)
                     if(!tab.classList.contains('dark')) tab.style.backgroundColor = '#e0dad0';
                     body.style.backgroundColor = '#e0dad0'; /* 투명해지지만 겹쳤을 때를 위해 스케치 유지 */
                 }
 
-                // 모든 탭이 상단에 밀집 도열 (가독성 공간 100% 확보)
-                // 폴더 바디는 계단식으로 내려감
+                // 폴더 바디는 하단 밀집 대신 현재 구조 유지
                 folder.style.transform = `translateY(${i * cascadeGap}px)`;
 
                 // 탭은 역으로 올려서 동일 선상에 일렬(Horizontally) 도열
                 tab.style.top = `${2 - (i * cascadeGap)}px`;
                 
-                // 우측 정렬된 탭들의 수평 위치 지정 (일렬 나열)
-                tab.style.marginRight = `${rightPositions[i]}px`;
+                // 좌측 정렬된 탭들의 수평 위치 지정 (일렬 나열)
+                tab.style.marginLeft = `${leftPositions[i]}px`;
 
                 // 하단 뭉침이 없어졌으므로 패딩 복구
                 body.style.paddingBottom = `40px`;
@@ -1296,12 +1315,22 @@
         function setupTabDelegation() {
             const overlay = document.getElementById('tab-overlay');
             const tabs = document.querySelectorAll('.folder .tab');
+            const folders = document.querySelectorAll('.folder');
             
             tabs.forEach((tab, index) => {
                 const clone = document.createElement('div');
                 clone.className = 'tab-overlay-click';
                 clone.style.cssText = 'position:absolute; cursor:pointer; pointer-events:auto;';
                 clone.dataset.tabIndex = index;
+
+                // 마우스 호버 시 탭 진출 및 부각 효과
+                clone.addEventListener('mouseenter', () => {
+                    folders[index].classList.add('hovered');
+                });
+                clone.addEventListener('mouseleave', () => {
+                    folders[index].classList.remove('hovered');
+                });
+
                 clone.addEventListener('click', function(e) {
                     e.stopPropagation();
                     currentActive = index;
