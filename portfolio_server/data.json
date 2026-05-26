@@ -27,14 +27,6 @@
         "description": "전체 포트폴리오 게시 페이지",
         "url": "https://portfolio-share.github.io/",
         "thumbnail": "/static/uploads/upload_1774928073.png"
-      },
-      {
-        "id": "1774928282278",
-        "type": "youtube",
-        "title": "전문 프로덕션 납품 작품",
-        "description": "기업 홍보를 위한 촬영, 편집 등 전체 과정 수행 가능",
-        "url": "",
-        "thumbnail": ""
       }
     ],
     "careers": [
