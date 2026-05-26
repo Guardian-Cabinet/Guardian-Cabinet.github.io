@@ -23,25 +23,17 @@
       {
         "id": "1",
         "type": "link",
-        "title": "청소년 맞춤형 정책 지원 서비스 개발",
-        "description": "청소년, 장애인, 학원 시설 등에서 관련된 프로그램을 게시하고 결제와 소통, 분석 등 다양한 needs를 충족시키기 위한 포털을 개발하여 상업화",
-        "url": "https://youth-canvas-ebeqjerbu85noh9qw2zufa.streamlit.app/",
+        "title": "전체 포트폴리오 게시 페이지",
+        "description": "전체 포트폴리오 게시 페이지",
+        "url": "https://portfolio-share.github.io/",
         "thumbnail": "/static/uploads/upload_1774928073.png"
-      },
-      {
-        "id": "2",
-        "type": "link",
-        "title": "데이터와 AI로 뉴스 편향을 검증하다",
-        "description": "청소년 미디어 리터러시 교육을 위한 팩트체크 시스템",
-        "url": "https://news-dashboard-cpigrdrhjzjaj4qzq92rc3.streamlit.app/",
-        "thumbnail": "/static/uploads/upload_1774928108.png"
       },
       {
         "id": "1774928282278",
         "type": "youtube",
         "title": "전문 프로덕션 납품 작품",
         "description": "기업 홍보를 위한 촬영, 편집 등 전체 과정 수행 가능",
-        "url": "https://www.youtube.com/watch?v=F4elUfrAUZ0",
+        "url": "",
         "thumbnail": ""
       }
     ],
